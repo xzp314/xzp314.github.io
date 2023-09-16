@@ -8040,6 +8040,95 @@ DevRTT=(1-β)DevRTT+β|SampleRTT-EstimatedRTT|</script><p>超时：EstimatedRTT+
       </tags>
   </entry>
   <entry>
+    <title>java-并发基础</title>
+    <url>/posts/16745.html</url>
+    <content><![CDATA[<h3 id="线程-进程-程序"><a href="#线程-进程-程序" class="headerlink" title="线程 进程 程序"></a>线程 进程 程序</h3><ul>
+<li>程序是静态的，是存储在磁盘中，包含数据和指令的文件，可以认为程序是静态的进程</li>
+</ul>
+<ul>
+<li>进程是程序的一次执行过程，总体上可以认为包含创建、运行和销毁三个阶段，是系统资源分配的基本单位，也就是说进程享有CPU、内存、输入输出设备等资源的使用权，进程会按照程序的指令，依次进行执行，进程之间一般不会互相干扰。</li>
+<li>线程则是更小的执行单位，是进程的一个执行序列，也被称为轻量级进程，是CPU调度的基本单位，一个进程可以创建多个线程，这些线程共享进程的资源，同时能够互相协作</li>
+</ul>
+<p>在Java中，启动<code>main</code>函数，其实就是启动了JVM的进程，<code>main</code>函数所在的线程就是进程创建的一个线程，也叫主线程</p>
+<h3 id="并发-vs-并行"><a href="#并发-vs-并行" class="headerlink" title="并发 vs 并行"></a>并发 vs 并行</h3><p>现代操作系统中，线程是CPU调度的最小单位，比如Intel Core i9-13900K拥有24核心和32线程</p>
+<ul>
+<li>并行：同一时刻，多个线程均在执行，需要多核CPU的支持</li>
+<li>并发：同一时刻，只能一个线程执行，但是在一段时间内，两个线程都有使用CPU，并发依赖于线程上下文切换</li>
+</ul>
+<p><img src="/posts/16745/image-20230916185735938.png" alt="image-20230916185735938"></p>
+<p><strong>并发的意义</strong></p>
+<p>考虑一个应用程序，需要能够执行某些耗时比较长的任务，同时渲染界面响应用户请求，如果是单线程非并发执行，那么执行任务时，程序就会假死，虽然一直在运行，但是无法即时响应用户请求</p>
+<h4 id="线程的状态"><a href="#线程的状态" class="headerlink" title="线程的状态"></a>线程的状态</h4><p><strong>并发就意味着线程不是一致运行的，是存在状态转换的</strong></p>
+<p><img src="/posts/16745/image-20230916193111039.png" alt="image-20230916193111039"></p>
+<p><strong>new</strong>：线程刚刚被创建，但是没有调用start方法</p>
+<p><strong>runnable</strong>：线程等待执行，或者正在执行，也就是ready和running</p>
+<blockquote>
+<p>当线程调用 <code>start()</code>方法后，线程则处于就绪状态，等待操作系统分配CPU时间片，分配后则进入running运行状态。</p>
+<p>当调用<code>yield()</code>方法后，只是谦让的允许当前线程让出CPU，但具体让不让不一定，由操作系统决定。如果让了，那么当前线程则会处于<code>ready</code>状态参与后续CPU竞争，直至执行</p>
+<p>其实<code>yield()</code>调用的效果相当于<code>sleep(0)</code></p>
+</blockquote>
+<p><strong>blocked</strong>：阻塞状态，特指阻塞于锁，是被动的，<code>synchronized</code></p>
+<p><strong>wait</strong>：等待事件的发生，是主动的，系统不会调度，需要依靠其他线程通知才能回到runnable状态</p>
+<p><strong>timed_wait</strong>：超时等待状态，指定时间让出CPU资源，线程不执行，等待一段时间后会自动返回runnable状态</p>
+<p><strong>terminated</strong>：线程执行完毕 | 异常，进入终止状态</p>
+<hr>
+<h4 id="sleep-vs-wait"><a href="#sleep-vs-wait" class="headerlink" title="sleep vs wait"></a>sleep vs wait</h4><ol>
+<li><p><code>sleep</code>不会释放锁，而<code>wait</code>会释放锁</p>
+<p> 为什么要释放锁，如果不释放，别的线程无法进入同步块，也就无法执行<code>notify|notifyAll</code>方法唤醒挂起的线程，造成死锁</p>
+</li>
+<li><p><code>sleep</code>通常用于暂停执行，相当于使其睡眠，而<code>wait</code>则通常用于线程间交互，相当于使其挂起</p>
+</li>
+<li><p><code>sleep</code>必须传入时间，超时即唤醒；<code>wait</code>可传可不传，不传的话，线程不会自动苏醒，需要别的线程调用<code>notify | notifyAll</code>方法</p>
+</li>
+<li><p><code>sleep</code>是<code>Thread</code>的静态本地方法，但是<code>wait</code>却是<code>Object</code>类的方法</p>
+<p> 因为<code>wait</code>需要释放当前线程持有的对象锁，需要对对象进行操作，因此需要定义在<code>Object</code>中</p>
+<p> 而<code>sleep</code>不需要释放对象锁，自然没有必要放在<code>Object</code>中</p>
+</li>
+</ol>
+<hr>
+<h4 id="sleep理解"><a href="#sleep理解" class="headerlink" title="sleep理解"></a>sleep理解</h4><p><strong>sleep(0)的意义</strong></p>
+<p><code>sleep()</code>函数其实就是告诉系统接下来一段时间我不参与CPU调度，那么如果时间是0，也就是告诉系统马上触发一次CPU调度</p>
+<p>比如单核CPU环境下，我们在大循环里面，写一个<code>sleep(0)</code>，就可以让出CPU给别的线程，比如界面绘制的线程，防止出现线程假死</p>
+<p><strong>调用Thread.sleep(1000)，1000ms后线程会不会被执行</strong></p>
+<p>调用<code>Thread.sleep(1000)</code>相当于告诉操作系统，未来的1000ms内我不参与CPU调度，但是过去了1000ms，可能另外一个线程正在使用CPU，操作系统不会进行CPU调度，睡眠的线程不一定会被执行，就算触发了CPU调度，也不一定就调度到当前这个线程</p>
+<p>类似，<code>resume</code>函数也只是告诉操作系统，我要参与CPU调度了，但是不一定马上获取CPU时间片</p>
+<hr>
+<h4 id="线程上下文切换"><a href="#线程上下文切换" class="headerlink" title="线程上下文切换"></a>线程上下文切换</h4><p><strong>并发依赖于线程上下文切换</strong></p>
+<p>想要实现并发，就需要能够通过CPU调度算法切换当前执行的进程，比如时间片轮转法，每个线程只能适用一小段CPU时间，然后不管执行完没有都要释放CPU使用权，而CPU能够继续执行下一个线程的后续指令，就需要下个线程的执行状态，所以上下文切换笼统来讲就是线程执行过程中的状态信息的切换，在切换到别的线程执行时，需要暂存当前线程的上下文，并加载下个线程的上下文</p>
+<p>线程上下文切换的内容根据切换线程的关系会有所不同</p>
+<ol>
+<li><strong>不同进程</strong>，线程切换和进程切换一样，代价比较大，包括虚拟内存（表）、全局变量、寄存器等</li>
+<li><strong>相同进程的不同线程</strong>，线程切换主要是线程私有的资源，包括程序计数器、栈信息等</li>
+</ol>
+<hr>
+<h4 id="wait-notify实践"><a href="#wait-notify实践" class="headerlink" title="wait notify实践"></a>wait notify实践</h4><p>等待和唤醒是相对的，当前线程等待就得有另外一个线程进行唤醒，否则程序就永远等待下去了，并且一般会配合synchronized一起使用</p>
+<p>比如有一个茶馆类，茶馆注册了服务员，客人来了之后需要分配服务员进行服务</p>
+<p>客人申请服务时</p>
+<ol>
+<li>如果发现工作忙=true，就会wait，挂起当前线程，等待空闲</li>
+<li>如果发现空闲，工作状态置为true，就会调用notify呼叫服务员</li>
+</ol>
+<p>服务员服务时</p>
+<ol>
+<li>如果发现没有工作，false，就会wait，挂起当前线程，等待客人到来</li>
+<li>如果发现有工作了，就会开始服务，notify叫醒客人</li>
+</ol>
+<ol>
+<li>服务员初始化，没有工作，wait</li>
+<li>客人1来店，发现空闲，将店的工作状态置为true，调用notify呼叫服务员</li>
+<li>客人2来店，发现忙碌，等待</li>
+<li>服务员来工作，工作完毕，将状态置为false，可以接受新的客人，同时唤醒等待的客人</li>
+<li>客人2唤醒</li>
+<li>服务员来工作，工作完毕，将状态置为false，可以接受新的客人</li>
+<li>没有客人来，服务员没有工作，wait</li>
+</ol>
+]]></content>
+      <categories>
+        <category>编程语言</category>
+        <category>java</category>
+      </categories>
+  </entry>
+  <entry>
     <title>java-ConcurrentHashMap详解</title>
     <url>/posts/58141.html</url>
     <content><![CDATA[<h3 id="HashMap的线程安全"><a href="#HashMap的线程安全" class="headerlink" title="HashMap的线程安全"></a>HashMap的线程安全</h3><p><code>HashMap</code>设计之初就没有考虑多线程访问，自然没有对多线程并发访问做任何控制，可以从两个示例进行分析</p>
@@ -8057,7 +8146,7 @@ DevRTT=(1-β)DevRTT+β|SampleRTT-EstimatedRTT|</script><p>超时：EstimatedRTT+
 <p>单线程场景下，我们可以通过额外添加一层<code>containsKey</code>方法来判断，也就是说，如果<code>containsKey</code>方法返回<code>true</code>，那么说明存在这个<code>key</code>，<code>get</code>就算获取到<code>Null</code>，那也是说明<code>value</code>就是<code>Null</code>；否则，说明不存在该<code>key</code>，直接结束<code>get</code>方法</p>
 <p>需要注意多线程场景下就没办法解决，比如线程1和线程2，考虑这样一个执行流程，线程1调用<code>containsKey</code>方法返回<code>true</code>，线程2将<code>key</code>移除，线程1调用<code>get</code>自然只能获取到<code>Null</code>，此时，线程1会误认为自己获取到的<code>Null</code>就是<code>key</code>对应的<code>value</code>，但是实际上<code>key</code>已经被线程2移除了</p>
 <p>所以，<code>HashMap</code>能够存放<code>value</code>为<code>Null</code>也是没有对多线程并发访问进行控制的一个证明</p>
-<h3 id="并发安全的HashMap"><a href="#并发安全的HashMap" class="headerlink" title="并发安全的HashMap"></a>并发安全的HashMap</h3><h4 id="HashTable-synchronizedMap"><a href="#HashTable-synchronizedMap" class="headerlink" title="HashTable | synchronizedMap"></a>HashTable | synchronizedMap</h4><ul>
+<h3 id="并发安全的HashMap"><a href="#并发安全的HashMap" class="headerlink" title="并发安全的HashMap"></a>并发安全的HashMap</h3><h4 id="HashTable-amp-synchronizedMap"><a href="#HashTable-amp-synchronizedMap" class="headerlink" title="HashTable&amp;synchronizedMap"></a>HashTable&amp;synchronizedMap</h4><ul>
 <li><p><code>HashTable</code>的<code>get put</code>方法都用<code>synchronized</code>进行修饰吗，并且<code>put</code>方法不允许存储<code>value</code>为<code>Null</code>，相当于加锁对象是<code>HashTable</code>的整个实例</p>
 </li>
 <li><p><code>synchronizedMap</code>维护一个<code>mutex</code>的成员变量，<code>mutex=this</code>，其实就是当前对象实例的互斥锁，然后<code>get</code>和<code>put</code>方法都是先对<code>mutex</code>加锁，才能继续后续操作</p>
@@ -8067,7 +8156,7 @@ DevRTT=(1-β)DevRTT+β|SampleRTT-EstimatedRTT|</script><p>超时：EstimatedRTT+
 <p>单独对同步方法的调用是能够保证并发安全的，但是如果组合调用就无法保证了</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">removeKey</span><span class="params">(String key)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(map.containsKey(key))&#123; <span class="comment">// containsKey方法是线程安全的方法</span></span><br><span class="line">  	map.remove(key); <span class="comment">// remove方法也是线程安全的方法。</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>比如线程1执行<code>containsKey</code>方法后释放锁还没获取<code>remove</code>的锁，线程2也执行<code>containsKey</code>方法后，后续继续执行，就会出现<code>remove</code>空的<code>key</code>，解决办法就是外层再进行锁封装，但是比较影响效率</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">removeKey</span><span class="params">(String key)</span>&#123;</span><br><span class="line">  <span class="keyword">synchronized</span>(object)&#123;</span><br><span class="line">    <span class="keyword">if</span>(map.containsKey(key))&#123; <span class="comment">// containsKey方法是线程安全的方法</span></span><br><span class="line">        map.remove(key); <span class="comment">// remove方法也是线程安全的方法。</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">removeKey</span><span class="params">(String key)</span>&#123;</span><br><span class="line">  <span class="keyword">synchronized</span>(object)&#123;</span><br><span class="line">    <span class="keyword">if</span>(map.containsKey(key))&#123;</span><br><span class="line">        map.remove(key);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h4><p><code>ConcurrentHashMap</code>虽然在JDK1.7和1.8的实现不一样，但是均不是将整个实例对象上锁，并发度有所提高。此外，<code>ConcurrentHashMap</code>是不允许<code>value</code>为<code>Null</code>的</p>
 <h4 id="JDK-1-7"><a href="#JDK-1-7" class="headerlink" title="JDK 1.7"></a>JDK 1.7</h4><p>底层是数组+链表，参考HashMap的JDK 1.7实现。在并发控制上采用分段锁，也就是将数组分为多个段，每段在逻辑上相当于一个小哈希表，每段上一个锁，不同段之间的锁不会互相影响，并发度取决于段的数量，因为默认是<code>16</code>，所以最多<code>16</code>个线程并发写，需要注意的是一旦初始化，后续不能修改，所以段的数量设置需要比较严谨</p>
 <p><strong>put</strong></p>
@@ -8693,78 +8782,6 @@ DevRTT=(1-β)DevRTT+β|SampleRTT-EstimatedRTT|</script><p>超时：EstimatedRTT+
         <category>编程语言</category>
         <category>java</category>
       </categories>
-  </entry>
-  <entry>
-    <title>java-java对象详解</title>
-    <url>/posts/39626.html</url>
-    <content><![CDATA[<h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">SelfClass</span> <span class="variable">c1</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">SelfClass</span>();</span><br><span class="line"><span class="type">SelfClass</span> <span class="variable">c2</span> <span class="operator">=</span> c1.getClass().newInstance();</span><br></pre></td></tr></table></figure>
-<p>类对象是java能够实现各种业务逻辑的基础，是类的实例化对象，例如上述左边的c实际上是对象引用，存储在栈内存中，而new出来的SelfClass对象才是该类的一个实例，一般来说，存储在堆内存中，对象实例和对象引用的关系是一对多。</p>
-<p><img src="/posts/39626/image-20230908160020627.png" alt="image-20230908160020627"></p>
-<h3 id="对象创建过程"><a href="#对象创建过程" class="headerlink" title="对象创建过程"></a>对象创建过程</h3><h4 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h4><ol>
-<li>该对象所属类的加载的检查——类加载检查</li>
-<li>内存空间的分配——分配内存空间</li>
-<li>类对象属性的设置——初始化零值 和 执行init方法</li>
-<li>类对象的基本信息的存储——设置对象头</li>
-</ol>
-<h4 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h4><p><img src="/posts/39626/image-20230908161418147.png" alt="image-20230908161418147"></p>
-<p>具体如下：</p>
-<ol>
-<li><p><strong>类加载检查</strong></p>
-<p>虚拟机首先检查是否能在常量池中定位到这个类的符号引用，然后检测这个类有没有被加载过，如果没有需要执行类加载过程[加载→验证→准备→解析→初始化]</p>
-</li>
-<li><p><strong>分配内存</strong></p>
-<p>虚拟机会为年轻的对象分配内存，内存大小在类加载时就可以确定了，实际上就是从java堆中分出来一块固定大小的内存空间。</p>
-</li>
-<li><p><strong>初始化零值</strong></p>
-<p>虚拟机需要将分配到的内存空间都初始化为零值（不包括对象头），其实就是字段数据类型的零值，比如int的0，boolean的false，引用类型的null，这一步操作保证了对象的实例字段在 Java 代码中可以不赋初始值就直接使用，</p>
-</li>
-<li><p><strong>设置对象头</strong></p>
-<p>对象头存储对象自身的运行时数据（哈希码、垃圾回收年龄分代、锁状态等）以及类型指针（对象指向类的元数据信息的值，虚拟机基于此可以确定这个对象属于哪个类），这些都会存放到对象头中，需要进行设置</p>
-</li>
-<li><p><strong>执行init方法</strong></p>
-<p>到这才是代码控制的步骤，也就是依据代码进行成员非静态变量的赋值和执行构造方法</p>
-</li>
-</ol>
-<h3 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h3><h4 id="内存分配方式"><a href="#内存分配方式" class="headerlink" title="内存分配方式"></a>内存分配方式</h4><p>分配的方式有指针碰撞和空闲列表两种，取决于java堆是否规整，也就是是否存在碎片，而这又是由垃圾回收算法决定的，比如复制算法能够避免碎片的产生</p>
-<p><strong>指针碰撞</strong>：适用于没有内存碎片的情形，实际上就是用一个分界指针将正在使用的内存和空闲的内存进行划分，内存分配只需要将指针往空闲内存那边移动相应内存大小即可</p>
-<p><strong>空闲列表</strong>：适用于堆不规整的情形，虚拟机会维护一个表，记录哪些内存块是可用的，分配的时候找一块足够大的内存块就行，然后更新这个表</p>
-<h4 id="内存分配的并发问题"><a href="#内存分配的并发问题" class="headerlink" title="内存分配的并发问题"></a>内存分配的并发问题</h4><p>内存分配是存在并发问题的，虚拟机通过TLAB+CAS进行处理</p>
-<p>TLAB的意思就是Thread Local Allocation Buffer，线程本地分配的缓冲区，也就是说虚拟机会为每个线程在Eden区分配一块私有的内存供其创建对象，如果这个空间不够再用CAS来保证并发控制</p>
-<p>CAS的意思是Compare and Swap，简单来说就是一种乐观锁，假设操作时不会出现并发问题，不加锁，操作结束后，再去检查操作是否成功，成功就ok，不成功就多次重试</p>
-<p>这里成功的检测，最简单的方法就是比较旧值和期待的值是否相等，但是这样会有ABA的问题，所以java提供了一个AtomicStampedReference来解决该问题</p>
-<h4 id="内存空间分配位置"><a href="#内存空间分配位置" class="headerlink" title="内存空间分配位置"></a>内存空间分配位置</h4><p>一般来说，都是分配在堆中；但是也有可能在栈上分配，随着方法的返回而销毁，无需垃圾回收。</p>
-<p>对于一些在方法内部定义的类对象，如果只在内部使用，没有被外部引用，则认为没有逃逸，没有逃逸的类对象不会在堆中存储，而是存储在方法的栈中。</p>
-<h4 id="对线内存布局"><a href="#对线内存布局" class="headerlink" title="对线内存布局"></a>对线内存布局</h4><ul>
-<li><p><strong>对象头</strong></p>
-<ol>
-<li>存储对象自身的运行时数据（哈希码、垃圾回收年龄分代、锁状态等）</li>
-<li>类型指针（对象指向类的元数据信息[元空间]的指针，虚拟机基于此可以确定这个对象属于哪个类）</li>
-</ol>
-</li>
-<li><p><strong>实例数据</strong></p>
-<p>对象真正存储的有效信息，也是在程序中所定义的各种类型的字段内容</p>
-</li>
-<li><p><strong>对齐填充</strong></p>
-<p>占位作用，因为对象的起始地址必须是8的倍数，对象头是8的1倍或者2倍，但是实例数据无法保证，需要对其进行对齐</p>
-</li>
-</ul>
-<h3 id="对象访问定位的两种方式"><a href="#对象访问定位的两种方式" class="headerlink" title="对象访问定位的两种方式"></a>对象访问定位的两种方式</h3><p>通过栈上的reference来定位堆上的对象实例，有句柄和直接指针两种方式</p>
-<h4 id="句柄"><a href="#句柄" class="headerlink" title="句柄"></a>句柄</h4><p>堆中额外存储一个句柄池，栈上的reference指向句柄，句柄存储了到堆中对象实例数据的指针和到元空间中对象的类信息的指针，优势在于<strong>对象被移动不影响reference，只需要修改句柄的指向</strong></p>
-<p><img src="/posts/39626/image-20230908162849900.png" alt="image-20230908162849900"></p>
-<h4 id="直接指针"><a href="#直接指针" class="headerlink" title="直接指针"></a>直接指针</h4><p>reference存储的就是堆中对象实例数据的指针，通过对象实例数据的对象头中存储的类型指针能够找到对象在元空间中存储的类的元数据信息，优势在于<strong>一次指针操作就可以拿到对象实例数据，效率高</strong></p>
-<p><img src="/posts/39626/image-20230908163050408.png" alt="image-20230908163050408"></p>
-<h3 id="拓展问题"><a href="#拓展问题" class="headerlink" title="拓展问题"></a>拓展问题</h3><p><strong>成员变量和局部变量的区别</strong></p>
-<p>我们这里暂时不考虑静态的成员变量</p>
-<p><strong>形式上</strong>：成员变量在类中定义，属于类，局部变量在方法中定义，或者作为方法的入参</p>
-<p>修饰符：成员变量可以用 public | private | static 等进行修饰，但是局部变量只能用final修饰，表示值不能变 或者引用不能指向别的地方</p>
-<p><strong>存储方式</strong>：局部变量存储在栈内存，成员变量存储在堆内存</p>
-<p><strong>生命周期</strong>：成员变量依赖于类对象，类对象销毁即消失，局部变量依赖于方法，方法返回即消失</p>
-<p><strong>初始化</strong>：成员变量如果没有初始化，则依据类型进行默认初始化，局部变量不会默认初始化</p>
-<p><strong>命名</strong>：在一个类方法中，局部变量可以和类的成员变量同名，但是局部变量优先，如果需要访问成员变量，可以用this</p>
-<hr>
-<p><strong>局部变量为什么要初始化</strong></p>
-<p>局部变量也就是类方法中的变量，局部变量运行时存储在栈中，数量多，生命周期短，如果交给虚拟机进行初始化，代价太大，但是不初始化就使用有不安全，因此就要求局部变量要初始化，当然全局变量也是需要初始化的，但是全局变量的初始化由虚拟机完成，因为全局变量数量少很多，初始化代价可以接受</p>
-]]></content>
   </entry>
   <entry>
     <title>java-对象详解</title>
@@ -9578,6 +9595,10 @@ DevRTT=(1-β)DevRTT+β|SampleRTT-EstimatedRTT|</script><p>超时：EstimatedRTT+
 <p><strong>解决方案</strong></p>
 <p>之前java应该是Java，类型中修改为java，同时需要将分类文件夹的名字也改为java</p>
 <p><img src="/posts/14401/image-20230915203553839.png" alt="image-20230915203553839"></p>
+<h4 id="目录显示问题"><a href="#目录显示问题" class="headerlink" title="目录显示问题"></a>目录显示问题</h4><p><strong>问题描述</strong></p>
+<p><img src="/posts/14401/image-20230916164110783.png" alt="image-20230916164110783"></p>
+<p><strong>解决方案</strong></p>
+<p>第2部分的目录标题等级排布有误，修改就好了</p>
 <h3 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h3><p><strong>问题描述</strong></p>
 <h4 id="插入本地图片"><a href="#插入本地图片" class="headerlink" title="插入本地图片"></a>插入本地图片</h4><p><strong>解决方案</strong></p>
 <ol>

@@ -79,15 +79,20 @@
 
 
 
-<meta name="description" content="xzp（Xu Zhipeng）个人小站">
-<meta property="og:type" content="website">
-<meta property="og:title" content="主页">
-<meta property="og:url" content="http://example.com/archives/2018/10/index.html">
+<meta name="description" content="并发的一些基础知识，更偏向于java这边的多线程，具体的线程、进程知识详见操作系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java-并发基础">
+<meta property="og:url" content="http://example.com/posts/16745.html">
 <meta property="og:site_name" content="主页">
-<meta property="og:description" content="xzp（Xu Zhipeng）个人小站">
+<meta property="og:description" content="并发的一些基础知识，更偏向于java这边的多线程，具体的线程、进程知识详见操作系统">
 <meta property="og:locale">
+<meta property="og:image" content="http://example.com/posts/16745/image-20230916185735938.png">
+<meta property="og:image" content="http://example.com/posts/16745/image-20230916193111039.png">
+<meta property="article:published_time" content="2018-10-29T13:24:31.000Z">
+<meta property="article:modified_time" content="2023-09-16T11:51:29.443Z">
 <meta property="article:author" content="Xu Zhipeng">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/posts/16745/image-20230916185735938.png">
 
 
 
@@ -117,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/archives/2018/10/"/>
+  <link rel="canonical" href="http://example.com/posts/16745.html"/>
 
 
 
 
 
-  <title>归档 | 主页</title>
+  <title>java-并发基础 | 主页</title>
   
 
 
@@ -143,7 +148,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -281,410 +286,292 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
-        
-        
-         
-        
-        OK! 目前共计 47 篇日志。 继续努力。
-      </span>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/16745.html">
 
-      
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="主页">
+    </span>
+
+    
+      <header class="post-header">
 
         
         
+          <h1 class="post-title" itemprop="name headline">java-并发基础</h1>
         
 
-        
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-29T21:24:31+08:00">
+                2018-10-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/posts/16745.html" itemprop="url">
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
               
-                <span itemprop="name">java-并发基础</span>
+                <span class="post-meta-item-text">分类于</span>
               
-            </a>
-        
-      </h2>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
+                    <span itemprop="name">编程语言</span>
+                  </a>
+                </span>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-10-29T21:24:31+08:00"
-              content="2018-10-29" >
-          10-29
-        </time>
-      </div>
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
 
-    </header>
-  </article>
+                
+                
+              
+            </span>
+          
 
+          
+            
+          
 
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.8k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  并发的一些基础知识，更偏向于java这边的多线程，具体的线程、进程知识详见操作系统
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/posts/58141.html" itemprop="url">
-              
-                <span itemprop="name">java-ConcurrentHashMap详解</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-10-24T20:38:28+08:00"
-              content="2018-10-24" >
-          10-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/posts/58446.html" itemprop="url">
-              
-                <span itemprop="name">java-Map详解</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-10-21T19:38:28+08:00"
-              content="2018-10-21" >
-          10-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <h3 id="线程-进程-程序"><a href="#线程-进程-程序" class="headerlink" title="线程 进程 程序"></a>线程 进程 程序</h3><ul>
+<li>程序是静态的，是存储在磁盘中，包含数据和指令的文件，可以认为程序是静态的进程</li>
+</ul>
+<ul>
+<li>进程是程序的一次执行过程，总体上可以认为包含创建、运行和销毁三个阶段，是系统资源分配的基本单位，也就是说进程享有CPU、内存、输入输出设备等资源的使用权，进程会按照程序的指令，依次进行执行，进程之间一般不会互相干扰。</li>
+<li>线程则是更小的执行单位，是进程的一个执行序列，也被称为轻量级进程，是CPU调度的基本单位，一个进程可以创建多个线程，这些线程共享进程的资源，同时能够互相协作</li>
+</ul>
+<p>在Java中，启动<code>main</code>函数，其实就是启动了JVM的进程，<code>main</code>函数所在的线程就是进程创建的一个线程，也叫主线程</p>
+<h3 id="并发-vs-并行"><a href="#并发-vs-并行" class="headerlink" title="并发 vs 并行"></a>并发 vs 并行</h3><p>现代操作系统中，线程是CPU调度的最小单位，比如Intel Core i9-13900K拥有24核心和32线程</p>
+<ul>
+<li>并行：同一时刻，多个线程均在执行，需要多核CPU的支持</li>
+<li>并发：同一时刻，只能一个线程执行，但是在一段时间内，两个线程都有使用CPU，并发依赖于线程上下文切换</li>
+</ul>
+<p><img src="/posts/16745/image-20230916185735938.png" alt="image-20230916185735938"></p>
+<p><strong>并发的意义</strong></p>
+<p>考虑一个应用程序，需要能够执行某些耗时比较长的任务，同时渲染界面响应用户请求，如果是单线程非并发执行，那么执行任务时，程序就会假死，虽然一直在运行，但是无法即时响应用户请求</p>
+<h4 id="线程的状态"><a href="#线程的状态" class="headerlink" title="线程的状态"></a>线程的状态</h4><p><strong>并发就意味着线程不是一致运行的，是存在状态转换的</strong></p>
+<p><img src="/posts/16745/image-20230916193111039.png" alt="image-20230916193111039"></p>
+<p><strong>new</strong>：线程刚刚被创建，但是没有调用start方法</p>
+<p><strong>runnable</strong>：线程等待执行，或者正在执行，也就是ready和running</p>
+<blockquote>
+<p>当线程调用 <code>start()</code>方法后，线程则处于就绪状态，等待操作系统分配CPU时间片，分配后则进入running运行状态。</p>
+<p>当调用<code>yield()</code>方法后，只是谦让的允许当前线程让出CPU，但具体让不让不一定，由操作系统决定。如果让了，那么当前线程则会处于<code>ready</code>状态参与后续CPU竞争，直至执行</p>
+<p>其实<code>yield()</code>调用的效果相当于<code>sleep(0)</code></p>
+</blockquote>
+<p><strong>blocked</strong>：阻塞状态，特指阻塞于锁，是被动的，<code>synchronized</code></p>
+<p><strong>wait</strong>：等待事件的发生，是主动的，系统不会调度，需要依靠其他线程通知才能回到runnable状态</p>
+<p><strong>timed_wait</strong>：超时等待状态，指定时间让出CPU资源，线程不执行，等待一段时间后会自动返回runnable状态</p>
+<p><strong>terminated</strong>：线程执行完毕 | 异常，进入终止状态</p>
+<hr>
+<h4 id="sleep-vs-wait"><a href="#sleep-vs-wait" class="headerlink" title="sleep vs wait"></a>sleep vs wait</h4><ol>
+<li><p><code>sleep</code>不会释放锁，而<code>wait</code>会释放锁</p>
+<p> 为什么要释放锁，如果不释放，别的线程无法进入同步块，也就无法执行<code>notify|notifyAll</code>方法唤醒挂起的线程，造成死锁</p>
+</li>
+<li><p><code>sleep</code>通常用于暂停执行，相当于使其睡眠，而<code>wait</code>则通常用于线程间交互，相当于使其挂起</p>
+</li>
+<li><p><code>sleep</code>必须传入时间，超时即唤醒；<code>wait</code>可传可不传，不传的话，线程不会自动苏醒，需要别的线程调用<code>notify | notifyAll</code>方法</p>
+</li>
+<li><p><code>sleep</code>是<code>Thread</code>的静态本地方法，但是<code>wait</code>却是<code>Object</code>类的方法</p>
+<p> 因为<code>wait</code>需要释放当前线程持有的对象锁，需要对对象进行操作，因此需要定义在<code>Object</code>中</p>
+<p> 而<code>sleep</code>不需要释放对象锁，自然没有必要放在<code>Object</code>中</p>
+</li>
+</ol>
+<hr>
+<h4 id="sleep理解"><a href="#sleep理解" class="headerlink" title="sleep理解"></a>sleep理解</h4><p><strong>sleep(0)的意义</strong></p>
+<p><code>sleep()</code>函数其实就是告诉系统接下来一段时间我不参与CPU调度，那么如果时间是0，也就是告诉系统马上触发一次CPU调度</p>
+<p>比如单核CPU环境下，我们在大循环里面，写一个<code>sleep(0)</code>，就可以让出CPU给别的线程，比如界面绘制的线程，防止出现线程假死</p>
+<p><strong>调用Thread.sleep(1000)，1000ms后线程会不会被执行</strong></p>
+<p>调用<code>Thread.sleep(1000)</code>相当于告诉操作系统，未来的1000ms内我不参与CPU调度，但是过去了1000ms，可能另外一个线程正在使用CPU，操作系统不会进行CPU调度，睡眠的线程不一定会被执行，就算触发了CPU调度，也不一定就调度到当前这个线程</p>
+<p>类似，<code>resume</code>函数也只是告诉操作系统，我要参与CPU调度了，但是不一定马上获取CPU时间片</p>
+<hr>
+<h4 id="线程上下文切换"><a href="#线程上下文切换" class="headerlink" title="线程上下文切换"></a>线程上下文切换</h4><p><strong>并发依赖于线程上下文切换</strong></p>
+<p>想要实现并发，就需要能够通过CPU调度算法切换当前执行的进程，比如时间片轮转法，每个线程只能适用一小段CPU时间，然后不管执行完没有都要释放CPU使用权，而CPU能够继续执行下一个线程的后续指令，就需要下个线程的执行状态，所以上下文切换笼统来讲就是线程执行过程中的状态信息的切换，在切换到别的线程执行时，需要暂存当前线程的上下文，并加载下个线程的上下文</p>
+<p>线程上下文切换的内容根据切换线程的关系会有所不同</p>
+<ol>
+<li><strong>不同进程</strong>，线程切换和进程切换一样，代价比较大，包括虚拟内存（表）、全局变量、寄存器等</li>
+<li><strong>相同进程的不同线程</strong>，线程切换主要是线程私有的资源，包括程序计数器、栈信息等</li>
+</ol>
+<hr>
+<h4 id="wait-notify实践"><a href="#wait-notify实践" class="headerlink" title="wait notify实践"></a>wait notify实践</h4><p>等待和唤醒是相对的，当前线程等待就得有另外一个线程进行唤醒，否则程序就永远等待下去了，并且一般会配合synchronized一起使用</p>
+<p>比如有一个茶馆类，茶馆注册了服务员，客人来了之后需要分配服务员进行服务</p>
+<p>客人申请服务时</p>
+<ol>
+<li>如果发现工作忙=true，就会wait，挂起当前线程，等待空闲</li>
+<li>如果发现空闲，工作状态置为true，就会调用notify呼叫服务员</li>
+</ol>
+<p>服务员服务时</p>
+<ol>
+<li>如果发现没有工作，false，就会wait，挂起当前线程，等待客人到来</li>
+<li>如果发现有工作了，就会开始服务，notify叫醒客人</li>
+</ol>
+<ol>
+<li>服务员初始化，没有工作，wait</li>
+<li>客人1来店，发现空闲，将店的工作状态置为true，调用notify呼叫服务员</li>
+<li>客人2来店，发现忙碌，等待</li>
+<li>服务员来工作，工作完毕，将状态置为false，可以接受新的客人，同时唤醒等待的客人</li>
+<li>客人2唤醒</li>
+<li>服务员来工作，工作完毕，将状态置为false，可以接受新的客人</li>
+<li>没有客人来，服务员没有工作，wait</li>
+</ol>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/posts/7673.html" itemprop="url">
-              
-                <span itemprop="name">java-List详解</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-10-21T19:38:28+08:00"
-              content="2018-10-21" >
-          10-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/posts/56443.html" itemprop="url">
-              
-                <span itemprop="name">java-代理机制详解</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-10-17T09:34:18+08:00"
-              content="2018-10-17" >
-          10-17
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/posts/63184.html" itemprop="url">
-              
-                <span itemprop="name">java-泛型机制详解</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-10-15T11:58:07+08:00"
-              content="2018-10-15" >
-          10-15
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/posts/39626.html" itemprop="url">
-              
-                <span itemprop="name">java-对象详解</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-10-11T13:12:07+08:00"
-              content="2018-10-11" >
-          10-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/posts/37249.html" itemprop="url">
-              
-                <span itemprop="name">java-类详解</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-10-10T18:15:01+08:00"
-              content="2018-10-10" >
-          10-10
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/posts/47305.html" itemprop="url">
-              
-                <span itemprop="name">java-String类型详解</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-10-09T18:15:01+08:00"
-              content="2018-10-09" >
-          10-09
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/posts/62901.html" itemprop="url">
-              
-                <span itemprop="name">java-数据类型详解</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-10-08T18:15:01+08:00"
-              content="2018-10-08" >
-          10-08
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/58141.html" rel="next" title="java-ConcurrentHashMap详解">
+                <i class="fa fa-chevron-left"></i> java-ConcurrentHashMap详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/55942.html" rel="prev" title="DMA-引言">
+                DMA-引言 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/2018/10/page/2/">2</a><a class="extend next" rel="next" href="/archives/2018/10/page/2/">&gt;</a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -692,6 +579,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -712,8 +603,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -792,6 +692,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B-%E8%BF%9B%E7%A8%8B-%E7%A8%8B%E5%BA%8F"><span class="nav-number">1.</span> <span class="nav-text">线程 进程 程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91-vs-%E5%B9%B6%E8%A1%8C"><span class="nav-number">2.</span> <span class="nav-text">并发 vs 并行</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%8A%B6%E6%80%81"><span class="nav-number">2.1.</span> <span class="nav-text">线程的状态</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sleep-vs-wait"><span class="nav-number">2.2.</span> <span class="nav-text">sleep vs wait</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#sleep%E7%90%86%E8%A7%A3"><span class="nav-number">2.3.</span> <span class="nav-text">sleep理解</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2"><span class="nav-number">2.4.</span> <span class="nav-text">线程上下文切换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wait-notify%E5%AE%9E%E8%B7%B5"><span class="nav-number">2.5.</span> <span class="nav-text">wait notify实践</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -948,6 +864,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -1322,26 +1242,6 @@
   
 
   
-  
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
-
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
   
 
 
