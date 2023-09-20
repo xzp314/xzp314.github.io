@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="学科基础知识," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="数据库基本概念，基于东南大学徐立臻数据库课程（研究生）">
+<meta name="description" content="实现互斥同步的核心在于锁，java提供了各种各样的锁，适用于不同的场景">
 <meta property="og:type" content="article">
-<meta property="og:title" content="DBMS-引言">
-<meta property="og:url" content="http://example.com/posts/57766.html">
+<meta property="og:title" content="java-锁详解">
+<meta property="og:url" content="http://example.com/posts/38827.html">
 <meta property="og:site_name" content="主页">
-<meta property="og:description" content="数据库基本概念，基于东南大学徐立臻数据库课程（研究生）">
+<meta property="og:description" content="实现互斥同步的核心在于锁，java提供了各种各样的锁，适用于不同的场景">
 <meta property="og:locale">
-<meta property="og:image" content="http://example.com/posts/57766/image-20220405201338202.png">
-<meta property="article:published_time" content="2022-06-11T06:16:27.000Z">
-<meta property="article:modified_time" content="2023-08-28T02:00:37.000Z">
+<meta property="og:image" content="http://example.com/posts/38827/image-20230920154240733.png">
+<meta property="og:image" content="http://example.com/posts/38827/image-20230920161811828.png">
+<meta property="article:published_time" content="2018-11-14T04:17:14.000Z">
+<meta property="article:modified_time" content="2023-09-20T08:41:13.987Z">
 <meta property="article:author" content="Xu Zhipeng">
-<meta property="article:tag" content="学科基础知识">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/posts/57766/image-20220405201338202.png">
+<meta name="twitter:image" content="http://example.com/posts/38827/image-20230920154240733.png">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/posts/57766.html"/>
+  <link rel="canonical" href="http://example.com/posts/38827.html"/>
 
 
 
 
 
-  <title>DBMS-引言 | 主页</title>
+  <title>java-锁详解 | 主页</title>
   
 
 
@@ -300,7 +300,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/posts/57766.html">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/38827.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -317,7 +317,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">DBMS-引言</h1>
+          <h1 class="post-title" itemprop="name headline">java-锁详解</h1>
         
 
         <div class="post-meta">
@@ -329,8 +329,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-06-11T14:16:27+08:00">
-                2022-06-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-14T12:17:14+08:00">
+                2018-11-14
               </time>
             
 
@@ -352,8 +352,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
-                    <span itemprop="name">课程学习</span>
+                  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
+                    <span itemprop="name">编程语言</span>
                   </a>
                 </span>
 
@@ -363,8 +363,8 @@
                 
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">数据库管理系统及其实现</span>
+                  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
                   </a>
                 </span>
 
@@ -394,7 +394,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  979
+                  2k
                 </span>
               
 
@@ -410,7 +410,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  3
+                  7
                 </span>
               
             </div>
@@ -418,7 +418,7 @@
 
           
               <div class="post-description">
-                  数据库基本概念，基于东南大学徐立臻数据库课程（研究生）
+                  实现互斥同步的核心在于锁，java提供了各种各样的锁，适用于不同的场景
               </div>
           
 
@@ -435,116 +435,75 @@
       
 
       
-        <h3 id="基本概念和术语"><a href="#基本概念和术语" class="headerlink" title="基本概念和术语"></a>基本概念和术语</h3><h4 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h4><p>一个大规模集成的数据集合。</p>
-<p>作用：</p>
-<p>一个数据库是对现实生活中一个企业或一个单位在计算机中的建模结果</p>
-<ul>
-<li>实体</li>
-<li>联系（实体间的关系）</li>
-</ul>
-<h4 id="数据库管理系统"><a href="#数据库管理系统" class="headerlink" title="数据库管理系统"></a>数据库管理系统</h4><p>DBMS——用来存储和管理数据库的一种系统软件。</p>
-<h4 id="文件-vs-数据库"><a href="#文件-vs-数据库" class="headerlink" title="文件 vs 数据库"></a>文件 vs 数据库</h4><ul>
-<li>数据库可以通过DBMS直接进行很多操作，而文件的话只提供了简单的操作。</li>
-<li>用文件的话，要针对不同的文件结构编写不同的代码。</li>
-<li>由于实际应用中并发同时访问导致数据访问不一致。【文件没有解决办法，需要在应用软件层解决，而DBMS中有】</li>
-<li>故障处理【文件系统不具备这个能力，但DBMS会自动恢复】</li>
-<li>安全和访问控制</li>
-</ul>
-<p>数据库系统建立在文件系统之上。</p>
-<h4 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h4><ul>
-<li>用来描述现实世界的一种符号</li>
-<li>是信息存在的形式</li>
-</ul>
-<h4 id="数据模型"><a href="#数据模型" class="headerlink" title="数据模型"></a>数据模型</h4><ul>
-<li>用来描述数据的一组概念</li>
-<li>用来描述现实世界的一种建模方法</li>
-</ul>
-<h4 id="数据模式"><a href="#数据模式" class="headerlink" title="数据模式"></a>数据模式</h4><ul>
-<li>用一种给定的数据模型对一个特定的企业进行描述得到的结果就是数据模式</li>
-</ul>
-<p><strong>学生选课管理数据库</strong></p>
-<ul>
-<li>概念模式：<ul>
-<li>学生（学号，名字，年龄，GPA）</li>
-<li>课程（课程号，课程名）</li>
-<li>选课关系（学号，课程号，成绩）</li>
-</ul>
+        <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>多线程并发场景下，实现互斥同步的核心在于锁机制，java考虑性能、功能、应用需求，提供了各种各样的锁。</p>
+<ol>
+<li>是否强制锁住临界资源<ol>
+<li>乐观锁</li>
+<li>悲观锁</li>
+</ol>
 </li>
-<li>物理模式：<ul>
-<li>用堆文件形式存储这三张表</li>
-<li>在学生的某项信息中建立索引</li>
-</ul>
+<li>获取不到锁时是否阻塞<ol>
+<li>自旋锁 | 自适应自旋锁</li>
+</ol>
 </li>
-<li>外模式：<ul>
-<li>课程信息表（课程号，选课人数）</li>
-</ul>
+<li>多线程竞争锁时是否允许插队<ol>
+<li>公平锁</li>
+<li>非公平锁</li>
+</ol>
 </li>
-</ul>
-<h4 id="范式"><a href="#范式" class="headerlink" title="范式"></a>范式</h4><p><strong>1NF</strong> </p>
-<p>第一范式</p>
-<p>不支持表中套表</p>
-<p>关系中的每一个元组必须是原子【即不可再分】</p>
-<p><img src="/posts/57766/image-20220405201338202.png" alt="image-20220405201338202" style="zoom:33%;"></p>
-<p>分解Address</p>
-<p><strong>2NF</strong></p>
-<p> 第二范式</p>
-<p>数据库设计时，设计出来的表满足一范式，并且该表内不存在属性对主键的部分函数依赖</p>
-<p>例子：</p>
-<p>若属性由（学号、姓名、班级、课程号、成绩）五个属性组成，其中（学号，课程号）共同组成主键。</p>
-<ul>
-<li>此时不满足二范式。</li>
-<li>其中的姓名和班级，只需要依赖主键中的学号而不需要课程号就可以得到</li>
-</ul>
-<p>不满足2范式容易出现的问题：</p>
-<ul>
-<li><p>插入异常</p>
-<p>上例中，不能插入一个还未选课的学生的信息，逐渐不能为空</p>
+<li>一个线程能否多次获取同一把锁<ol>
+<li>可重入锁</li>
+<li>非可重入锁</li>
+</ol>
 </li>
-<li><p>删除异常</p>
-<p>上例中，如果一个学生申请休学，把选过的课退了，那么他的信息也会被删除</p>
+<li>临界资源是否能够共享<ol>
+<li>共享锁</li>
+<li>独享锁</li>
+</ol>
 </li>
-<li><p>更新异常</p>
-<p>更新中难以保持数据的一致性，上例的设计有大量的数据冗余</p>
-<p>每次更新学生数据，每一个选课记录都得改</p>
+<li>锁升级机制涉及到的锁<ol>
+<li>无锁</li>
+<li>偏向锁</li>
+<li>轻量级锁</li>
+<li>重量级锁</li>
+</ol>
 </li>
-</ul>
-<p><strong>解决方法</strong></p>
-<ul>
-<li>设计时，一事一地。<ul>
-<li>一张表只管一件事情</li>
-<li>可以分解为学号-课程号-成绩和学号-姓名-班级两张表</li>
-</ul>
-</li>
-</ul>
-<p><strong>3NF</strong> </p>
-<p>第三范式</p>
-<p>在满足二范式的前提下，不存在属性对主键的传递依赖。</p>
-<p><strong>例子</strong></p>
-<p>若属性由（职工编号、工资级别、工资）三个属性组成，其中（职工编号）为主键。</p>
-<p><strong>分析</strong></p>
-<p>工资取决于工资级别，工资级别取决于职工编号</p>
-<p><strong>问题</strong></p>
-<ul>
-<li>插入异常：当一个人的工资级别还没定的时候，他对应的工资也没有</li>
-<li>删除异常：3级工资的人只有一个，若删除，会把对应的工资级别信息也删除了</li>
-<li>更新异常：数据内有大量的冗余，1级工资对应1000元，会重复很多次，修改也很麻烦</li>
-</ul>
-<p><strong>解决方法</strong></p>
-<ul>
-<li>设计时，一事一地。<ul>
-<li>一张表只管一件事情</li>
-<li>一张职工编号-职工等级表，一张职工等级-工资表</li>
-</ul>
-</li>
-</ul>
-<p><strong>4NF</strong></p>
-<ul>
-<li>在满足三范式的前提下，消除多值依赖</li>
-</ul>
-<p><strong>5NF</strong></p>
-<ul>
-<li>在满足四范式的前提下，消除连接依赖</li>
-</ul>
+</ol>
+<h3 id="乐观锁-vs-悲观锁"><a href="#乐观锁-vs-悲观锁" class="headerlink" title="乐观锁 vs 悲观锁"></a>乐观锁 vs 悲观锁</h3><p>悲观锁认为自己在使用数据的时候一定有别的线程来修改数据，因此在获取数据的时候会先加锁，确保数据不会被别的线程修改，比如<code>synchronized | lock[ReentrantLock]</code>，适用于写操作比较多的场景，加锁能够保证写操作正确性</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// synchronized</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">testMethod</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="comment">// 操作同步资源</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// ReentrantLock</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">ReentrantLock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReentrantLock</span>(); <span class="comment">// 需要保证多个线程使用的是同一个锁</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">modifyPublicResources</span><span class="params">()</span> &#123;</span><br><span class="line">	lock.lock();</span><br><span class="line">	<span class="comment">// 操作同步资源</span></span><br><span class="line">	lock.unlock();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>乐观锁认为自己在使用数据时不会有别的线程修改数据，所以不会添加锁，只是在更新数据的时候去判断之前有没有别的线程更新了这个数据，最典型的就是CAS算法，比较内存中的值和旧值是否相等，相等则用新值更新，否则不断重新尝试，适用于读操作比较多的场景，不加锁能够显著提高读操作的性能，比如java中的<code>AtomicInteger</code>类就是基于CAS实现的原子性递增操作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">AtomicInteger</span> <span class="variable">atomicInteger</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AtomicInteger</span>();  <span class="comment">// 需要保证多个线程使用的是同一个AtomicInteger</span></span><br><span class="line">atomicInteger.incrementAndGet(); <span class="comment">//执行自增1</span></span><br></pre></td></tr></table></figure>
+<h3 id="自旋锁和自适应自旋锁"><a href="#自旋锁和自适应自旋锁" class="headerlink" title="自旋锁和自适应自旋锁"></a>自旋锁和自适应自旋锁</h3><p>一般来说，线程在尝试获取悲观锁时，如果发现获取不到就会阻塞，阻塞其实就是放弃CPU的使用权，将自己挂起直到别的线程释放锁进行唤醒。阻塞和唤醒一个线程需要操作系统进行CPU状态的切换，本身就比较耗费性能，而如果同步代码块的执行时间很短，很快就能获取到锁，那么就没必要阻塞等待唤醒了，当然这需要多核CPU的支持，这样线程1持有锁正在执行，线程2尝试获取锁失败也不需要放弃CPU使用权，等待一下就可以。因此，就引入了自旋锁，自旋实际上就是空转、循环的意思，如果自旋结束前，锁被释放了，那么就不必阻塞而直接获取同步资源了。</p>
+<p><img src="/posts/38827/image-20230920154240733.png" alt="image-20230920154240733"></p>
+<p>为什么引入自适应自旋锁呢？</p>
+<p>其实根据自旋的定义会发现，自旋的时间实际上是被浪费的CPU时间，如果自旋时间过长，也会导致性能受到影响，所以一般会设置一定的自旋次数上限（默认10次），如果达到该上限，那么就会阻塞。而自适应自旋锁呢其实就是动态修改自旋次数上限，比如自旋等待刚刚成功获取到了锁，那么JVM会认为自旋等待获取到锁的概率比较大，就会增加次数上限；否则，JVM可能会忽略自旋锁阶段，直接进入线程阻塞。</p>
+<h3 id="公平锁-vs-非公平锁"><a href="#公平锁-vs-非公平锁" class="headerlink" title="公平锁 vs 非公平锁"></a>公平锁 vs 非公平锁</h3><p>公平锁就是申请锁的线程默认封装到先进先出队列中，锁释放后，先申请的线程先获取锁，能够确保线程不会饥饿，但是等待队列中的线程除了第一个线程，也就是获取到锁正在执行的线程，其余线程都需要阻塞，CPU唤醒线程的次数多，开销更大</p>
+<p>非公平锁就是允许新来的线程在锁刚刚释放，没有安排给别的线程时插队，插队成功获取到锁，失败再去队列中等待，当然如果进入到队列了，那么其实也是公平锁。非公平锁意味着锁不是按照先来后到分配的，这就有可能导致等待队列中的线程饥饿，但是CPU要唤醒的线程数变少。</p>
+<p><img src="/posts/38827/image-20230920161811828.png" alt="image-20230920161811828"></p>
+<p>公平锁的实现就是加了一个<code>!hasQueuedPredecessors()</code>   的判断，这个判断的目的在于看当前线程是不是队列的首位，如果没有这个判断，那么就是新申请的线程也可以抢到锁，即不公平，而如果有这个判断，就限制必须是队列首位的线程才能获取锁，即公平锁</p>
+<h3 id="可重入锁-vs-非可重入锁"><a href="#可重入锁-vs-非可重入锁" class="headerlink" title="可重入锁 vs 非可重入锁"></a>可重入锁 vs 非可重入锁</h3><p>可重入锁，又名递归锁，<code>synchronized</code>和<code>ReentrantLock</code>都是这种锁（<code>Reentrant</code>的意思就是可重入），其实就是，同一个线程在外层同步方法获取到锁时，调用到内层同步方法，如果锁对象是一样的，那么就可以自动获取内层的锁，不会因为之前获取锁导致计数器变为1而无法获取，避免出现死锁的问题</p>
+<blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Widget</span> &#123;</span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">doSomething</span><span class="params">()</span> &#123;</span><br><span class="line">     System.out.println(<span class="string">&quot;方法1执行...&quot;</span>);</span><br><span class="line">     doOthers();</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">doOthers</span><span class="params">()</span> &#123;</span><br><span class="line">     System.out.println(<span class="string">&quot;方法2执行...&quot;</span>);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>实例同步方法A调用实例同步方法B，如果是非可重入锁，就会死锁</p>
+<p>因为对实例的锁已经被获取了，无法执行B，A等待B执行完毕才会释放锁，B又等待A释放锁才能执行，就死锁了</p>
+</blockquote>
+<p>其实源码简单来说就是</p>
+<ol>
+<li>计数器如果是0，说明没有线程获得锁，直接获取锁</li>
+<li>如果是1，检测是不是申请锁的线程和持有锁的线程是不是一样，一样就再次获取锁，计数器+1；不一样就阻塞</li>
+<li>释放锁也得依次-1，直到为0，完成所有锁的释放</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (current == getExclusiveOwnerThread()) &#123;</span><br><span class="line">  	<span class="comment">// 当前线程是不是持有锁的线程</span></span><br><span class="line">    <span class="type">int</span> <span class="variable">nextc</span> <span class="operator">=</span> c + acquires; <span class="comment">// 如果是就可以继续+1</span></span><br><span class="line">    <span class="keyword">if</span> (nextc &lt; <span class="number">0</span>) <span class="comment">// overflow</span></span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(<span class="string">&quot;Maximum lock count exceeded&quot;</span>);</span><br><span class="line">    setState(nextc);</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>; <span class="comment">// 获取锁成功</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@ReservedStackAccess</span></span><br><span class="line"><span class="keyword">protected</span> <span class="keyword">final</span> <span class="type">boolean</span> <span class="title function_">tryRelease</span><span class="params">(<span class="type">int</span> releases)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">c</span> <span class="operator">=</span> getState() - releases;</span><br><span class="line">    <span class="keyword">if</span> (Thread.currentThread() != getExclusiveOwnerThread())</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalMonitorStateException</span>(); <span class="comment">// 当前线程是不是持有锁的线程 不是就报错</span></span><br><span class="line">    <span class="type">boolean</span> <span class="variable">free</span> <span class="operator">=</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">if</span> (c == <span class="number">0</span>) &#123; <span class="comment">// 如果c为0了 说明所有锁释放完毕 才是真正地释放锁</span></span><br><span class="line">        free = <span class="literal">true</span>;</span><br><span class="line">        setExclusiveOwnerThread(<span class="literal">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    setState(c);</span><br><span class="line">    <span class="keyword">return</span> free;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而不可重入锁是如果不是0就阻塞，释放锁则是判断如果是当前线程持有锁就直接置为0即可</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="type">boolean</span> <span class="title function_">tryAcquire</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">this</span>.compareAndSetState(<span class="number">0</span>,<span class="number">1</span>)) &#123; <span class="comment">// 直接尝试获取锁 原本必须是0 然后才能改成1</span></span><br><span class="line">        <span class="built_in">this</span>.owner = Thread.currentThread;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span> <span class="type">boolean</span> <span class="title function_">tryRelease</span><span class="params">()</span> &#123;</span><br><span class="line">		<span class="keyword">if</span>(Thread.currentThread() != <span class="built_in">this</span>.owner) &#123;</span><br><span class="line">      	<span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalMonitorStateException</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      	<span class="built_in">this</span>.owner = <span class="literal">null</span>;</span><br><span class="line">      	<span class="built_in">this</span>.setState(<span class="number">0</span>); <span class="comment">// 释放锁时直接置为0</span></span><br><span class="line">      	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="独享锁-vs-排它锁"><a href="#独享锁-vs-排它锁" class="headerlink" title="独享锁 vs 排它锁"></a>独享锁 vs 排它锁</h3><p>独享锁也叫排它锁，锁一次只能被一个线程获取，比如<code>synchronized</code> 和 <code>ReentrantLock</code></p>
+<p>共享锁就是说锁能够共享，获得共享锁的线程只能读，不能写，比如<code>ReentrantReadWriteLock</code></p>
+<p>其实类似数据库中的S锁和X锁，读读不互斥，读写和写写还是互斥的</p>
+<p><code>ReentrantReadWriteLock</code>设计了两种锁，<code>ReadLock</code>和<code>WriteLock</code>，也就是读锁和写锁</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">lock</span><span class="params">()</span> &#123;sync.acquireShared(<span class="number">1</span>);&#125; <span class="comment">// 读锁的获取</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">acquireShared</span><span class="params">(<span class="type">int</span> arg)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (tryAcquireShared(arg) &lt; <span class="number">0</span>)</span><br><span class="line">        doAcquireShared(arg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">lock</span><span class="params">()</span> &#123;sync.acquire(<span class="number">1</span>);&#125; <span class="comment">// 写锁的获取</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">acquire</span><span class="params">(<span class="type">int</span> arg)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!tryAcquire(arg) &amp;&amp;</span><br><span class="line">        acquireQueued(addWaiter(Node.EXCLUSIVE), arg))</span><br><span class="line">        selfInterrupt();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>详细源码分析见<a href>ReentrantReadWriteLock详解</a></p>
 
       
     </div>
@@ -560,12 +519,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag"># 学科基础知识</a>
-          
-        </div>
-      
 
       
       
@@ -575,8 +528,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/posts/50141.html" rel="next" title="Spring-Spring Boot">
-                <i class="fa fa-chevron-left"></i> Spring-Spring Boot
+              <a href="/posts/26948.html" rel="next" title="java-线程协作实践">
+                <i class="fa fa-chevron-left"></i> java-线程协作实践
               </a>
             
           </div>
@@ -585,8 +538,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/posts/97.html" rel="prev" title="DBMS-体系结构">
-                DBMS-体系结构 <i class="fa fa-chevron-right"></i>
+              <a href="/posts/55942.html" rel="prev" title="DMA-引言">
+                DMA-引言 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -738,7 +691,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E5%92%8C%E6%9C%AF%E8%AF%AD"><span class="nav-number">1.</span> <span class="nav-text">基本概念和术语</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.1.</span> <span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.2.</span> <span class="nav-text">数据库管理系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%87%E4%BB%B6-vs-%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-number">1.3.</span> <span class="nav-text">文件 vs 数据库</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE"><span class="nav-number">1.4.</span> <span class="nav-text">数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.5.</span> <span class="nav-text">数据模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.6.</span> <span class="nav-text">数据模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%8C%83%E5%BC%8F"><span class="nav-number">1.7.</span> <span class="nav-text">范式</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%90%E8%A7%82%E9%94%81-vs-%E6%82%B2%E8%A7%82%E9%94%81"><span class="nav-number">2.</span> <span class="nav-text">乐观锁 vs 悲观锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E6%97%8B%E9%94%81%E5%92%8C%E8%87%AA%E9%80%82%E5%BA%94%E8%87%AA%E6%97%8B%E9%94%81"><span class="nav-number">3.</span> <span class="nav-text">自旋锁和自适应自旋锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E5%B9%B3%E9%94%81-vs-%E9%9D%9E%E5%85%AC%E5%B9%B3%E9%94%81"><span class="nav-number">4.</span> <span class="nav-text">公平锁 vs 非公平锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E9%87%8D%E5%85%A5%E9%94%81-vs-%E9%9D%9E%E5%8F%AF%E9%87%8D%E5%85%A5%E9%94%81"><span class="nav-number">5.</span> <span class="nav-text">可重入锁 vs 非可重入锁</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%8B%AC%E4%BA%AB%E9%94%81-vs-%E6%8E%92%E5%AE%83%E9%94%81"><span class="nav-number">6.</span> <span class="nav-text">独享锁 vs 排它锁</span></a></li></ol></div>
             
 
           </div>
