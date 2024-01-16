@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title></title>
-    <url>/posts/0.html</url>
-    <content><![CDATA[<h1 id="git安装、使用和配置"><a href="#git安装、使用和配置" class="headerlink" title="git安装、使用和配置"></a>git安装、使用和配置</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a href="https://git-scm.com/book/zh/v2/起步-安装-Git">Git - 安装 Git (git-scm.com)</a></p>
+    <title>git安装和配置</title>
+    <url>/posts/52196.html</url>
+    <content><![CDATA[<h1 id="git安装和配置"><a href="#git安装和配置" class="headerlink" title="git安装和配置"></a>git安装和配置</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a href="https://git-scm.com/book/zh/v2/起步-安装-Git">Git - 安装 Git (git-scm.com)</a></p>
 <p>安装完成后，即可在终端输入<code>git -version</code>命令，如果能够显示版本信息，表示安装成功</p>
-<p><img src="/posts/0/image-20240116191916905.png" alt="image-20240116191916905"></p>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
+<p><img src="/posts/52196/image-20240116191916905.png" alt="image-20240116191916905"></p>
+<h2 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h2><ol>
 <li><p><strong>命令行</strong></p>
 </li>
 <li><p>图形化界面（Sourcetree、fork、Github Desktop）</p>
@@ -25,25 +25,43 @@
 <p>使用上述命令保存用户名和密码，避免每次都输入，这个命令设置了一个全局git配置，相当于告诉git在需要身份验证时使用store的凭证助手</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git config --global --list</span><br></pre></td></tr></table></figure>
 <p>使用上述命令可以查看我们配置的用户信息</p>
-<p><img src="/posts/0/Users\xzp\AppData\Roaming\Typora\typora-user-images\image-20240116193557354.png" alt="image-20240116193557354"></p>
+<p><img src="/posts/52196/image-20240116193557354.png" alt="image-20240116193557354"></p>
 ]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
+      <tags>
+        <tag>开发基础知识</tag>
+      </tags>
   </entry>
   <entry>
-    <title></title>
-    <url>/posts/1.html</url>
-    <content><![CDATA[<p><img src="/posts/1/Git-Cheet-Sheet-ByGeekHour.png" alt="Git-Cheet-Sheet-ByGeekHour"></p>
+    <title>git常用命令</title>
+    <url>/posts/953.html</url>
+    <content><![CDATA[<h1 id="git常用命令"><a href="#git常用命令" class="headerlink" title="git常用命令"></a>git常用命令</h1><p><img src="/posts/953/Git-Cheet-Sheet-ByGeekHour.png" alt="Git-Cheet-Sheet-ByGeekHour"></p>
 ]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
+      <tags>
+        <tag>开发基础知识</tag>
+      </tags>
   </entry>
   <entry>
-    <title></title>
-    <url>/posts/0.html</url>
+    <title>git简介</title>
+    <url>/posts/6361.html</url>
     <content><![CDATA[<h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><h2 id="git是什么"><a href="#git是什么" class="headerlink" title="git是什么"></a>git是什么</h2><p>git是一个免费开源的分布式版本控制系统，它使用一个特殊的叫做仓库的数据库来记录文件的变化，仓库中的每个文件都有一个完整的版本历史记录，可以看到谁在什么时间修改了哪些文件的哪些内容，在需要的时候也可以将文件恢复到之前的某一个版本</p>
-<h2 id="版本控制系统"><a href="#版本控制系统" class="headerlink" title="版本控制系统"></a>版本控制系统</h2><h3 id="集中式"><a href="#集中式" class="headerlink" title="集中式"></a>集中式</h3><p><img src="/posts/0/image-20240116180426658.png" alt="image-20240116180426658" style="zoom:33%;"></p>
+<h2 id="版本控制系统"><a href="#版本控制系统" class="headerlink" title="版本控制系统"></a>版本控制系统</h2><h3 id="集中式"><a href="#集中式" class="headerlink" title="集中式"></a>集中式</h3><p><img src="/posts/6361/image-20240116180426658.png" alt="image-20240116180426658" style="zoom:33%;"></p>
 <p>所有的文件都保存在中央服务器上，每个人的电脑上只保存了一个副本，当你需要修改文件的时候，首先要从中央服务器上下载最新的版本，然后添加你想要的修改内容，修改完成之后再上传回中央服务器</p>
 <p>优势在于使用很简单直接，缺陷是中央服务器的单点故障问题：如果中央服务器出现故障或者网络连接出现问题，那么所有人都无法工作了，只能等待中央服务器或者网络恢复正常</p>
-<h3 id="分布式"><a href="#分布式" class="headerlink" title="分布式"></a>分布式</h3><p><img src="/posts/0/image-20240116180826680.png" alt="image-20240116180826680" style="zoom:33%;"></p>
+<h3 id="分布式"><a href="#分布式" class="headerlink" title="分布式"></a>分布式</h3><p><img src="/posts/6361/image-20240116180826680.png" alt="image-20240116180826680" style="zoom:33%;"></p>
 <p>每个人在电脑上都有一个完整的版本哭，所以我们可以在本地进行修改，不需要考虑网络问题，这样即使中央服务器出现故障，我们也可以继续工作，当需要将我们的修改内容分享给其他人的时候，只需要将仓库互相同步一下就可以了</p>
 ]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
+      <tags>
+        <tag>开发基础知识</tag>
+      </tags>
   </entry>
   <entry>
     <title>DBMS-并发</title>
