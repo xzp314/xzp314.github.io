@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学科基础知识," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="数据库设计相关概念，基于东南大学徐立臻数据库课程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DMA-数据库设计">
+<meta property="og:url" content="http://example.com/posts/11989.html">
+<meta property="og:site_name" content="主页">
+<meta property="og:description" content="数据库设计相关概念，基于东南大学徐立臻数据库课程">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/posts/11989/image-20220405201338202.png">
+<meta property="og:image" content="http://example.com/posts/11989/image-20220405203447643.png">
+<meta property="og:image" content="http://example.com/posts/11989/image-20220406145343358.png">
+<meta property="og:image" content="http://example.com/posts/11989/image-20220406145943349.png">
+<meta property="article:published_time" content="2019-01-24T10:55:01.000Z">
+<meta property="article:modified_time" content="2023-08-28T01:59:41.000Z">
+<meta property="article:author" content="Xu Zhipeng">
+<meta property="article:tag" content="学科基础知识">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/posts/11989/image-20220405201338202.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/posts/11989.html"/>
+
+
+
+
+
+  <title>DMA-数据库设计 | 主页</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="主页" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">主页</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">xzp个人小站</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/11989.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="主页">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">DMA-数据库设计</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-24T18:55:01+08:00">
+                2019-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">课程学习</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库系统及其应用</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  6
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  数据库设计相关概念，基于东南大学徐立臻数据库课程
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="数据依赖"><a href="#数据依赖" class="headerlink" title="数据依赖"></a>数据依赖</h2><ul>
+<li>关系数据库内数据之间存在一定的数据依赖关系</li>
+</ul>
+<h3 id="函数依赖FD"><a href="#函数依赖FD" class="headerlink" title="函数依赖FD"></a>函数依赖FD</h3><p>Function Dependency</p>
+<p>一个属性的值可以唯一的决定其它属性的值</p>
+<p>学号可以唯一决定姓名、年龄等等</p>
+<h3 id="多值依赖MVD"><a href="#多值依赖MVD" class="headerlink" title="多值依赖MVD"></a>多值依赖MVD</h3><p>Multi-valued Dependency</p>
+<p>一个属性的值决定其它属性的一组值</p>
+<p>实际生活存在但很少</p>
+<h3 id="连接依赖JD"><a href="#连接依赖JD" class="headerlink" title="连接依赖JD"></a>连接依赖JD</h3><p>Join Dependency</p>
+<p>关系属性之间能够无损连接</p>
+<ul>
+<li>无损连接：连接后的元组数一个不多，一个不少</li>
+</ul>
+<p>实际生活存在但很少</p>
+<p>供应商-零件-工程的三元关系</p>
+<p>某一个供应商供应零件某个操作</p>
+<p>分解成三张表：供应商-零件 供应商-工程 零件-工程</p>
+<p>再把这三张表连接能够完全还原原来的表</p>
+<p>那么就叫无损连接分解</p>
+<p>例如 某工程需要某零件，并且某供应商提供该零件，那么该工程必须去采购该供应商提供的零件才能满足无损连接分解，否则还原就会出现之前没有的记录</p>
+<h2 id="关系模式的规范化"><a href="#关系模式的规范化" class="headerlink" title="关系模式的规范化"></a>关系模式的规范化</h2><h3 id="关系模式的范式理论"><a href="#关系模式的范式理论" class="headerlink" title="关系模式的范式理论"></a>关系模式的范式理论</h3><h4 id="1NF"><a href="#1NF" class="headerlink" title="1NF"></a>1NF</h4><p>第一范式</p>
+<p>不支持表中套表</p>
+<p>关系中的每一个元组必须是原子【即不可再分】</p>
+<p><img src="/posts/11989/image-20220405201338202.png" alt="image-20220405201338202"></p>
+<p>分解Address</p>
+<h4 id="2NF"><a href="#2NF" class="headerlink" title="2NF"></a>2NF</h4><p> 第二范式</p>
+<p>数据库设计时，设计出来的表满足一范式，并且该表内不存在属性对主键的部分函数依赖</p>
+<p>例子：</p>
+<p>若属性由（学号、姓名、班级、课程号、成绩）五个属性组成，其中（学号，课程号）共同组成主键。</p>
+<ul>
+<li>此时不满足二范式。</li>
+<li>其中的姓名和班级，只需要依赖主键中的学号而不需要课程号就可以得到</li>
+</ul>
+<p>不满足2范式容易出现的问题：</p>
+<ul>
+<li><p>插入异常</p>
+<p>上例中，不能插入一个还未选课的学生的信息，逐渐不能为空</p>
+</li>
+<li><p>删除异常</p>
+<p>上例中，如果一个学生申请休学，把选过的课退了，那么他的信息也会被删除</p>
+</li>
+<li><p>更新异常</p>
+<p>更新中难以保持数据的一致性，上例的设计有大量的数据冗余</p>
+<p>每次更新学生数据，每一个选课记录都得改</p>
+</li>
+</ul>
+<h5 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h5><ul>
+<li>设计时，一事一地。<ul>
+<li>一张表只管一件事情</li>
+<li>可以分解为学号-课程号-成绩和学号-姓名-班级两张表</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-NF"><a href="#3-NF" class="headerlink" title="3 NF"></a>3 NF</h4><p>第三范式</p>
+<p>在满足二范式的前提下，不存在属性对主键的传递依赖。</p>
+<h5 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h5><p>若属性由（职工编号、工资级别、工资）三个属性组成，其中（职工编号）为主键。</p>
+<h5 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h5><p>工资取决于工资级别，工资级别取决于职工编号</p>
+<h5 id="上例不满足3范式的问题"><a href="#上例不满足3范式的问题" class="headerlink" title="上例不满足3范式的问题"></a>上例不满足3范式的问题</h5><ul>
+<li>插入异常：当一个人的工资级别还没定的时候，他对应的工资也没有</li>
+<li>删除异常：3级工资的人只有一个，若删除，会把对应的工资级别信息也删除了</li>
+<li>更新异常：数据内有大量的冗余，1级工资对应1000元，会重复很多次，修改也很麻烦</li>
+</ul>
+<h5 id="解决方法-1"><a href="#解决方法-1" class="headerlink" title="解决方法"></a>解决方法</h5><ul>
+<li>设计时，一事一地。<ul>
+<li>一张表只管一件事情</li>
+<li>一张职工编号-职工等级表，一张职工等级-工资表</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-NF-四范式"><a href="#4-NF-四范式" class="headerlink" title="4 NF 四范式"></a>4 NF 四范式</h4><ul>
+<li>在满足三范式的前提下，消除多值依赖。</li>
+</ul>
+<h4 id="5-NF-五范式"><a href="#5-NF-五范式" class="headerlink" title="5 NF 五范式"></a>5 NF 五范式</h4><ul>
+<li>在满足四范式的前提下，消除连接依赖。</li>
+</ul>
+<h3 id="应用示例"><a href="#应用示例" class="headerlink" title="应用示例"></a>应用示例</h3><p><img src="/posts/11989/image-20220405203447643.png" alt="image-20220405203447643"></p>
+<p>设计如下三张表：</p>
+<ol>
+<li>第一行设备基本信息表</li>
+<li>第二行设备存放位置</li>
+<li>第三行设备入库出库的记录</li>
+</ol>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">	1[1NF]--消除属性对主键的部分函数依赖--&gt;2[2NF]--消除属性对主键的传递依赖--&gt;3[3Nf-足够了]--消除多值依赖--&gt;4[4NF]--消除多值依赖--&gt;5[5NF];</span><br></pre></td></tr></table></figure>
+<h2 id="ER模型"><a href="#ER模型" class="headerlink" title="ER模型"></a>ER模型</h2><p><img src="/posts/11989/image-20220406145343358.png" alt="image-20220406145343358"></p>
+<h2 id="数据库设计方法"><a href="#数据库设计方法" class="headerlink" title="数据库设计方法"></a>数据库设计方法</h2><h3 id="面向过程的方法"><a href="#面向过程的方法" class="headerlink" title="面向过程的方法"></a>面向过程的方法</h3><p>根据单位日常处理的流程，以过程为中心。</p>
+<ul>
+<li>好处<ul>
+<li>在设计初期，能比较快的实现</li>
+</ul>
+</li>
+<li>缺点<ul>
+<li>没分析数据之间的关系，数据有冗余和矛盾，当流程进行改动时，会有很多问题</li>
+</ul>
+</li>
+</ul>
+<h3 id="面向对象的方法"><a href="#面向对象的方法" class="headerlink" title="面向对象的方法"></a>面向对象的方法</h3><p>依然会分析流程，但是需要归纳流程涉及到的数据，是以数据为中心的方法</p>
+<p>分析数据之间的关系，设计一些符合3NF的模式</p>
+<h2 id="数据库设计流程"><a href="#数据库设计流程" class="headerlink" title="数据库设计流程"></a>数据库设计流程</h2><p><img src="/posts/11989/image-20220406145943349.png" alt="image-20220406145943349"></p>
+<ol>
+<li><p>Requirement Analysis</p>
+<p>需求分析，与用户交流确定需求</p>
+<ol>
+<li><p>Information requirement</p>
+<p>每一项业务需要涉及到哪些信息</p>
+</li>
+<li><p>Process requirement</p>
+<p>每一项业务需要对这些数据做什么处理（增删改查）</p>
+</li>
+<li><p>Requirement indication</p>
+<p>结果是得到需求分析报告，需要和用户反复讨论、确认</p>
+</li>
+</ol>
+</li>
+<li><p>Concept Design</p>
+<p>概念设计，与用户讨论，分析数据之间的关系（实体）、实体及实体间的逻辑，利用ER图来进行描述，和用什么数据库系统实现无关</p>
+<p>得到DBMS independent data schema</p>
+<p>确保用户的所有业务都能在我们设计的schema基础上顺利执行</p>
+</li>
+<li><p>Logic Design</p>
+<p>逻辑设计，看采用哪一种数据库系统，生成全局模式（基表的属性、属性类型等等）【<strong>concept schema</strong>】，定义视图【<strong>outer schema</strong>】</p>
+</li>
+<li><p>Physical Design</p>
+<p>物理设计，考虑数据在磁盘上到底如何存储，默认都是堆文件，但是比如学生基本信息表比较适合用簇集，而在某些属性上是否应该添加B+树索引</p>
+<p>得到【<strong>inner schema</strong>】</p>
+</li>
+</ol>
+<h3 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h3><p>数据字典：把所有的基本数据元素都找出来</p>
+<p>数据流图DFD or UML</p>
+<p>解决问题：</p>
+<ul>
+<li><p>名字冲突</p>
+<ul>
+<li>同名异意，都叫编号，学号、设备编号啥的</li>
+<li>异名同意，学号、学生编号啥的</li>
+</ul>
+</li>
+<li><p>概念冲突</p>
+<p>同一个概念，一个部门用作属性，一个部门用作实体</p>
+<p>院系，可以作为学生表的属性，也可以作为实体（表）</p>
+<p>是否需要视为实体，如果需要，则如何设置属性指向该表，院系编号</p>
+</li>
+<li><p>域冲突</p>
+<p>同一个概念，名称、意义都没有区别，但是值域有区别，比如性别可以男\女、0\1、F\M</p>
+</li>
+<li><p>编码</p>
+<ul>
+<li>实现信息的标准化，学号（专业、院系、入学年份）</li>
+<li>标识符，唯一标识实体</li>
+<li>压缩信息，院系单独作为一张表，编号代表院系，而不是全称</li>
+</ul>
+</li>
+</ul>
+<p>通过需求分析，所有信息都要有唯一的来源和职责</p>
+<h3 id="概念设计"><a href="#概念设计" class="headerlink" title="概念设计"></a>概念设计</h3><p>在数据字典和数据流图的基础上</p>
+<ul>
+<li>用ER图抽象出实体，哪些数据应该抽象形成一个实体</li>
+<li>定义实体间的联系</li>
+<li>绘制ER图（ERWin，Rose），与用户讨论</li>
+</ul>
+<h3 id="逻辑设计"><a href="#逻辑设计" class="headerlink" title="逻辑设计"></a>逻辑设计</h3><ul>
+<li>把ER图表达的数据模型进行建表</li>
+<li>表和属性的命名规则</li>
+<li>定义每个属性的类型和值域</li>
+<li><p>适当的逆规范化</p>
+<ul>
+<li>权衡效率和范式规范</li>
+<li>采取一些存储过程、编程规范防止出现逆规范的问题</li>
+</ul>
+</li>
+<li><p>定义必要的视图</p>
+</li>
+<li>考虑遗留系统的接口表的设计</li>
+</ul>
+<h3 id="物理设计"><a href="#物理设计" class="headerlink" title="物理设计"></a>物理设计</h3><p>根据DBMS特点对每个表的存储和索引情况进行权衡</p>
+<ul>
+<li>分区设计</li>
+<li>存储过程</li>
+<li>触发器</li>
+<li>完整性约束</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>仅仅在结构上满足3范式是不够的</li>
+<li>一事一地包括每项信息的唯一，要提取出问题的本质，识别本质上同一概念的信息项</li>
+<li>对于表达类似信息、能合并尽量合并</li>
+<li>考虑到效率、用途等因素、该分开的要分开</li>
+<li>结合DBMS内部实现技术，合理设计索引和文件结构，为查询优化准备号存取路径</li>
+<li>在结构规范化、减少数据冗余和提高数据库访问性能之间仔细权衡，适当折中</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag"># 学科基础知识</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/8042.html" rel="next" title="DMA-数据库安全和完整性约束">
+                <i class="fa fa-chevron-left"></i> DMA-数据库安全和完整性约束
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/16771.html" rel="prev" title="IM项目-MVC vs DDD">
+                IM项目-MVC vs DDD <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+                <a href="/archives">
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xzp314" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:seu_xuzhipeng@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%BE%9D%E8%B5%96"><span class="nav-number">1.</span> <span class="nav-text">数据依赖</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E4%BE%9D%E8%B5%96FD"><span class="nav-number">1.1.</span> <span class="nav-text">函数依赖FD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%80%BC%E4%BE%9D%E8%B5%96MVD"><span class="nav-number">1.2.</span> <span class="nav-text">多值依赖MVD</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E4%BE%9D%E8%B5%96JD"><span class="nav-number">1.3.</span> <span class="nav-text">连接依赖JD</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB%E6%A8%A1%E5%BC%8F%E7%9A%84%E8%A7%84%E8%8C%83%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">关系模式的规范化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB%E6%A8%A1%E5%BC%8F%E7%9A%84%E8%8C%83%E5%BC%8F%E7%90%86%E8%AE%BA"><span class="nav-number">2.1.</span> <span class="nav-text">关系模式的范式理论</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1NF"><span class="nav-number">2.1.1.</span> <span class="nav-text">1NF</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2NF"><span class="nav-number">2.1.2.</span> <span class="nav-text">2NF</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95"><span class="nav-number">2.1.2.1.</span> <span class="nav-text">解决方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-NF"><span class="nav-number">2.1.3.</span> <span class="nav-text">3 NF</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BE%8B%E5%AD%90"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%B8%8A%E4%BE%8B%E4%B8%8D%E6%BB%A1%E8%B6%B33%E8%8C%83%E5%BC%8F%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.1.3.3.</span> <span class="nav-text">上例不满足3范式的问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95-1"><span class="nav-number">2.1.3.4.</span> <span class="nav-text">解决方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-NF-%E5%9B%9B%E8%8C%83%E5%BC%8F"><span class="nav-number">2.1.4.</span> <span class="nav-text">4 NF 四范式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-NF-%E4%BA%94%E8%8C%83%E5%BC%8F"><span class="nav-number">2.1.5.</span> <span class="nav-text">5 NF 五范式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.2.</span> <span class="nav-text">应用示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ER%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.</span> <span class="nav-text">ER模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E6%96%B9%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">数据库设计方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E8%BF%87%E7%A8%8B%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">4.1.</span> <span class="nav-text">面向过程的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-number">4.2.</span> <span class="nav-text">面向对象的方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B"><span class="nav-number">5.</span> <span class="nav-text">数据库设计流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90"><span class="nav-number">5.1.</span> <span class="nav-text">需求分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5%E8%AE%BE%E8%AE%A1"><span class="nav-number">5.2.</span> <span class="nav-text">概念设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E8%AE%BE%E8%AE%A1"><span class="nav-number">5.3.</span> <span class="nav-text">逻辑设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E8%AE%BE%E8%AE%A1"><span class="nav-number">5.4.</span> <span class="nav-text">物理设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">5.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xu Zhipeng</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">160.6k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

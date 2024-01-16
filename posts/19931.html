@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学科基础知识," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="查询语句的优化原理，基于东南大学徐立臻数据库课程（研究生）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DBMS-查询优化">
+<meta property="og:url" content="http://example.com/posts/19931.html">
+<meta property="og:site_name" content="主页">
+<meta property="og:description" content="查询语句的优化原理，基于东南大学徐立臻数据库课程（研究生）">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220417130625432-1692774513967-50.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328152757242-1692775610159-1.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328153018869-1692774513967-51.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328154656381-1692774513967-52.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220417130700539-1692774513967-53.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220417130829183-1692774513967-54.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220417132246542-1692774513967-55.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220417132524957-1692774513968-58.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220417132800705-1692774513968-57.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220417133200970-1692774513968-59.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328160944596-1692774513968-61.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328161003008-1692774513968-60.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328161045501-1692774513968-62.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328161101907-1692775640310-1.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328161247604-1692774513968-63.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328161301410-1692774513968-65.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328161653603-1692774513968-66.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328162052117-1692774513968-67.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328162604410-1692774513968-68.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328163705756-1692774513968-69.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328164100902-1692774513968-71.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328165721837-1692774513968-72.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328164318264-1692774513968-74.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328164545961-1692774513968-73.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328164632140-1692774513968-75.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328165256902-1692774513968-77.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220329151359539-1692774513968-76.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328155629137-1692774513968-79.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220328160650442-16484548113911-1692774513968-78.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220329152052113-1692774513968-80.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220418201450656-1692774513968-86.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220418201534435-1692774513968-87.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220420191150345-1692774513968-88.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220420191704877-1692774513968-89.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220420191948312-1692774513968-90.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220420192103841-1692774513968-91.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220420192304381-1692774513968-92.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220420191150345-1692774513968-88.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220420195055941-1692774513968-93.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220422110848121-1692774513968-95.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220422111108963-1692774513968-94.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220422111720799-1692774513968-97.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220422183319245-1692774513968-96.png">
+<meta property="og:image" content="http://example.com/posts/19931/image-20220422193709229-1692774513968-98.png">
+<meta property="article:published_time" content="2022-06-11T06:48:20.000Z">
+<meta property="article:modified_time" content="2023-08-28T02:01:48.000Z">
+<meta property="article:author" content="Xu Zhipeng">
+<meta property="article:tag" content="学科基础知识">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/posts/19931/image-20220417130625432-1692774513967-50.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/posts/19931.html"/>
+
+
+
+
+
+  <title>DBMS-查询优化 | 主页</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="主页" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">主页</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">xzp个人小站</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/19931.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="主页">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">DBMS-查询优化</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-06-11T14:48:20+08:00">
+                2022-06-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">课程学习</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库管理系统及其实现</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  7.2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  27
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  查询语句的优化原理，基于东南大学徐立臻数据库课程（研究生）
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p><strong>本质</strong></p>
+<ol>
+<li>代数优化-把用户提交的查询语言进行重写（结果等价、效率更高的形式）</li>
+<li>操作优化-根据查询涉及到的数据对象在磁盘上的具体物理存储、所能使用的访问路径决定最高效的操作策略来获取结果</li>
+</ol>
+<p><strong>目标</strong></p>
+<p>以最小的代价在短时间内获取用户查询的结果</p>
+<h3 id="分布式系统查询优化"><a href="#分布式系统查询优化" class="headerlink" title="分布式系统查询优化"></a>分布式系统查询优化</h3><p><strong>分类</strong></p>
+<ol>
+<li><p>Global Query</p>
+<p>针对全局关系的查询</p>
+</li>
+<li><p>Fragment Query</p>
+<p>针对裂片的查询</p>
+</li>
+</ol>
+<p><strong>流程</strong></p>
+<p><img src="/posts/19931/image-20220417130625432-1692774513967-50.png" alt="image-20220417130625432" style="zoom:67%;"></p>
+<h4 id="示例-集中式"><a href="#示例-集中式" class="headerlink" title="示例-集中式"></a>示例-集中式</h4><p><img src="/posts/19931/image-20220328152757242-1692775610159-1.png" alt="image-20220328152757242" style="zoom: 33%;"></p>
+<p>最初查询树(Query tree)</p>
+<ol>
+<li>按照where进行笛卡尔乘积</li>
+<li>投影</li>
+</ol>
+<p>小优化后得到如下查询树</p>
+<p><img src="/posts/19931/image-20220328153018869-1692774513967-51.png" alt="image-20220328153018869" style="zoom:33%;"></p>
+<ol>
+<li>对S进行查询，筛选出位于Nanjing的供应商$S_1$</li>
+<li>对供应关系进行查询，筛选出供应量&gt;1000的供应关系$SP_1$</li>
+<li>通过供应商编号SNUM将$S_1$和${SP}_1$进行连接，得到$S1-SP_1$</li>
+<li>对零件进行查询，筛选出名称为‘Bolt’的零件$P_1$</li>
+<li>通过零件编号PNUM将$S1-SP_1$与$P_1$连接</li>
+<li>投影SNAME即可</li>
+</ol>
+<p>再次优化得到如下查询树</p>
+<p><img src="/posts/19931/image-20220328154656381-1692774513967-52.png" alt="image-20220328154656381" style="zoom:33%;"></p>
+<ol>
+<li>对供应商进行筛选再投影，不需要城市这个属性了</li>
+<li>对供应关系进行筛选再投影，不需要供应量这个属性了</li>
+<li>对零件进行筛选再投影，不需要零件名称这个属性了</li>
+<li>连接，再连接，投影</li>
+</ol>
+<p><strong>连接操作优化</strong></p>
+<ol>
+<li><p>两次连接的顺序</p>
+<p>上面有S和SP的连接，接着有S-SP与P的连接</p>
+</li>
+<li><p>每个连接的实现方法R与S连接</p>
+<ol>
+<li>嵌套循环，R内循环，S外循环</li>
+<li>嵌套循环，S内循环，R外循环</li>
+<li>嵌套循环，利用某关系上的索引提高效率</li>
+<li>归并扫描</li>
+<li>哈希连接</li>
+</ol>
+</li>
+</ol>
+<h4 id="示例-分布式"><a href="#示例-分布式" class="headerlink" title="示例-分布式"></a>示例-分布式</h4><p><strong>关系背景</strong></p>
+<p><img src="/posts/19931/image-20220417130700539-1692774513967-53.png" alt="image-20220417130700539" style="zoom:67%;"></p>
+<p>SP1和SP2是导出分割的结果，分别表示南京和上海的供货情况</p>
+<p><strong>查询</strong></p>
+<p><img src="/posts/19931/image-20220417130829183-1692774513967-54.png" alt="image-20220417130829183" style="zoom:67%;"></p>
+<p>查询某供应商的名字，该供应商需要位于南京，且供应零件Bolt的数量超过1000</p>
+<p><strong>初始语法树</strong></p>
+<p>叶子结点表示关系，中间结点表示一个操作，从叶结点到根的顺序就是一个执行顺序</p>
+<p><img src="/posts/19931/image-20220417132246542-1692774513967-55.png" alt="image-20220417132246542" style="zoom:67%;"></p>
+<h5 id="代数优化"><a href="#代数优化" class="headerlink" title="代数优化"></a>代数优化</h5><p>rewrite-把用户提交的初始查询改写成<strong>等价的</strong>效率更高的形式</p>
+<p>DBMS内部会用关系代数表达查询，通过分析器生成查询树。</p>
+<p>代数优化对原来生成的查询树进行变化，<strong>把一元操作尽量往叶端下压</strong>，从而减小二元操作（例如连接）的规模</p>
+<p><img src="/posts/19931/image-20220417132524957-1692774513968-58.png" alt="image-20220417132524957" style="zoom:67%;"></p>
+<p>最终得到可以在不同节点上局部运行的子查询</p>
+<p><img src="/posts/19931/image-20220417132800705-1692774513968-57.png" alt="image-20220417132800705" style="zoom:67%;"></p>
+<p>前面对语法树的优化都是<strong>代数优化</strong>，现在到了<strong>操作优化</strong>阶段，考虑如下问题</p>
+<h5 id="操作优化"><a href="#操作优化" class="headerlink" title="操作优化"></a>操作优化</h5><ol>
+<li><p>首先考虑分布式连接操作</p>
+<ol>
+<li><p>$(S1’⋃ S2’) ⋈  (SP1’ ⋃ SP2’)$</p>
+<p>并集后左边50+50=100条记录</p>
+<p>并集后右边50+50=100条记录</p>
+<p>连接的检验次数=100*100</p>
+</li>
+<li><p>Distributed Join</p>
+<p>(S1’⋈SP1’)U(S2’⋈SP2’)</p>
+<p>裂片两两Join，中间结果Union</p>
+<p>左边连接数量为50<em>50，右边也是50\</em>50，</p>
+</li>
+</ol>
+</li>
+<li><p>节点选择问题，数据可能存在副本，在哪个节点上运算</p>
+</li>
+<li><p>每次连接操作怎么实现</p>
+<p><img src="/posts/19931/image-20220417133200970-1692774513968-59.png" alt="image-20220417133200970" style="zoom:67%;"></p>
+<p>先把节点$j$上所有记录的连接条件的属性投影出来送给节点$i$，节点$i$根据这个对$R$做$semi-join$，得到满足连接条件的$R$的所有记录，再把这个东西传回去给$S$，再做一次连接，即可得到$R⋈S$</p>
+</li>
+</ol>
+<h4 id="关系代数等价变换规则"><a href="#关系代数等价变换规则" class="headerlink" title="关系代数等价变换规则"></a>关系代数等价变换规则</h4><ol>
+<li><p>连接和笛卡尔乘积的交换律</p>
+<p>代数优化的时候连接或笛卡尔乘积操作的左右子树可以交换</p>
+<p><img src="/posts/19931/image-20220328160944596-1692774513968-61.png" alt="image-20220328160944596" style="zoom:33%;"></p>
+</li>
+<li><p>连接和笛卡尔乘积的结合律</p>
+<p>代数优化的时候连接或笛卡尔乘积操作时可以旋转，查询树可以旋转，连接顺序问题</p>
+</li>
+</ol>
+<p><img src="/posts/19931/image-20220328161003008-1692774513968-60.png" alt="image-20220328161003008" style="zoom:33%;"></p>
+<ol>
+<li><p>投影操作的串接律</p>
+<p>$A_1-A_n$是$B_1-B_m$的子集→先进行$B_1-B_m$的投影再进行$A_1-A_n$的投影等价于直接进行$A_1-A_n$的投影</p>
+<p><img src="/posts/19931/image-20220328161045501-1692774513968-62.png" alt="image-20220328161045501" style="zoom:33%;">→<img src="/posts/19931/image-20220328161101907-1692775640310-1.png" alt="image-20220328161101907" style="zoom:33%;"></p>
+</li>
+<li><p>选择操作的串接律</p>
+<p><img src="/posts/19931/image-20220328161247604-1692774513968-63.png" alt="image-20220328161247604" style="zoom:33%;"></p>
+</li>
+<li><p>选择与投影操作的交换律，右侧肯定能运行，左侧执行的条件是：F中的条件只能属于$A_1-A_n$，</p>
+<p><img src="/posts/19931/image-20220328161301410-1692774513968-65.png" alt="image-20220328161301410" style="zoom: 33%;"></p>
+<p>如果F中存在某些条件（属性）$B_1-B_m$不属于$A_1-A_n$，那么只能</p>
+<p><img src="/posts/19931/image-20220328161653603-1692774513968-66.png" alt="image-20220328161653603" style="zoom:33%;"></p>
+<p>也就是需要补全哪些缺失的属性，才能让后续的选择操作正常执行</p>
+</li>
+<li><p>选择的条件与表的关系</p>
+<ul>
+<li>选择的条件只与单个表(E1)有关，可以把选择的操作压到连接操作的下面，即先选择再连接，减少连接的记录数</li>
+</ul>
+<p><img src="/posts/19931/image-20220328162052117-1692774513968-67.png" alt="image-20220328162052117" style="zoom:33%;"></p>
+<ul>
+<li><p>如果选择的条件F是两个子条件F1、F2的交集，并且F1的属性只在E1中，F2的属性也只在E2中，那么</p>
+<p><img src="/posts/19931/image-20220328162604410-1692774513968-68.png" alt="image-20220328162604410" style="zoom:33%;"></p>
+</li>
+</ul>
+</li>
+</ol>
+<pre><code> &lt;img src=&quot;DBMS-查询优化/image-20220328163626557-1692774513968-70.png&quot; alt=&quot;image-20220328163626557&quot; style=&quot;zoom:50%;&quot; /&gt;
+</code></pre><ul>
+<li><p>如果选择的条件F是两个子条件F1、F2的交集，并且F1的属性只在E1中，F2的属性在E1和E2中都有，那么</p>
+<p><img src="/posts/19931/image-20220328163705756-1692774513968-69.png" alt="image-20220328163705756" style="zoom:33%;"></p>
+<p><img src="/posts/19931/image-20220328164100902-1692774513968-71.png" alt="image-20220328164100902" style="zoom:50%;"></p>
+<p>F2条件有两个关系的，所以压不下来，但是依然可以先进行F1条件的选择</p>
+</li>
+</ul>
+<ol>
+<li><p>符合并兼容的可以压下去</p>
+<p><img src="/posts/19931/image-20220328165721837-1692774513968-72.png" alt="image-20220328165721837"></p>
+<p>属性集合完全一致，且属性的取值范围一致</p>
+<p><img src="/posts/19931/image-20220328164318264-1692774513968-74.png" alt="image-20220328164318264" style="zoom:33%;"></p>
+</li>
+<li><p>集合差</p>
+<p><img src="/posts/19931/image-20220328164545961-1692774513968-73.png" alt="image-20220328164545961" style="zoom:33%;"></p>
+</li>
+<li><p>投影操作的下压，假设$A_1-A_m$是一系列属性，在这其中$B_1-B_m= {E_1}.{attr}\and C_1-C_k= {E_2}.{attr}$，注意这里不是$\in$而是$=$，意味着$A_1-A_m\in B_1-B_m+C_1-C_k$那么</p>
+<p><img src="/posts/19931/image-20220328164632140-1692774513968-75.png" alt="image-20220328164632140" style="zoom:33%;"></p>
+<p>即先投影，再连接</p>
+</li>
+<li><p>先并再投影等价于先投影再并</p>
+<p><img src="/posts/19931/image-20220328165256902-1692774513968-77.png" alt="image-20220328165256902" style="zoom:33%;"></p>
+<p>满足并兼容</p>
+</li>
+</ol>
+<p>示例1</p>
+<p><img src="/posts/19931/image-20220329151359539-1692774513968-76.png" alt="image-20220329151359539" style="zoom:33%;"></p>
+<p>查询预定了103号船的水手的姓名</p>
+<ol>
+<li>连接，再选择和投影 效率比较高</li>
+<li>嵌套查询，先找到预订103号船水手的集合，然后看哪个水手的编号在里面</li>
+<li>关联嵌套，按照该逻辑进行查询，效率不高。因为要把外层的水手表里面的每个水手的编号带入到嵌套查询，每次换S.sid就得执行一遍</li>
+</ol>
+<p>示例2</p>
+<p>DEPT：部门，编号，名称，所在地区（北方）</p>
+<p>SUPPLY：供应商，编号，名称，所属部门编号</p>
+<p>查询属于<strong>位于北方地区部门管理</strong>的供应商的编号</p>
+<p><img src="/posts/19931/image-20220328155629137-1692774513968-79.png" alt="image-20220328155629137" style="zoom:33%;"></p>
+<p><img src="/posts/19931/image-20220328160650442-16484548113911-1692774513968-78.png" alt="image-20220328160650442" style="zoom:33%;"></p>
+<p>连接→选择→投影，优化后</p>
+<p><img src="/posts/19931/image-20220329152052113-1692774513968-80.png" alt="image-20220329152052113" style="zoom:33%;"></p>
+<ol>
+<li>投影，删掉Supply无用属性</li>
+<li>选择+投影，删掉DEPT无用属性和不符合条件的记录</li>
+<li>连接+投影，得到结果</li>
+</ol>
+<h4 id="全局查询→裂片查询"><a href="#全局查询→裂片查询" class="headerlink" title="全局查询→裂片查询"></a>全局查询→裂片查询</h4><p><strong>方法</strong></p>
+<ol>
+<li><p>水平分割</p>
+<p>$R→R1 ⋃ R2 ⋃ … ⋃ Rn$</p>
+</li>
+<li><p>垂直分割</p>
+<p>$S →S1 ⋈ S2 ⋈ … ⋈ Sn$</p>
+</li>
+</ol>
+<p><strong>原则</strong></p>
+<ul>
+<li><p>运用等价变换规则把一元操作尽量往叶端下压</p>
+</li>
+<li><p>寻找并且合并公共子表达式 with子句</p>
+<p><strong>公共子表达式</strong>：在同一查询表达式中出现多次的子表达式。找到这种子表达式并只计算一次，将提高查询效率</p>
+<p><strong>识别方法</strong></p>
+<ol>
+<li><p>将查询树的相同叶子节点合并</p>
+</li>
+<li><p>将操作数和操作都相同的中间节点也合并起来</p>
+<p><strong>示例</strong></p>
+<p>两张表 emp雇员表和dept部门表，mgrnum是部门经理的编号，sal是薪资</p>
+<p>$\Pi_{emp.name}(emp⋈(\sigma_{mgrnum=373} dept)–(\sigma_{sal&gt;35000}emp) ⋈ (sigma_{mgrnum=373} dept))$</p>
+<p>筛选出在某部门工并且工资不高于35000的雇员，这个部门指的经理编号为373的部门</p>
+</li>
+</ol>
+</li>
+</ul>
+<pre><code> **初始查询树**
+
+ &lt;img src=&quot;DBMS-查询优化/image-20220418195151899-1692774513968-81.png&quot; alt=&quot;image-20220418195151899&quot; style=&quot;zoom:50%;&quot; /&gt;
+
+ **优化过程**
+
+ &lt;img src=&quot;DBMS-查询优化/image-20220418200109895-1692774513968-82.png&quot; alt=&quot;image-20220418200109895&quot; style=&quot;zoom:67%;&quot; /&gt;
+
+ **结果**
+
+ &lt;img src=&quot;DBMS-查询优化/image-20220418200440554-1692774513968-83.png&quot; alt=&quot;image-20220418200440554&quot; style=&quot;zoom: 67%;&quot; /&gt;&lt;img src=&quot;../../../cloud/OneDrive - 东南大学/同步盘/面试/数据库/笔记/DBMS.assets/image-20220418200600363.png&quot; alt=&quot;image-20220418200600363&quot; style=&quot;zoom:67%;&quot; /&gt;
+
+ 公共子表达式=$emp ⋈ (\sigma_&#123;mgrnum&#125;=373 dept)$
+
+ 按照绿色的公式，sal&gt;35000就转变为sal≤35000，得到如下左图，再将条件下沉得到右图
+
+ &lt;img src=&quot;DBMS-查询优化/image-20220418200809696-1692774513968-85.png&quot; alt=&quot;image-20220418200809696&quot; style=&quot;zoom:67%;&quot; /&gt;
+
+ 其实就是$\Pi_&#123;emp.name&#125;((\sigma_&#123;sal≤35000&#125;emp) ⋈ (sigma_&#123;mgrnum=373&#125; dept))$
+
+ 在sql语言上体现如下
+
+ <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> emp.name </span><br><span class="line"><span class="keyword">FROM</span> emp, dept</span><br><span class="line"><span class="keyword">WHERE</span> emp.deptnum<span class="operator">=</span>dept.deptnum </span><br><span class="line">	<span class="keyword">AND</span> dept.mgrnum<span class="operator">=</span><span class="number">373</span></span><br><span class="line"><span class="keyword">EXCEPT</span>(<span class="keyword">or</span> MINUS) </span><br><span class="line">	<span class="keyword">SELECT</span> emp.name </span><br><span class="line">	<span class="keyword">FROM</span> emp, dept</span><br><span class="line">	<span class="keyword">WHERE</span> emp.deptnum<span class="operator">=</span>dept.deptnum</span><br><span class="line">		<span class="keyword">AND</span> dept.mgrnum<span class="operator">=</span><span class="number">373</span></span><br><span class="line">		<span class="keyword">AND</span> emp.sal<span class="operator">&gt;</span><span class="number">35000</span>;</span><br></pre></td></tr></table></figure>
+
+ 专家写的
+
+ <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> emp.name </span><br><span class="line"><span class="keyword">FROM</span> emp, dept</span><br><span class="line"><span class="keyword">WHERE</span> emp.deptnum<span class="operator">=</span>dept.deptnum </span><br><span class="line">    <span class="keyword">AND</span> dept.mgrnum<span class="operator">=</span><span class="number">373</span> </span><br><span class="line">    <span class="keyword">AND</span> emp.sal<span class="operator">&lt;=</span><span class="number">35000</span>;</span><br></pre></td></tr></table></figure>
+</code></pre><ol>
+<li><p>找到并消除空子表达式</p>
+<p><img src="/posts/19931/image-20220418201450656-1692774513968-86.png" alt="image-20220418201450656" style="zoom:50%;"></p>
+<p>找到部门编号为1的部门，直接针对裂片1进行选择即可，另外两个都是空的</p>
+</li>
+<li><p>消除无用的垂直裂片</p>
+<p><img src="/posts/19931/image-20220418201534435-1692774513968-87.png" alt="image-20220418201534435" style="zoom:50%;"></p>
+<p>F涉及到的属性和投影的属性都是在R1里面的，那么说明R2里面的属性就是没有用的，直接丢掉就好了</p>
+</li>
+</ol>
+<h3 id="查询分解"><a href="#查询分解" class="headerlink" title="查询分解"></a>查询分解</h3><p><strong>代数优化→操作优化</strong></p>
+<p>考虑到存储片段的站点，需要将查询分解成几个子查询，这些子查询可以在不同的站点上本地执行。</p>
+<p><img src="/posts/19931/image-20220420191150345-1692774513968-88.png" alt="image-20220420191150345"></p>
+<p>下标表示裂片，上标表示存放节点</p>
+<p><strong>分解方法</strong></p>
+<p>按后序（左→右→中）遍历查询树，直到存放的节点发生变化，即变成2，然后得到第一个子树，该子树就是可以在原节点上进行的子查询。其余的可以通过继续遍历来生成，所以我们可以得到所有的子树。</p>
+<p><img src="/posts/19931/image-20220420191704877-1692774513968-89.png" alt="image-20220420191704877" style="zoom:50%;"></p>
+<p>开始遍历，碰到右边$R_3^1$时停止，此时得到的就是如图的左子树，右边的U虽然进去了，但是实际上按照后序是没有访问的，所以不算。</p>
+<p><img src="/posts/19931/image-20220420191948312-1692774513968-90.png" alt="image-20220420191948312" style="zoom:50%;"></p>
+<p>继续遍历，碰到$R_6^3$停止，得到第二个子树</p>
+<p><img src="/posts/19931/image-20220420192103841-1692774513968-91.png" alt="image-20220420192103841" style="zoom:50%;"></p>
+<p>继续遍历，碰到根节点，结束，得到最后一个子树。</p>
+<p>最终得到如图的<strong>总装树</strong></p>
+<h4 id="总装树"><a href="#总装树" class="headerlink" title="总装树"></a>总装树</h4><p><img src="/posts/19931/image-20220420192304381-1692774513968-92.png" alt="image-20220420192304381" style="zoom:50%;"></p>
+<h3 id="操作优化-1"><a href="#操作优化-1" class="headerlink" title="操作优化"></a>操作优化</h3><p>找到最有效的计算方法实现操作</p>
+<p>单机环境下，一元操作的计算相对简单，根据数据的存储情况选择相应的搜索策略（哈希、顺序扫描、索引），分布式环境下，一元操作变成子查询，是由局部库实现，和单机没什么差别。二元操作是影响效率的瓶颈，其中，最重要的是连接操作（代价太大了 ×）</p>
+<h4 id="集中式环境"><a href="#集中式环境" class="headerlink" title="集中式环境"></a>集中式环境</h4><h5 id="嵌套循环"><a href="#嵌套循环" class="headerlink" title="嵌套循环"></a>嵌套循环</h5><p><strong>背景：磁盘物理上不是连续存储的，那么1次I/O（寻道时间）只能拿1个物理块</strong></p>
+<p><strong>前提：两个关系R(m)和S(n)连接，以堆文件的形式存储</strong></p>
+<p>一次I/O取一条记录需要n*m次I/O，内外循环，效率非常低，需要以物理块为单位进行优化</p>
+<p><strong>优化策略</strong></p>
+<ul>
+<li>基于磁盘是块访问，由于CPU运算速度比I/O存取速度块的多。【减少读盘次数，空间换时间】</li>
+<li>每次I/O取一个物理块，用块的内容和块的内容在内存中进行逐条对比</li>
+<li>申请两个缓冲区分别给内外循环，每次I/O取外循环的一个物理块到缓冲区，由这个物理块去扫描内循环，每次I/O也取内循环的一个物理块到缓冲区，但是最后在内存还是一个一个比较</li>
+</ul>
+<p>减少了I/O开销，其实减少的是内循环的I/O次数</p>
+<p><strong>示例</strong></p>
+<p>假设记录数都是12</p>
+<p>完全没有缓冲区，一条记录一条记录对照，那么12+12*12=13*12=156次I/O</p>
+<p>如果2个缓冲区，物理块能够存2条记录，那么内外循环的物理块的数量都为12/2=6，6+6*6=7*6=42</p>
+<p>如果外循环给2个缓冲区，内循环1个缓冲区，物理块能够存2条记录，那么外循环的物理块的数量为12/4=3，内循环为12/2=6，3+6*3=21</p>
+<p>极端情况，外循环给了6个缓冲区，物理块只需要1块，那么</p>
+<p>1+1*6=7</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th><strong>无缓冲区</strong></th>
+<th><strong>144</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1个缓冲区</strong></td>
+<td><strong>36</strong></td>
+</tr>
+<tr>
+<td><strong>2个缓冲区</strong></td>
+<td><strong>18</strong></td>
+</tr>
+<tr>
+<td><strong>6个缓冲区</strong></td>
+<td><strong>6</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>公式</strong></p>
+<p>假设$b_R$是外循环的物理块数量，$b_S$是内循环的物理块数量，$n_B&gt;=2$是缓冲区的总数量，其中$n_B-1$给外循环，剩下那个给内循环。<strong>为什么只给内循环1个物理块，给1个物理块：1次I/O拿出1个物理块的内容，给2个物理块也是需要两次I/O才能拿出两个物理块的内容，而在内存里面有两个内循环的物理块2次I/O完成的任务和之前一样</strong></p>
+<script type="math/tex; mode=display">b_R+\lceil b_R/(n_B-1)\rceil\times b_S</script><p>第一个$b_R$无法避免，肯定要扫描完外循环的所有物理块的，有几个物理块就肯定要这么多次I/O的</p>
+<p>外循环每次换，内循环都得遍历一遍整个内循环的所有物理块，每次需要$b_S$次I/O</p>
+<p>内循环到底需要多少次全盘扫描呢，也就是$b_S$次I/O，那要看外循环借助缓冲区能够几次搞完，$\lceil b_R/(n_B-1)\rceil$就是次数，也就是说<strong>外循环增加缓冲区其实是降低了这个次数，内外循环到底有多少个物理块是固定的，对应的I/O次数也是固定的</strong>。</p>
+<h5 id="归并扫描"><a href="#归并扫描" class="headerlink" title="归并扫描"></a>归并扫描</h5><p>两个关系事先做好外排序后挨个比较</p>
+<ul>
+<li>比较次数为m+n</li>
+<li>I/O次数为$b_R+b_S$</li>
+</ul>
+<h5 id="B-树索引"><a href="#B-树索引" class="headerlink" title="B+树索引"></a>B+树索引</h5><p><strong>使用最多</strong></p>
+<ul>
+<li>在某个属性上建立了B+树所索引，让有索引的作为内关系，没有索引的作为外关系</li>
+<li>再用嵌套循环的思想，外循环取一个物理块，投影出索引属性，通过属性值去内循环进行查找，得到磁盘地址，取到记录进行连接</li>
+<li>属性的重复数量&gt;20%，那么不如顺序扫描，因为一查，每次都得拿20%，过于分散，好多物理块都得访问，I/O次数得不到减少</li>
+</ul>
+<h5 id="Hash-连接"><a href="#Hash-连接" class="headerlink" title="Hash 连接"></a>Hash 连接</h5><p>在两个经常连接的公共属性上定义一个相同的hash函数，把两个表一起散列到一个hash文件中，按照hash值将记录分到不同桶里面，能连接的肯定都在一个桶里面</p>
+<h4 id="分布式环境"><a href="#分布式环境" class="headerlink" title="分布式环境"></a>分布式环境</h4><p><strong>主要问题</strong></p>
+<ol>
+<li><p>物化问题-选择参与查询的片段的合适副本</p>
+<p>影响效率、负载不均衡</p>
+<ol>
+<li><p>局部最大化</p>
+<p>贪心的策略</p>
+<p><img src="/posts/19931/image-20220420191150345-1692774513968-88.png" alt="image-20220420191150345"></p>
+<p>假设$R_3$在1、3上有备份，$R_4$在1、2、4上有备份</p>
+<p>在查询分解时同时解决副本选择问题，遍历到$R_3$时发现其在1、3上都有副本，而当前的子查询节点(j)是1，那么就优先选择$R_3$在节点1上的副本，同理在$R_4$也这样贪心处理，直到某时候再也没办法选择相同的节点</p>
+</li>
+</ol>
+</li>
+<li><p>连接实现策略</p>
+<p><img src="/posts/19931/image-20220420195055941-1692774513968-93.png" alt="image-20220420195055941" style="zoom:67%;"></p>
+<p>| 连接策略     | 连接操作 |<br>| —————— | ———— |<br>| 先并再连接   | 直接连接 |<br>| 两两连接再并 | 半连接   |</p>
+</li>
+<li><p>实现join（主要是直接连接）的具体算法</p>
+<p>传统集中式数据库的算法</p>
+</li>
+</ol>
+<p>上述三种优化组合的策略非常多，操作优化就是估算这几种组合的代价以选择最好的组合策略</p>
+<p><strong>基本优化方法</strong></p>
+<ol>
+<li><p>穷举各种连接组合的开销</p>
+</li>
+<li><p>启发式方法，基于一些启发式规则</p>
+<p>有索引的关系作为内关系，嵌套循环实现连接</p>
+<p>物理块少的作为外关系，尽可能减少内关系的遍历次数</p>
+</li>
+<li><p>1和2结合</p>
+<p>先用启发式规则排除一些明显不好的策略，然后对剩下的策略进行代价的估算，选择出好的</p>
+</li>
+</ol>
+<h5 id="代价估算"><a href="#代价估算" class="headerlink" title="代价估算"></a>代价估算</h5><ol>
+<li><p>广域网环境</p>
+<p>传输速率约为100bps~50Kbps，远远慢于计算机的处理速度，因此本地处理的成本可以省略，只考虑网络传输代价</p>
+</li>
+<li><p>局域网环境</p>
+<p>传输速率将达到1000Mbps，上述两项都要考虑。</p>
+</li>
+</ol>
+<p>总查询代价=本地处理代价+网络传输代价</p>
+<ul>
+<li><p>网络传输代价</p>
+<p>$TC(x)=C_0+C_1x$</p>
+<p>传送x个字节的代价</p>
+<p>$C_0$就是传输的初始化代价（建立连接、握手），不管传输多少数据都要有这个代价</p>
+<p>$C_1$是连接建立之后每传输一个字节需要的开销，受制于使用的网络特点</p>
+</li>
+<li><p>本地查询处理代价</p>
+<p>$PC=cost_{cpu}+cost_{I/O}$</p>
+<p>cpu比I/O快很多，一般忽略</p>
+<p>一次I/O的代价=$D_0+D_1$</p>
+<p>$D_0$:平均寻道时间(ms)，和机械硬盘的性能有关系</p>
+<p>$D_1$:I/O一个物理块需要的时间(us)，忽略不计</p>
+<p>$PC=cost_{I/O}=Number(I/O)×D_0$</p>
+<p>其实最后比较的就是I/O次数</p>
+</li>
+</ul>
+<h5 id="Semi-join"><a href="#Semi-join" class="headerlink" title="Semi join"></a>Semi join</h5><p>semi join用于减少<strong>网络传输开销</strong>，适用于广域网(WAN)</p>
+<p><a href="#Semi join">Semi join</a></p>
+<p>$R ⋉  S =\Pi _R(R ⋈ S)$</p>
+<p>R和S分别在节点1和2上，先决定将R传输到S上进行连接，但是R关系太大了，怎么压缩（不用的记录不要传过去），按照如下步骤实现连接</p>
+<ol>
+<li>将$\Pi_A(S)$→site1，A是连接的属性</li>
+<li>在节点1上执行$R⋈\Pi_A(S))$得到$R⋉S$，这里得到的就是满足连接条件的关系R里面的记录</li>
+<li>将$R⋉S$→ site2</li>
+<li>执行$(R⋉S)⋈S$得到$R⋈S$的最终结果，用刚刚得到的关系R的记录再去和S做连接，得到的就是R和S的连接</li>
+</ol>
+<p>假设R有1024记录，S有1024记录，每条记录10属性，等长为1</p>
+<p>那么原本网络传输数据：10*1024</p>
+<p>但是现在假设只有一半的R符合条件，A只有原属性的1/10长度</p>
+<p>$10<em>1/10</em>1024+1/2<em>1024</em>10=6*1024$</p>
+<p><strong>开销对比</strong></p>
+<ul>
+<li><p>直接连接开销：$C_0+C_1*min(r,s)——————①$</p>
+<p>$C_0$建立连接的固定开销，$C_1$传输单位字节的开销，$r$,$s$是关系R和S的元组数</p>
+</li>
+<li><p>semi join开销：$min(2C_0+C_1<em>s’+C_1</em>r’’,2C_0+C_1r’+C_1<em>s’’)=\\2C_0+C_1</em>min(s’+r’’,r’+s’’)——②$</p>
+<p>固定有两次连接开销$C_0$，$s’,r’=|\Pi_A(S)|, |\Pi_A(R)|$，$s’’,r’’=|S⋉R|,|R⋉S|$</p>
+<p>$s’$表示投影得到的关系S剩余的数据量($r’$同理)，所以与$r’’$对应</p>
+<p>$r’’$表示R满足连接条件的剩余数据量($s’’$同理)</p>
+</li>
+</ul>
+<p>只有当$②&lt;①$时，semi join才有意义</p>
+<p>当$C_0$相对于$C_1$很小时，可以忽略，那么只需要$min(s’+r’’,r’+s’’)&lt;min(r,s)$</p>
+<ol>
+<li><p>$C_0$需要很小，否则2次连接的开销影响较大</p>
+</li>
+<li><p>不适合采用多元semi join，多个关系做join</p>
+<p><strong>R⋉(S⋉T)得到的是满足三者连接条件的R</strong></p>
+<p>直接连接是两个小的关系的传输成本，比如就是s+r</p>
+<p>semi join如下</p>
+<ol>
+<li>$T$的投影$t’$传输到$S$上，做semi-join得到满足连接条件的$S’$，经过了压缩</li>
+<li>把$S’$的投影$s_1’$弄到$R$上，做semi-join得到满足条件的$R’$</li>
+<li>再把$R’$和$S_1$传输到$T$上，$r’’$和$s’’$</li>
+</ol>
+<p>$t’+s_1’+r’’+s’’$</p>
+<p><strong>?</strong></p>
+</li>
+<li><p>通过semi join对R和S操作时，需要能够剔除足够数量的元组数</p>
+</li>
+</ol>
+<p><strong>评价</strong></p>
+<ol>
+<li><p>牺牲处理代价（投影、semi join）优化传输代价</p>
+<p>局域网情况下不适合</p>
+</li>
+<li><p>semi join存在太多候选方案</p>
+<p>$R_1⋈R_2⋈R_3…⋈R_n$，考虑对$R_1$的semi join</p>
+<p>$R_1 ⋉ R_2, R_1 ⋉ (R_2 ⋉ R_1), R_1 ⋉ (R_2 ⋉ R_3), …$</p>
+<p>无法穷举已进行代价估计</p>
+</li>
+<li><p>⋉ 可以视为数据压缩器(Bernstein’s remark)</p>
+<ul>
+<li><p>关系R的reducer program:对关系R的semi join操作链</p>
+</li>
+<li><p>RED(Q,R):查询Q中所有的对关系R的reducer program的集合</p>
+</li>
+<li><p>Full reducer:满足以下条件的reducer</p>
+<ol>
+<li>$\in RED(Q,R)$</li>
+<li>能够最大化压缩R</li>
+</ol>
+</li>
+<li><p>但是找到Full reducer不是追求的目标</p>
+</li>
+</ul>
+</li>
+</ol>
+<h6 id="tree-query-amp-cyclic-query"><a href="#tree-query-amp-cyclic-query" class="headerlink" title="tree query &amp; cyclic query"></a>tree query &amp; cyclic query</h6><ul>
+<li><p>TQ</p>
+<p>$q = (R_1.A=R_2.B)∧(R_1.C=R_3.D)∧(R_2.E=R_4.F)∧\(R_3.G=R_5.H)∧(R_3.J=R_6.K)$</p>
+<p>只要两个关系需要直接连接，就连一条边，得到如下tree query（无环）</p>
+<p><img src="/posts/19931/image-20220422110848121-1692774513968-95.png" alt="image-20220422110848121" style="zoom:50%;"></p>
+</li>
+<li><p>CQ</p>
+<p>$q = (R_1.A=R_2.B)∧(R_2.C=R_3.D)∧(R_3.E=R_1.F)$</p>
+<p>如下cyclic query（有环）</p>
+<p><img src="/posts/19931/image-20220422111108963-1692774513968-94.png" alt="image-20220422111108963" style="zoom:50%;"></p>
+</li>
+<li><p>Special</p>
+<p>$q=(R_1.A=R_2.B)∧(R_2.B=R_3.C)∧(R_3.C=R_1.A)$</p>
+<p>这不是CQ，而是TQ，因为$R_3.C=R_1.A$可以由前面的条件传递过来，并不是一个独立的条件，可以省略？</p>
+<p>学生表学号=选课表学号，选课表学号=基本信息表学号，都是一个学号</p>
+</li>
+<li><p>发现</p>
+<ul>
+<li><p>TQ是有Full reducer</p>
+</li>
+<li><p>CQ的大部分情况下都不存在Full reducer</p>
+<p><img src="/posts/19931/image-20220422111720799-1692774513968-97.png" alt="image-20220422111720799" style="zoom:50%;"></p>
+<p>$q = (R_1.B=R_2.C)∧(R_2.D=R_3.E)∧(R_3.F=R_1.A)$</p>
+<p>查询结果为空，但是无法通过任何的semi join操作减少某关系的元组数量</p>
+<p>比如$R_1⋉R_3$得到的是$R_1$的所有元祖，同理任意两个关系也是一样</p>
+<p>比如$R_1⋉(R_2⋉R_3)$也消除不掉任意元组</p>
+<p>如下例子虽然结果也为空，但是存在Full reducer</p>
+<p><img src="/posts/19931/image-20220422183319245-1692774513968-96.png" alt="image-20220422183319245" style="zoom:50%;"></p>
+<p>最后用T’’对R’’做semi join得到∅，即Full reducer如下</p>
+<p>$①R’=R⋉T②S’=S⋉R’③T’=T⋉S’④R’’=R’⋉T’\\⑤S’’=S’⋉’’⑥T’’=T’⋉S’’⑦R’’’=R’’⋉T’’=∅$</p>
+<ul>
+<li><p>推论</p>
+<ol>
+<li>对于CQ：一般来说，没有Full reducer。即使有，其长度也会随着查询中某些关系的图元的数量而线性增加(大约3(m-1))</li>
+<li>对于TQ：Full reducer的长度&lt; n-1（n是查询图中的节点数，关系的个数）</li>
+</ol>
+</li>
+</ul>
+<p>所以找到Full reducer不应该成为优化目标，SDD-1 算法是一种启发式规则，不需要找Full reducer，也不考虑多元semi join，即便是多元连接，也只考虑两两semi join，看是不是能减少开销（<strong>开销对比</strong>），有用的保留（动态的，会随着查询进程，其他semi join的进行可能会变成benifit的），没用的直接全关系传输</p>
+</li>
+</ul>
+</li>
+</ul>
+<h5 id="Direct-Join"><a href="#Direct-Join" class="headerlink" title="Direct Join"></a>Direct Join</h5><p>分布式环境下也按照集中式环境下的经典算法进行连接，但是需要把算法逻辑和数据传输结合起来</p>
+<p><strong>原始开销</strong></p>
+<p>嵌套循环cost：$[b_R+\lceil b_R/(n_B-1)\rceil\times b_S]*D_0$</p>
+<p>归并扫描cost：$(b_R+b_S)*D_0+Cost_{sort}(R)+Cost_{sort}(S)$</p>
+<p><strong>传输方式</strong></p>
+<h6 id="shipped-whole"><a href="#shipped-whole" class="headerlink" title="shipped whole"></a>shipped whole</h6><p>参与运算的关系不加选择直接传输</p>
+<p>以嵌套循环作为连接算法</p>
+<ol>
+<li><p>传输内循环的关系，需要传输到节点的磁盘上作为临时关系，因为需要多次扫描</p>
+<p>内循环传输，传输1个物理块放入缓冲区，对比本地外关系的一个物理块后，不能丢弃，后面还要对比，所以需要存到磁盘上</p>
+</li>
+<li><p>传输外关系，不需要存储为临时关系</p>
+<p>节点1上的关系R取一个物理块放入内存传输到节点2的缓冲区内，节点2取关系S的一个物理块放入另一个缓冲区，一一对比。对比完，节点1再取、发送过来，之前的就扔掉了</p>
+</li>
+</ol>
+<h6 id="fetch-as-need"><a href="#fetch-as-need" class="headerlink" title="fetch as need"></a>fetch as need</h6><p>需要什么元组，传什么元组</p>
+<p>被传输的关系（作为内循环关系）一般需要在连接属性上建立索引</p>
+<p>外关系在本地开辟两个缓冲区，取外关系的1个物理块放到缓冲区，然后投影出连接属性的不同值发送给内关系的节点，内关系根据这个值借助索引去取内关系的元组传回外关系的节点，外关系这边做完连接后，再取下一个物理块。其实有点像按照物理块为单位让外关系对内关系做一次semi join</p>
+<h6 id="R-系统"><a href="#R-系统" class="headerlink" title="R*系统"></a>R*系统</h6><p><img src="/posts/19931/image-20220422193709229-1692774513968-98.png" alt="image-20220422193709229" style="zoom:67%;"></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>连接算法</th>
+<th>传输方式</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>嵌套循环</td>
+<td>外关系做shipped whole</td>
+</tr>
+<tr>
+<td>嵌套循环</td>
+<td>内关系做fetch as need</td>
+</tr>
+<tr>
+<td>归并扫描</td>
+<td>外关系做shipped whole</td>
+</tr>
+<tr>
+<td>归并扫描</td>
+<td>内关系可以fetch 也可以shipped</td>
+</tr>
+<tr>
+<td>嵌套或归并</td>
+<td>借助第三个节点，将内外关系做shipped whole</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>归并扫描其实已经没有内外关系的区分了，但是实现上总是有一个指针先动，后一个指针后动，先动的就是外关系，后动的就是内关系</p>
+<ol>
+<li>显然，外关系都是shipped whole的，外关系是肯定扫描一遍的，所以肯定需要传输完整的过去</li>
+<li>在嵌套循环中，如果内循环是做shipped whole，索引过不去，并且还得存成临时关系，传输代价和存储代价都比较大</li>
+</ol>
+<p><strong>未考虑的情形</strong></p>
+<ol>
+<li><p>Multiple join</p>
+<p>转换成多个二元关系，两两连接</p>
+</li>
+<li><p>Copy selection</p>
+<p>R*系统不支持副本</p>
+</li>
+</ol>
+<h5 id="分布式分组与聚合函数评估"><a href="#分布式分组与聚合函数评估" class="headerlink" title="分布式分组与聚合函数评估"></a>分布式分组与聚合函数评估</h5><p>Evaluation 128)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> PNUM, <span class="built_in">SUM</span>(QUAN) <span class="keyword">FROM</span> SP <span class="keyword">GROUP</span> <span class="keyword">BY</span> PNUM;</span><br></pre></td></tr></table></figure>
+<p>$GB_{PNUM, SUM(QUAN)}SP$:按照零件编号做分组，看每种零件的总供货量</p>
+<p>$GB$就是$group~by$操作，第一个就是分组属性，第二个是要做的聚集函数，最后那个是表</p>
+<p><strong>优化思想</strong></p>
+<p>如果SP水平分布在不同裂片上，那么原本是需要对SP做重构的，但是其实是不是可以在不同裂片上直接做分组聚集，最终结果做并集</p>
+<h6 id="SNC准则"><a href="#SNC准则" class="headerlink" title="SNC准则"></a>SNC准则</h6><ol>
+<li><p>非全表范围的聚集函数</p>
+<p>比如求按照某属性分组之后组的平均值</p>
+<p>关系$R$水平分割成$R_1∪R_2$，假设$G_i$是对关系R按照分组条件分组得到的其中一个组，当且仅当</p>
+<p>$G_i\in R_j~or~ Gi∩Rj=Φ~for~all~i,j————SNC准则$</p>
+<p>就是这个组要么完全属于其中一个裂片，要么和这个裂片一点关系都没有，即任意组不会跨裂片，那么</p>
+<p>$GB_{G, AF}(R1 ⋃ R2) = (GB_{G, AF}R1) ⋃ (GB_{G, AF}R2)$</p>
+<p>现在就是可以在裂片内直接做分组了</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> SNUM, <span class="built_in">AVG</span>(QUAN) <span class="keyword">FROM</span> SP <span class="keyword">GROUP</span> <span class="keyword">BY</span> SNUM;</span><br></pre></td></tr></table></figure>
+<p>按照供应商编号求每个供应商的供应量的平均值</p>
+<ol>
+<li>如果SP是按照供应商所在城市做的导出分割（S那张表水平分割），同一个城市的供应商都在一个裂片，同一个供应商的供应关系肯定也只能在一个裂片，此时按照供应商编号分组，那么每个供应商的供应关系只能出现在一个裂片里面。</li>
+<li>如果SP是按照零件类型做的导出分割，那就不满足上述条件了，因为这样一个供应商供应不同零件，那这些供应关系就会跨裂片，无法在裂片内直接做分组</li>
+</ol>
+</li>
+<li><p>全表范围的聚集函数的运算</p>
+<p>比如求总和、最大值、最小值、平均值、计数等</p>
+<p>$S→S_1,S_2,…,S_n$</p>
+<p>例如</p>
+<script type="math/tex; mode=display">
+SUM(S) = SUM(SUM(S_1), SUM(S_2), …, SUM(S_n)) \\
+COUNT(S) = SUM(COUNT(S_1), … COUNT(S_n)) \\
+AVG(S) = SUM(S)/COUNT(S)\\
+MIN(S) = MIN(MIN(S_1), MIN(S_2), …, MIN(S_n)) \\
+MAX(S) = MAX(MAX(S_1), MAX(S_2), …, MAX(S_n))</script></li>
+</ol>
+<h5 id="Update"><a href="#Update" class="headerlink" title="Update"></a>Update</h5><p>更新操作是在查询的基础上实现的，where条件用来搜索需要更新的数据</p>
+<p>需要保证更新时，多副本的一致性</p>
+<p><strong>策略</strong></p>
+<h6 id="同时更新所有副本"><a href="#同时更新所有副本" class="headerlink" title="同时更新所有副本"></a>同时更新所有副本</h6><p>只要有一个副本不能更新，更新就失败了</p>
+<p>这样就会导致只要副本数量够多，那么更新成功的概率就会无限趋向于0</p>
+<p>p是更新成功的概率，n是副本数量</p>
+<p>$lim_{n→∞}p^n=0$</p>
+<h6 id="尽可能更新"><a href="#尽可能更新" class="headerlink" title="尽可能更新"></a>尽可能更新</h6><p>能更新的都更新，如果有不能更新的节点，那么需要维持更新信息到一个临时节点，等到故障节点正常，就去这个临时节点取数据再做更新</p>
+<p>实现很困难，还有好多突发情况，比如临时节点也坏了咋办</p>
+<h6 id="主副本更新策略"><a href="#主副本更新策略" class="headerlink" title="主副本更新策略"></a>主副本更新策略</h6><p>指定一个副本为主要副本，其他的是从副本，只对主副本更新，主副本某时会进行广播来更新从副本</p>
+<p>存在主从副本的不一致，如果下一个操作还是更新，那没事了，但是如果下一个操作是对从副本的读取，那就得比较版本号，如果不一致就</p>
+<ol>
+<li>将查询操作重定向到主副本节点</li>
+<li>等待从副本的更新</li>
+</ol>
+<h6 id="快照"><a href="#快照" class="headerlink" title="快照"></a>快照</h6><p>只在一个节点存储主副本，其他节点存储快照，快照是主题在某一个时刻的印象</p>
+<p>用户可以自主选择查master copy还是snapshots</p>
+<p>一致性要求高，那就差master copy</p>
+<ul>
+<li>主体更新，快照不变</li>
+<li>快照要么命令（REFRESH ）强制更新，要么周期更新</li>
+</ul>
+<p>比较适用于更新少的数据库，比如人口统计数据</p>
+<ol>
+<li>代数优化-把用户提交的查询语言进行重写（结果等价、效率更高的形式）</li>
+<li>操作优化-根据查询涉及到的数据对象在磁盘上的具体物理存储、所能使用的访问路径决定最高效的操作策略来获取结果</li>
+</ol>
+<p><strong>目标</strong></p>
+<p>以最小的代价在短时间内获取用户查询的结果</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag"># 学科基础知识</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/61373.html" rel="next" title="DBMS-目录分布">
+                <i class="fa fa-chevron-left"></i> DBMS-目录分布
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/26000.html" rel="prev" title="DBMS-恢复">
+                DBMS-恢复 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+                <a href="/archives">
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xzp314" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:seu_xuzhipeng@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F%E6%9F%A5%E8%AF%A2%E4%BC%98%E5%8C%96"><span class="nav-number">2.</span> <span class="nav-text">分布式系统查询优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-%E9%9B%86%E4%B8%AD%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">示例-集中式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-%E5%88%86%E5%B8%83%E5%BC%8F"><span class="nav-number">2.2.</span> <span class="nav-text">示例-分布式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%A3%E6%95%B0%E4%BC%98%E5%8C%96"><span class="nav-number">2.2.1.</span> <span class="nav-text">代数优化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E4%BC%98%E5%8C%96"><span class="nav-number">2.2.2.</span> <span class="nav-text">操作优化</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB%E4%BB%A3%E6%95%B0%E7%AD%89%E4%BB%B7%E5%8F%98%E6%8D%A2%E8%A7%84%E5%88%99"><span class="nav-number">2.3.</span> <span class="nav-text">关系代数等价变换规则</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E6%9F%A5%E8%AF%A2%E2%86%92%E8%A3%82%E7%89%87%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.4.</span> <span class="nav-text">全局查询→裂片查询</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E5%88%86%E8%A7%A3"><span class="nav-number">3.</span> <span class="nav-text">查询分解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E8%A3%85%E6%A0%91"><span class="nav-number">3.1.</span> <span class="nav-text">总装树</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E4%BC%98%E5%8C%96-1"><span class="nav-number">4.</span> <span class="nav-text">操作优化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9B%86%E4%B8%AD%E5%BC%8F%E7%8E%AF%E5%A2%83"><span class="nav-number">4.1.</span> <span class="nav-text">集中式环境</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B5%8C%E5%A5%97%E5%BE%AA%E7%8E%AF"><span class="nav-number">4.1.1.</span> <span class="nav-text">嵌套循环</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BD%92%E5%B9%B6%E6%89%AB%E6%8F%8F"><span class="nav-number">4.1.2.</span> <span class="nav-text">归并扫描</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#B-%E6%A0%91%E7%B4%A2%E5%BC%95"><span class="nav-number">4.1.3.</span> <span class="nav-text">B+树索引</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Hash-%E8%BF%9E%E6%8E%A5"><span class="nav-number">4.1.4.</span> <span class="nav-text">Hash 连接</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E7%8E%AF%E5%A2%83"><span class="nav-number">4.2.</span> <span class="nav-text">分布式环境</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%A3%E4%BB%B7%E4%BC%B0%E7%AE%97"><span class="nav-number">4.2.1.</span> <span class="nav-text">代价估算</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Semi-join"><span class="nav-number">4.2.2.</span> <span class="nav-text">Semi join</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#tree-query-amp-cyclic-query"><span class="nav-number">4.2.2.1.</span> <span class="nav-text">tree query &amp; cyclic query</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Direct-Join"><span class="nav-number">4.2.3.</span> <span class="nav-text">Direct Join</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#shipped-whole"><span class="nav-number">4.2.3.1.</span> <span class="nav-text">shipped whole</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#fetch-as-need"><span class="nav-number">4.2.3.2.</span> <span class="nav-text">fetch as need</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#R-%E7%B3%BB%E7%BB%9F"><span class="nav-number">4.2.3.3.</span> <span class="nav-text">R*系统</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E5%88%86%E7%BB%84%E4%B8%8E%E8%81%9A%E5%90%88%E5%87%BD%E6%95%B0%E8%AF%84%E4%BC%B0"><span class="nav-number">4.2.4.</span> <span class="nav-text">分布式分组与聚合函数评估</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#SNC%E5%87%86%E5%88%99"><span class="nav-number">4.2.4.1.</span> <span class="nav-text">SNC准则</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Update"><span class="nav-number">4.2.5.</span> <span class="nav-text">Update</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%90%8C%E6%97%B6%E6%9B%B4%E6%96%B0%E6%89%80%E6%9C%89%E5%89%AF%E6%9C%AC"><span class="nav-number">4.2.5.1.</span> <span class="nav-text">同时更新所有副本</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%B0%BD%E5%8F%AF%E8%83%BD%E6%9B%B4%E6%96%B0"><span class="nav-number">4.2.5.2.</span> <span class="nav-text">尽可能更新</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E4%B8%BB%E5%89%AF%E6%9C%AC%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5"><span class="nav-number">4.2.5.3.</span> <span class="nav-text">主副本更新策略</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%BF%AB%E7%85%A7"><span class="nav-number">4.2.5.4.</span> <span class="nav-text">快照</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xu Zhipeng</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">160.6k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

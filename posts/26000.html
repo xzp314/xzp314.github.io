@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学科基础知识," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="数据库故障恢复，基于东南大学徐立臻数据库课程（研究生）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DBMS-恢复">
+<meta property="og:url" content="http://example.com/posts/26000.html">
+<meta property="og:site_name" content="主页">
+<meta property="og:description" content="数据库故障恢复，基于东南大学徐立臻数据库课程（研究生）">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/posts/26000/image-20220331143007828.png">
+<meta property="og:image" content="http://example.com/posts/26000/image-20220330193742407.png">
+<meta property="og:image" content="http://example.com/posts/26000/image-20220330193816326.png">
+<meta property="og:image" content="http://example.com/posts/26000/image-20220330194506255.png">
+<meta property="og:image" content="http://example.com/posts/26000/image-20220330194520063.png">
+<meta property="og:image" content="http://example.com/posts/26000/image-20220331143544299.png">
+<meta property="og:image" content="http://example.com/posts/26000/image-20220331144159907.png">
+<meta property="og:image" content="http://example.com/posts/26000/image-20220427150732147.png">
+<meta property="og:image" content="http://example.com/posts/26000/image-20220427152808527.png">
+<meta property="og:image" content="http://example.com/posts/26000/image-20220428201808001.png">
+<meta property="og:image" content="http://example.com/posts/26000/image-20220428202220790.png">
+<meta property="og:image" content="http://example.com/posts/26000/image-20220428202323672.png">
+<meta property="og:image" content="http://example.com/posts/26000/image-20220428203122464.png">
+<meta property="article:published_time" content="2022-06-11T06:48:24.000Z">
+<meta property="article:modified_time" content="2023-08-30T04:27:45.164Z">
+<meta property="article:author" content="Xu Zhipeng">
+<meta property="article:tag" content="学科基础知识">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/posts/26000/image-20220331143007828.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/posts/26000.html"/>
+
+
+
+
+
+  <title>DBMS-恢复 | 主页</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="主页" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">主页</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">xzp个人小站</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/26000.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="主页">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">DBMS-恢复</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-06-11T14:48:24+08:00">
+                2022-06-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">课程学习</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库管理系统及其实现</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  5.9k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  21
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  数据库故障恢复，基于东南大学徐立臻数据库课程（研究生）
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><ul>
+<li>数据库最基本的运行单位</li>
+<li>如果不自己定义事务，那么系统默认一条SQL语句当作一条事务</li>
+</ul>
+<h4 id="ACID准则"><a href="#ACID准则" class="headerlink" title="ACID准则"></a>ACID准则</h4><ul>
+<li>Atomic（原子性）：要么全部完成（commit），要么什么都不做(rollback)</li>
+<li>Consistency preservation（保持一致性）：数据库本身状态一致，经过一个事务后，数据库保持另一个状态一致</li>
+<li>Isolation（隔离性）：事务之间不能干扰</li>
+<li>Durability（持久性）：一个事务只要成功完成，那么其对数据库的影响会永久存在，并且能够在故障后恢复</li>
+</ul>
+<p>如银行转账问题，把转账看出一个事务，如从A的账户转前给B账户</p>
+<p><img src="/posts/26000/image-20220331143007828.png" alt="image-20220331143007828" style="zoom:33%;"></p>
+<p><strong>如果不显式创建事务，那么提交的每一条sql语句都是事务</strong></p>
+<p>上述的转账就必须显式声明事务，否则两个update语句分别是单独的事务</p>
+<p>A和B两个账号被排它锁锁住了，no read no update until commit</p>
+<p><strong>主要目的</strong></p>
+<ul>
+<li>能够从故障中恢复</li>
+<li>尽可能地减少系统发生故障的可能</li>
+</ul>
+<p>在一些故障后将数据库恢复到一致的状态。</p>
+<p><strong>要求</strong></p>
+<ul>
+<li>冗余【数据备份】是必要的，与数据库设计的冗余是不一样的</li>
+<li>恢复机制要能够<strong>检测</strong>到所有故障</li>
+</ul>
+<p><strong>常用恢复方法</strong></p>
+<h3 id="周期性转储"><a href="#周期性转储" class="headerlink" title="周期性转储"></a>周期性转储</h3><p><img src="/posts/26000/image-20220330193742407.png" alt="image-20220330193742407" style="zoom:33%;"></p>
+<p>改进</p>
+<p><img src="/posts/26000/image-20220330193816326.png" alt="image-20220330193816326" style="zoom:33%;"></p>
+<h3 id="备份-增量转储"><a href="#备份-增量转储" class="headerlink" title="备份+增量转储"></a>备份+增量转储</h3><ol>
+<li>长时间整个备份，短时间备份变化的部分</li>
+<li>恢复丢失的信息较少，但是依然会有部分更新内容丢失</li>
+<li>实现简单、开销小，但是依然会有更新丢失，适用于文件系统或者小型数据库管理系统</li>
+</ol>
+<h3 id="备份-日志"><a href="#备份-日志" class="headerlink" title="备份+日志"></a>备份+日志</h3><p>日志记录自上次备份以来数据库的所有改变</p>
+<ul>
+<li><p>日志记录如下内容：</p>
+<ul>
+<li><p>before image:B.I 旧的值 前项</p>
+</li>
+<li><p>after image:A.I 新的值 后项</p>
+<p><img src="/posts/26000/image-20220330194506255.png" alt="image-20220330194506255" style="zoom:33%;"></p>
+<p><img src="/posts/26000/image-20220330194520063.png" alt="image-20220330194520063" style="zoom:33%;"></p>
+<p>相当于通过日志重演数据库的所有变化不会丢失信息，保证数据库数据的一致性，不会产生丢失更新</p>
+</li>
+<li><p>没做完的事务，用B.I进行恢复(undo)</p>
+</li>
+<li><p>做完但是没有写入到数据库的数据，用A.I进行恢复(redo)</p>
+</li>
+</ul>
+</li>
+<li><p>缺陷</p>
+<ul>
+<li><p>日志的可靠性要求比一般的数据要高</p>
+</li>
+<li><p>如果两次转储的间隔时间太长，可能会因为Log的积累而出现（日志）存储空间不足的情况，解决办法：</p>
+<ol>
+<li>提交后释放空间</li>
+</ol>
+<p>事务一旦成功，不会回退，一般用不到日志，但是万一出现磁盘介质故障，数据损坏，需要从最近的备份+日志进行恢复，即重演一遍，但是日志没了。</p>
+<ol>
+<li><p>日志定期转储到磁盘</p>
+</li>
+<li><p>日志压缩</p>
+<ol>
+<li>不必为中止的事务存储日志信息</li>
+<li>已提交的事务不需要B.I，只需要A.I进行redo</li>
+<li>更改可以合并，只保留最新的A.I</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="多副本"><a href="#多副本" class="headerlink" title="多副本"></a>多副本</h3><p>针对分布式环境，每个数据对象都有多个副本。当故障发生时，与其他副本一起恢复。系统不会因为某些副本的失败而崩溃。</p>
+<p>优势</p>
+<ol>
+<li>提高可靠性</li>
+<li>恢复很容易</li>
+</ol>
+<p>缺陷</p>
+<ol>
+<li><p>在集中式数据库系统中很难获得独立的故障模式（当前副本的故障不会影响其他节点）。</p>
+<p>集中式环境下，出了问题，数据的多个副本要坏一起坏</p>
+</li>
+<li><p>存储空间的浪费</p>
+</li>
+</ol>
+<p>不适用于传统集中式数据库</p>
+<p><strong>相关数据结构</strong></p>
+<p>恢复信息必须存储在非挥发存储器【不会因为断电就丢失信息】</p>
+<h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a><strong>数据结构</strong></h3><h4 id="Commit-list"><a href="#Commit-list" class="headerlink" title="Commit list"></a>Commit list</h4><p>所有已经提交的事务的列表，存储TID（事务的ID）</p>
+<h4 id="Active-list"><a href="#Active-list" class="headerlink" title="Active list"></a>Active list</h4><p>当前正在运行的事务的列表，存储TID</p>
+<h4 id="Log"><a href="#Log" class="headerlink" title="Log"></a>Log</h4><p><img src="/posts/26000/image-20220331143544299.png" alt="image-20220331143544299" style="zoom:33%;"></p>
+<p>Before image：修改前的数据存储的block，BID是物理地址，碰到问题就用这个block去这个物理地址做覆盖</p>
+<p>After image同理</p>
+<h3 id="提交规则"><a href="#提交规则" class="headerlink" title="提交规则"></a>提交规则</h3><p>当事务提交之前要把所有的更新后项【新值 A.I】写到持久存储（硬盘）上，写到日志也行，不一定非要写在数据库里面，所以可能没写到数据库里</p>
+<h3 id="先记后写规则"><a href="#先记后写规则" class="headerlink" title="先记后写规则"></a>先记后写规则</h3><p>如果直接修改数据库，在更新之前要把被修改数据的老值 B.I 先写到日志中，要不然旧的值就没了</p>
+<h3 id="undo-amp-redo-amp-idempotent"><a href="#undo-amp-redo-amp-idempotent" class="headerlink" title="undo&amp;redo&amp;idempotent"></a>undo&amp;redo&amp;idempotent</h3><p>满足幂等性，做n次和做1次的效果相同</p>
+<p><img src="/posts/26000/image-20220331144159907.png" alt="image-20220331144159907" style="zoom:33%;"></p>
+<h3 id="故障重启动恢复模块"><a href="#故障重启动恢复模块" class="headerlink" title="故障重启动恢复模块"></a>故障重启动恢复模块</h3><p>检查点check point</p>
+<p>自动周期性的设置检查点，在检查点时，检查自从上一个检查点以来运行的事务的TID在active list和commit list两个列表中的存在情况:</p>
+<ol>
+<li>那些已经提交的事务的TID，是否已经反映到数据库里面了</li>
+<li>那些回滚的事务的TID，对数据库产生的影响是否已经消除</li>
+</ol>
+<h3 id="A-I→DB-before-commit"><a href="#A-I→DB-before-commit" class="headerlink" title="A.I→DB before commit"></a>A.I→DB before commit</h3><p>直接改数据库的</p>
+<p>在commit 之前A.I直接写入DB[需要undo,不需要redo]</p>
+<p><strong>事务执行流程</strong></p>
+<ol>
+<li>TID写入active list</li>
+<li><strong>B.I写入日志</strong></li>
+<li><strong>A.I写入DB</strong></li>
+<li>重复2,3直到所有语句完成，遇到commit</li>
+<li>commit命令后将事务的TID写入commit list</li>
+<li>从active list删掉事务的TID</li>
+</ol>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Commit list</th>
+<th>Active list</th>
+<th>Period</th>
+<th>Explain</th>
+<th>Error process</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>√</td>
+<td>1结束5没结束</td>
+<td>部分更新了，部分没更新（更新的部分有B.I）</td>
+<td>用日志记录的B.I进行undo, 然后delete TID from active list</td>
+</tr>
+<tr>
+<td>√</td>
+<td>√</td>
+<td>5结束6没结束</td>
+<td>事情是做完了，但是没删而已</td>
+<td>delete TID from active list</td>
+</tr>
+<tr>
+<td>√</td>
+<td></td>
+<td>6结束</td>
+<td>没事</td>
+<td>nothing to do</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="A-I→DB-after-commit-148"><a href="#A-I→DB-after-commit-148" class="headerlink" title="A.I→DB after commit(148)"></a>A.I→DB after commit(148)</h3><p>先把新值存到Log， 遇到commit 命令后再将改动的数据写入DB【比第一种更新策略效率高，并发度，只要没到commit就不动数据库，数据库是不受干扰的】【需要redo,不需要undo】</p>
+<ol>
+<li>把TID写入active list</li>
+<li><strong>A.I写入Log</strong></li>
+<li>循环2直到所有语句执行完</li>
+<li>遇到commit 命令后把TID写入commit list</li>
+<li>将改动的数据A.I写入DB</li>
+<li>把TID从active list中删除</li>
+</ol>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Commit list</th>
+<th>Active list</th>
+<th>Period</th>
+<th>Explain</th>
+<th>Error process</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>√</td>
+<td>1结束4没结束</td>
+<td>虽然是部分更新，部分未更新，但是数据库没变（日志有数据？）</td>
+<td>delete TID from active list</td>
+</tr>
+<tr>
+<td>√</td>
+<td>√</td>
+<td>4结束6没结束 正在搬数据</td>
+<td>log里面有所有的新的数据，数据库不一致（有新有旧，改了多少不允许，反正redo）</td>
+<td>根据Log中的A.I进行redo, 再delete TID from active list</td>
+</tr>
+<tr>
+<td>√</td>
+<td></td>
+<td>6结束</td>
+<td>没事</td>
+<td>nothing to do</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>和SUX锁协议相匹配，事务运行的并发度较高</p>
+<h3 id="A-I→DB-concurrently-with-commit"><a href="#A-I→DB-concurrently-with-commit" class="headerlink" title="A.I→DB concurrently with commit"></a>A.I→DB concurrently with commit</h3><p>在第2种的基础上改进，充分利用系统资源（CPU和I/O）</p>
+<p>AI写入DB和commit命令并发执行【可能需要redo ,也可能需要undo】</p>
+<ol>
+<li>把TID写入active list</li>
+<li><strong>A.I 和B.I都写入Log</strong></li>
+<li>利用磁盘空闲时用后台线程把A.I（B.I已经记录Log）写入DB，有可能没写完</li>
+<li>循环2,3直到语句执行完遇到commit 命令后把TID写入commit list。</li>
+<li>确保A.I完全写入DB</li>
+<li>把TID从active list中删除</li>
+</ol>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>Commit list</th>
+<th>Active list</th>
+<th>Period</th>
+<th>Explain</th>
+<th>Error process</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>√</td>
+<td>1结束4没结束</td>
+<td>数据库有可能动过，去Log找B.I做undo</td>
+<td>undo, delete TID from active list</td>
+</tr>
+<tr>
+<td>√</td>
+<td>√</td>
+<td>4结束6没结束 正在搬数据</td>
+<td>B.I和A.I肯定记录完了，但是A.I可能没有完全更新过去</td>
+<td>redo, delete TID from active list</td>
+</tr>
+<tr>
+<td>√</td>
+<td></td>
+<td>6结束</td>
+<td>没事</td>
+<td>nothing to do</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="Update-Out-of-Place"><a href="#Update-Out-of-Place" class="headerlink" title="Update Out of Place"></a>Update Out of Place</h3><p>异地更新策略，每个物理块保持两个副本（交替使用）和一个页表（Page Table，指针数组，每一项指向当前激活的物理块，现在有1000个物理块，就有1000个指针，每个指针指向这个物理块当前有效的副本的地址）</p>
+<p>更新时，就是修改物理块，老的物理块（目前生效的？）不动，新的副本那边做修改，提交时，拨指针，将新的副本作为生效的物理块。</p>
+<p>拨指针成功了就是新的一致状态，没成功就是旧的一致状态</p>
+<p><img src="/posts/26000/image-20220427150732147.png" alt="image-20220427150732147" style="zoom:67%;"></p>
+<p>拨指针的动作需要保证原子性</p>
+<h4 id="lorie’s-approach"><a href="#lorie’s-approach" class="headerlink" title="lorie’s approach"></a>lorie’s approach</h4><p><img src="/posts/26000/image-20220427152808527.png" alt="image-20220427152808527" style="zoom:67%;"></p>
+<h3 id="恢复过程"><a href="#恢复过程" class="headerlink" title="恢复过程"></a>恢复过程</h3><p><strong>故障类型</strong></p>
+<ol>
+<li><p>事务故障(Transaction failure):由于某些超出预期的原因 导致该事务不得不中止。</p>
+<p>代码写错了，逻辑错误，事务必须滚回</p>
+</li>
+<li><p>系统故障(System failure):操作系统崩溃了，但磁盘上的数据库没有损坏。如突然断电。</p>
+</li>
+<li><p>介质故障(Media failure):磁盘故障，数据库被损坏了</p>
+</li>
+</ol>
+<p><strong>解决措施</strong></p>
+<ol>
+<li>事务故障一定发生在事务提交之前，只需要<ol>
+<li>undo</li>
+<li>delete TID from active list</li>
+</ol>
+</li>
+<li>系统故障<ol>
+<li>重启</li>
+<li>根据需求进行undo or redo</li>
+</ol>
+</li>
+<li>介质故障<ol>
+<li>换或者修磁盘</li>
+<li>装载最近的备份</li>
+<li>根据日志做重演(redo)——A.I不能轻易删除</li>
+</ol>
+</li>
+</ol>
+<h4 id="系统启动"><a href="#系统启动" class="headerlink" title="系统启动"></a>系统启动</h4><p><strong>启动类型</strong></p>
+<h5 id="emergency-restart"><a href="#emergency-restart" class="headerlink" title="emergency restart"></a>emergency restart</h5><p>在系统或媒体故障后启动。启动前需要恢复。</p>
+<h5 id="warm-start"><a href="#warm-start" class="headerlink" title="warm start"></a>warm start</h5><p>正常关机后启动，不需要恢复</p>
+<h5 id="cold-start"><a href="#cold-start" class="headerlink" title="cold start"></a>cold start</h5><p>从头开始启动系统。在灾难性故障后启动或启动一个新的数据库。</p>
+<h3 id="两段提交协议"><a href="#两段提交协议" class="headerlink" title="两段提交协议"></a>两段提交协议</h3><p><strong>判断是否支持分布式数据库管理的依据</strong></p>
+<p>前文的恢复都是基于集中式数据库的</p>
+<ul>
+<li><p>DDBMS中的事务是<strong>分布式事务</strong>，分布式事务管理的关键是如何保证所有子事务一起提交或一起中止。</p>
+<p>银行转账，事务T减钱加钱，分布式环境下，A账户存储在节点1，B账户存储在节点2，T1和T2两个子事务属于事务T，分别在两个节点处理两个账户</p>
+</li>
+<li><p>实现子交易之间的协同依赖于通信，而通信是不可靠的。</p>
+</li>
+<li><p>两将军悖论：不存在有限长的可靠协议</p>
+<p>Two general paradox，A、B将军攻城，A发信要进攻，但是需要收到B的确认回信才会进攻，否则信丢了A动B不动，而B收到信后回信了，也不可靠，因为他知道A要收到自己的回信才会进攻，信丢了，B动A不动，最后没完没了的通信</p>
+</li>
+<li><p>解决方法：对信息进行编号，稳扎稳打，步步为营，先走一点点，确保收到回信了，再走一点点<img src="/posts/26000/image-20220428201808001.png" alt="image-20220428201808001"></p>
+</li>
+<li><p>多将军问题</p>
+<p><img src="/posts/26000/image-20220428202220790.png" alt="image-20220428202220790"></p>
+<p>coordinator需要确保每个参与者都协调了，必须所有将军都走了一点点了，才能继续下一步</p>
+</li>
+</ul>
+<p><strong>强制写入指不写入就不能继续后续操作</strong></p>
+<p><img src="/posts/26000/image-20220428202323672.png" alt="image-20220428202323672" style="zoom:50%;"></p>
+<p>一个<strong>子事务</strong>为协调者，其余为参与者，参与者之间不通讯，假定通过日志来进行恢复，那么理想的提交协议应该满足</p>
+<ol>
+<li>协调者广播一条prepare命令</li>
+<li>等待接收参与者的OK 或者 not OK命令</li>
+<li>所有都收到后，检查结果</li>
+<li>如果都是OK，返回Commit，此时协调者开始进行事务提交了</li>
+<li>如果有至少一条NOT OK，返回Abort</li>
+<li>等待接收所有参与者的Ack，否则会重发commit或者abort</li>
+<li>最后才能结束事务</li>
+</ol>
+<p>每个参与者，回答OK之前，具备自主权，转账例子上，余额不够的话，先把A账号的子事务Abort，回答not OK即可，一旦回答OK之后，就丧失了自主权，存在<a name="阻塞"><strong>阻塞问题</strong></a></p>
+<p>如果协调者在参与者回答OK后出现故障，没办法把Commit/Abort发出去，那么参与者必须等待，并处于阻塞状态。</p>
+<p><strong>后续内容已经有点涉及到Presumed Abort的意思</strong></p>
+<p><strong>prepare</strong></p>
+<p>对于协调者而言</p>
+<ol>
+<li><p>协调者广播一条prepare命令，告诉大家要开始commit了</p>
+</li>
+<li><p>每个参与者会回复OK or not OK</p>
+<ol>
+<li>所有参与者都回复OK</li>
+<li>至少收到了一条not OK</li>
+</ol>
+<p>上述两个条件满足其一即可进入commit阶段</p>
+</li>
+</ol>
+<p>对于参与者而言</p>
+<ol>
+<li><p>接收到prepare，根据自身情况看是否可以commit</p>
+<ol>
+<li><p>同意commit</p>
+<ol>
+<li>强制写入一个prepare的日志记录</li>
+<li>返回ok给协调者</li>
+<li>进入准备状态，等待协调者发布最终处理结果</li>
+</ol>
+</li>
+<li><p>拒绝commit</p>
+<ol>
+<li><p>强制写入一个abort的日志记录</p>
+</li>
+<li><p>返回not ok给协调者</p>
+</li>
+<li><p>在本地终止事务，释放所有锁，并 “忘记 “它。</p>
+<p>这是安全的，因为只要自己返回了 not ok，协调者只能abort</p>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<p><strong>commit</strong></p>
+<p><strong>如果有至少一个not OK，此时可能还有参与者未回复，但是协调者已经可以进行后续操作</strong></p>
+<ol>
+<li><p>强制写入一个abort记录到日志</p>
+</li>
+<li><p>给<strong>所有处于准备状态的参与者</strong>以及<strong>还未回应OK还是not OK的参与者</strong>都回复Abort</p>
+<p>回应了not OK的不用发送abort了，因为他们本地已经Abort了</p>
+</li>
+<li><p>等待接收来自步骤2接收Abort信息的参与者返回的ACK消息</p>
+<p>同理，也不需要等待接收那些not OK的参与者</p>
+</li>
+<li><p>写入一个end记录，忘记该事务</p>
+</li>
+</ol>
+<p><strong>如果全部都是OK，那么协调者</strong></p>
+<ol>
+<li>强制写入一个commit记录到日志，事务到达提交点，用户可以被告知事务完成被提交了</li>
+<li>发送commit命令给<strong>所有参与者</strong></li>
+<li>等待接收来自所有参与者的Ack</li>
+<li>写入end记录，忘记该事务</li>
+</ol>
+<p>Ack用于确保每个参与者都能得知并且执行最终的决定</p>
+<p><strong>只有回复了OK的参与者会进入commit阶段，接收到commit命令</strong></p>
+<ol>
+<li>强制写入commit记录</li>
+<li>返回Ack</li>
+<li>提交事务，并且忘记</li>
+</ol>
+<p>收到Abort命令</p>
+<ol>
+<li>强制写入abort记录</li>
+<li>返回ack</li>
+<li>终止事务，并且忘记</li>
+</ol>
+<p>发送ACK前要求参与者写入commit或者abort，确保参与者收到commit和abort命令后，不需要询问协调者最终的结果就可以进行故障恢复</p>
+<p><strong>故障处理</strong></p>
+<p>假设每个节点都设置故障恢复模块，它处理来自其他节点恢复进程的所有消息，并处理在该节点最后一次故障时正在执行提交协议的所有事务</p>
+<p>对于故障发生时执行的每一个事务，恢复进程依据不同情况作不同处理</p>
+<ol>
+<li><p><strong>没有任何形式的2PC协议记录</strong></p>
+<p><strong>基于undo记录撤销、并终止该事务，记录abort，忘记它</strong></p>
+</li>
+<li><p>或者协调者收集所有参与者的日志信息发现有事务处于提交或中止状态</p>
+<p>定期尝试向所有尚未发送ack的参与者发送commit或者abort命令，直到收到所有回复，记下end，忘记该事务</p>
+</li>
+<li><p>或者（某个特定）事务处于准备状态（等待结果决定）</p>
+<p>定期尝试联系协调者，确认应该如何处理，收到commit或者abort后做出相应处理</p>
+</li>
+</ol>
+<p>当一个恢复进程收到来自准备状态的参与者节点的查询信息时，它会查看它有哪些关于该事务的信息。如果已知该事务处于中止或提交状态，那么它将发送对应的响应。</p>
+<p>如果没有发现关于该事务的任何信息时，又该如何处理呢？</p>
+<p>由于COMMITS和ABORTS都被确认，所以在协调者忘记事务前，参与者发送查询信息是由于参与者没有收到并且处理commit或者abort</p>
+<ol>
+<li>协调者发送prepares</li>
+<li>在收到所有投票并决定commit/abort前崩溃了</li>
+<li>重启时，abort命名没有通知给参与者</li>
+</ol>
+<h3 id="R-事务处理管理"><a href="#R-事务处理管理" class="headerlink" title="R*事务处理管理"></a>R*事务处理管理</h3><p>事务——是执行的一个原子的可持续的单元，由一个或多个SQL语句构成，语句封闭在一个begin-transaction和一个end-transaction中，并且给事务赋予唯一的事务处理标识符，由地点标识符和顺序号码构成。</p>
+<p><strong>并发控制</strong></p>
+<p>并发控制通过两段加锁协议实现，事务持有数据对象的锁直到事物结束或者异常终止</p>
+<p>当检测到死锁时，由异常来终止 等待循环内的 一个事务的来消除死锁，一般终止完成极少工作的事务</p>
+<p><strong>优化的两阶段提交协议</strong></p>
+<p>目的是改进信息交换和重演日志上的操作的性能</p>
+<p>force a log表示将运行记录拷贝到硬盘的操作</p>
+<p>write a log表示将运行记录写进内存的操作</p>
+<p>问题：在将记录拷贝到硬盘前，系统故障可能导致日志丢失</p>
+<p>两阶段提交协议在接收Prepare后，可以发送abort终止事务，掌握了自主权；但是一旦回复了OK，那么就丧失自主权了。</p>
+<h3 id="假定异常终止协议"><a href="#假定异常终止协议" class="headerlink" title="假定异常终止协议"></a>假定异常终止协议</h3><p>只要有一个not OK 那么就可以进入commit阶段了</p>
+<p><strong>如果有至少一个not OK，此时可能还有参与者未回复，但是协调者已经可以进行后续操作</strong></p>
+<ol>
+<li><p>强制写入一个abort记录到日志</p>
+</li>
+<li><p>给<strong>所有处于准备状态的参与者</strong>以及<strong>还未回应OK还是not OK的参与者</strong>都回复Abort</p>
+<p>回应了not OK的不用发送abort了，因为他们本地已经Abort了</p>
+</li>
+<li><p>等待接收来自步骤2接收Abort信息的参与者返回的ACK消息</p>
+<p>同理，也不需要等待接收那些not OK的参与者</p>
+</li>
+<li><p>写入一个end记录，忘记该事务</p>
+</li>
+</ol>
+<p>当恢复机构没有事务的标识符时，就假定该事务已经被异常终止了</p>
+<p>在决定中止事务后，协调者立即 “忘记 “该交易（第一次收到NO）并写下中止记录是安全的操作，有以下意义</p>
+<ol>
+<li><p>abort记录不需要强制写入，没有相当于也是终止</p>
+<p>强制写入指不写入就不能继续后续操作</p>
+</li>
+<li><p>参与者无需为终止返回ACK</p>
+</li>
+<li><p>协调者无需在终止记录中记下每个参与者的名字，也不需要记录end</p>
+</li>
+<li><p><strong>如果协调者在发送abort命令时，发现某个参与者有问题，不需要反馈给恢复进程，而是让参与者通过参与者的恢复进程发出查询得知需要进行终止即可</strong></p>
+</li>
+</ol>
+<p>如果我们利用完全或部分只读事务的优势，我们可以做得更好。部分只读事务是指一个或多个参与的进程不执行任何更新，但其他进程执行更新。我们不需要事先知道只读的状态。除了基本协议中的OK和NOT OK之外，我们还增加了一个READ</p>
+<ol>
+<li>如果一个参与者收到一个prepare，并且它没有做任何更新，它就会发送一个READ，释放它的锁，并且 “忘记 “这个事务。没有日志记录被写入—对它来说，事务被中止或提交没有区别</li>
+<li>协调者不向发送READ的参与者发送任何COMMIT或ABORT消息</li>
+</ol>
+<p>如果协调者本身只读的，并且只接收到READ，相当于完全只读，那么协议就不会有第二阶段，协调人也不写日志记录。</p>
+<h3 id="假定提交协议"><a href="#假定提交协议" class="headerlink" title="假定提交协议"></a>假定提交协议</h3><p>由于大多数事务都要提交，那么能否通过要求对ABORTS的ACK，取消COMMITS的ACK来使提交成本降低。</p>
+<p>要求ABORTS被确认，而COMMITS不需要，同时要求abort记录被强制执行，而commit记录不需要由参与者执行。其结果是，在没有信息的情况下，当参与者查询时，恢复过程会以COMMIT来响应。然而，这种方法有一个问题：</p>
+<p>考虑一个已经发出PREPARE消息的协调者，仍然在等待所有的反馈回来。其中一个下属发送了一个OK，并进入了准备状态。然后协调者崩溃了。此时，协调者没有写任何日志记录。因此，当协调者的节点恢复时，它将发现没有关于该事务的信息，因此中止并 “忘记 “它。但是当参与者恢复进程查询时，在发现没有信息时，它将被发送一个COMMIT消息，导致不一致。</p>
+<p>为了解决这个问题，协调者需要在发送任何PREPARE消息之前安全地记录其参与者的名字。它通过强行写入一个收集记录来做到这一点。这样，当协调者在恢复时中止，它将知道该通知谁（并获得ACK）进行中止。</p>
+<p>协调者改进如下</p>
+<ol>
+<li>在发送prepare之前强制写入收集表信息，包含参与者的名称</li>
+<li>强制写入abort命令</li>
+<li>abort需要返回ack，commit不需要</li>
+<li>只在abort后写入end</li>
+</ol>
+<p>参与者改进如下</p>
+<p>参与者只强制写中止记录，而不写提交记录。他们只 ACK ABORTs，而不是 COMMITs</p>
+<p>在重启时，如果恢复进程发现某个事务有收集记录但没有后续记录，它就会遵循中止协议。在没有信息的情况下，它用一个COMMIT来响应查询。</p>
+<h3 id="PA-VS-PC-VS-2P"><a href="#PA-VS-PC-VS-2P" class="headerlink" title="PA VS PC VS 2P"></a>PA VS PC VS 2P</h3><ol>
+<li>在所有情况下，PA都优于或等于2P。</li>
+<li>在完全只读事务的情况下，PA比PC好</li>
+<li>在部分只读事务，并且只有协调者做更新的情况下，PA也比PC好。</li>
+<li>在事务只有一个参与者更新的情况下，PA和PC在日志记录方面等效，但是PC比PA能够节省一条ACK信息</li>
+<li>对于一个有n&gt;1个更新参与者的事务，PA和PC都需要写相同数量的记录，但是PA会强制写n-1次，而PC不会。PA也将发送n个额外的ACK消息</li>
+<li>对于参与者而言，PC比PA有效地多，因为PC能成功地完成更新事务，因为其不需要ack和提交记录的人工转移</li>
+<li>对于只读事务的参与者而言，PA比PC有效，因为记录参与者标识的收集（存在硬盘）不需要人工运输到协调者去</li>
+<li>R*中可以为单独的事务设置提交协议，PA为只读事务准备，PC为其他事务准备。</li>
+</ol>
+<h3 id="三段提交协议"><a href="#三段提交协议" class="headerlink" title="三段提交协议"></a>三段提交协议</h3><p>解决两段提交协议的阻塞问题</p>
+<p><img src="/posts/26000/image-20220428203122464.png" alt="image-20220428203122464" style="zoom:67%;"></p>
+<ol>
+<li><p>广播预备提交信息</p>
+</li>
+<li><p>回答 Ready 或者 Abort</p>
+<ol>
+<li><p>参与者收到回信后，全部都是Ready，就会回复prepare to commit的消息</p>
+<p>这个消息会被参与者记到磁盘上，回答OK</p>
+</li>
+<li><p>如果有Abort，那么就直接发送Abort。此时，磁盘上也不会存prepare to commit</p>
+</li>
+</ol>
+</li>
+<li><p>正常会得到所有的OK后，回复Commit 或者 Abort的命令</p>
+</li>
+<li><p>参与者回复ACK</p>
+</li>
+</ol>
+<p>如果协调者不出错，阶段二无效</p>
+<p>如果协调者在参与者回答OK后出现故障，超时，参与者互相通信选出一个新的协调者。</p>
+<p>协调者会检查所有参与者是否存储了prepare to commit的信息，如果所有参与者上都有这个消息，就发出Commit命令，否则Abort，存储下这个操作能够告诉给原来的协调者做了啥命令</p>
+<p>如果协调者在发出Abort之前G了，自己已经Abort，prepare to commit也不会发送出去，新的协调者也会Abort，还是一致状态</p>
+<p>两阶段，协调者在故障前可能已经Commit或者Abort了（难以保持一致），但是命令没发出去</p>
+<p>三阶段发出的是消息，可以反悔，协调者时间上还没有做操作，其实就是加了一层记录到磁盘的操作</p>
+<p>很少用三段，效率低，绝大部分用不到阶段2</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag"># 学科基础知识</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/19931.html" rel="next" title="DBMS-查询优化">
+                <i class="fa fa-chevron-left"></i> DBMS-查询优化
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/23083.html" rel="prev" title="DBMS-并发">
+                DBMS-并发 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+                <a href="/archives">
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xzp314" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:seu_xuzhipeng@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1"><span class="nav-number">1.</span> <span class="nav-text">事务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ACID%E5%87%86%E5%88%99"><span class="nav-number">1.1.</span> <span class="nav-text">ACID准则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%A8%E6%9C%9F%E6%80%A7%E8%BD%AC%E5%82%A8"><span class="nav-number">2.</span> <span class="nav-text">周期性转储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD-%E5%A2%9E%E9%87%8F%E8%BD%AC%E5%82%A8"><span class="nav-number">3.</span> <span class="nav-text">备份+增量转储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%87%E4%BB%BD-%E6%97%A5%E5%BF%97"><span class="nav-number">4.</span> <span class="nav-text">备份+日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%89%AF%E6%9C%AC"><span class="nav-number">5.</span> <span class="nav-text">多副本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">6.</span> <span class="nav-text">数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Commit-list"><span class="nav-number">6.1.</span> <span class="nav-text">Commit list</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Active-list"><span class="nav-number">6.2.</span> <span class="nav-text">Active list</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Log"><span class="nav-number">6.3.</span> <span class="nav-text">Log</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E8%A7%84%E5%88%99"><span class="nav-number">7.</span> <span class="nav-text">提交规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%88%E8%AE%B0%E5%90%8E%E5%86%99%E8%A7%84%E5%88%99"><span class="nav-number">8.</span> <span class="nav-text">先记后写规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undo-amp-redo-amp-idempotent"><span class="nav-number">9.</span> <span class="nav-text">undo&amp;redo&amp;idempotent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%85%E9%9A%9C%E9%87%8D%E5%90%AF%E5%8A%A8%E6%81%A2%E5%A4%8D%E6%A8%A1%E5%9D%97"><span class="nav-number">10.</span> <span class="nav-text">故障重启动恢复模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A-I%E2%86%92DB-before-commit"><span class="nav-number">11.</span> <span class="nav-text">A.I→DB before commit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A-I%E2%86%92DB-after-commit-148"><span class="nav-number">12.</span> <span class="nav-text">A.I→DB after commit(148)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#A-I%E2%86%92DB-concurrently-with-commit"><span class="nav-number">13.</span> <span class="nav-text">A.I→DB concurrently with commit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Update-Out-of-Place"><span class="nav-number">14.</span> <span class="nav-text">Update Out of Place</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#lorie%E2%80%99s-approach"><span class="nav-number">14.1.</span> <span class="nav-text">lorie’s approach</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%81%A2%E5%A4%8D%E8%BF%87%E7%A8%8B"><span class="nav-number">15.</span> <span class="nav-text">恢复过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8"><span class="nav-number">15.1.</span> <span class="nav-text">系统启动</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#emergency-restart"><span class="nav-number">15.1.1.</span> <span class="nav-text">emergency restart</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#warm-start"><span class="nav-number">15.1.2.</span> <span class="nav-text">warm start</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#cold-start"><span class="nav-number">15.1.3.</span> <span class="nav-text">cold start</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E6%AE%B5%E6%8F%90%E4%BA%A4%E5%8D%8F%E8%AE%AE"><span class="nav-number">16.</span> <span class="nav-text">两段提交协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#R-%E4%BA%8B%E5%8A%A1%E5%A4%84%E7%90%86%E7%AE%A1%E7%90%86"><span class="nav-number">17.</span> <span class="nav-text">R*事务处理管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%87%E5%AE%9A%E5%BC%82%E5%B8%B8%E7%BB%88%E6%AD%A2%E5%8D%8F%E8%AE%AE"><span class="nav-number">18.</span> <span class="nav-text">假定异常终止协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%87%E5%AE%9A%E6%8F%90%E4%BA%A4%E5%8D%8F%E8%AE%AE"><span class="nav-number">19.</span> <span class="nav-text">假定提交协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PA-VS-PC-VS-2P"><span class="nav-number">20.</span> <span class="nav-text">PA VS PC VS 2P</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E6%AE%B5%E6%8F%90%E4%BA%A4%E5%8D%8F%E8%AE%AE"><span class="nav-number">21.</span> <span class="nav-text">三段提交协议</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xu Zhipeng</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">160.6k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

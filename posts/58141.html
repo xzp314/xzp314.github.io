@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="java基础知识," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="HashMap的并发安全容器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java-ConcurrentHashMap详解">
+<meta property="og:url" content="http://example.com/posts/58141.html">
+<meta property="og:site_name" content="主页">
+<meta property="og:description" content="HashMap的并发安全容器">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/posts/58141/image-20230916140306849.png">
+<meta property="og:image" content="http://example.com/posts/58141/image-20230916140943533.png">
+<meta property="article:published_time" content="2018-10-24T12:38:28.000Z">
+<meta property="article:modified_time" content="2023-10-10T02:39:09.024Z">
+<meta property="article:author" content="Xu Zhipeng">
+<meta property="article:tag" content="java基础知识">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/posts/58141/image-20230916140306849.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/posts/58141.html"/>
+
+
+
+
+
+  <title>java-ConcurrentHashMap详解 | 主页</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="主页" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">主页</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">xzp个人小站</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/58141.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="主页">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">java-ConcurrentHashMap详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-24T20:38:28+08:00">
+                2018-10-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
+                    <span itemprop="name">编程语言</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.1k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  11
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  HashMap的并发安全容器
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="HashMap的线程安全"><a href="#HashMap的线程安全" class="headerlink" title="HashMap的线程安全"></a>HashMap的线程安全</h3><p><code>HashMap</code>设计之初就没有考虑多线程访问，自然没有对多线程并发访问做任何控制，可以从两个示例进行分析</p>
+<h4 id="多线程死循环"><a href="#多线程死循环" class="headerlink" title="多线程死循环"></a>多线程死循环</h4><p>JDK1.7之前，发生哈希冲突时，采用头插法插入新的<code>Node</code>，在多线程场景下，多线程扩容完成后，后续<code>get</code>操作可能发生死循环</p>
+<p>首先，线程1和线程2都调用<code>transfer</code>方法进行扩容，假设切换到线程1执行扩容，并完成操作</p>
+<p><img src="/posts/58141/image-20230916140306849.png" alt="image-20230916140306849" style="zoom:50%;"></p>
+<p>然后，线程2开始扩容</p>
+<p><img src="/posts/58141/image-20230916140943533.png" alt="image-20230916140943533"></p>
+<p>最后，形成了<code>A</code>指向<code>B</code>，<code>B</code>指向<code>A</code>的循环，后续如果<code>get</code>访问到这个链表，就会出现死循环</p>
+<p>虽然，在JDK1.8通过尾插法解决了该问题，但是依然可以证明<code>HashMap</code>本身对应多线程访问是没有过多附加安全控制的</p>
+<h4 id="HashMap允许存放value为Null"><a href="#HashMap允许存放value为Null" class="headerlink" title="HashMap允许存放value为Null"></a>HashMap允许存放value为Null</h4><p><strong><code>value</code>为<code>Null</code>是否有意义？</strong></p>
+<p><code>Null</code>是有意义的，可以类比数据库中允许为<code>Null</code>的字段，学生信息注册时，部分信息缺失，不能有缺失就不允许注册吧，因此需要允许某些字段为<code>Null</code>，表示信息缺失</p>
+<p><strong><code>value</code>为<code>Null</code>存在什么问题？</strong></p>
+<p> 可能存在一种歧义，获取到<code>Null</code>时，到底是不存在这个<code>key</code>，还是<code>key</code>对应的值就是<code>Null</code>呢</p>
+<p>单线程场景下，我们可以通过额外添加一层<code>containsKey</code>方法来判断，也就是说，如果<code>containsKey</code>方法返回<code>true</code>，那么说明存在这个<code>key</code>，<code>get</code>就算获取到<code>Null</code>，那也是说明<code>value</code>就是<code>Null</code>；否则，说明不存在该<code>key</code>，直接结束<code>get</code>方法</p>
+<p>需要注意多线程场景下就没办法解决，比如线程1和线程2，考虑这样一个执行流程，线程1调用<code>containsKey</code>方法返回<code>true</code>，线程2将<code>key</code>移除，线程1调用<code>get</code>自然只能获取到<code>Null</code>，此时，线程1会误认为自己获取到的<code>Null</code>就是<code>key</code>对应的<code>value</code>，但是实际上<code>key</code>已经被线程2移除了</p>
+<p>所以，<code>HashMap</code>能够存放<code>value</code>为<code>Null</code>也是没有对多线程并发访问进行控制的一个证明</p>
+<h3 id="并发安全的HashMap"><a href="#并发安全的HashMap" class="headerlink" title="并发安全的HashMap"></a>并发安全的HashMap</h3><h4 id="HashTable-amp-synchronizedMap"><a href="#HashTable-amp-synchronizedMap" class="headerlink" title="HashTable&amp;synchronizedMap"></a>HashTable&amp;synchronizedMap</h4><ul>
+<li><p><code>HashTable</code>的<code>get put</code>方法都用<code>synchronized</code>进行修饰吗，并且<code>put</code>方法不允许存储<code>value</code>为<code>Null</code>，相当于加锁对象是<code>HashTable</code>的整个实例</p>
+</li>
+<li><p><code>synchronizedMap</code>维护一个<code>mutex</code>的成员变量，<code>mutex=this</code>，其实就是当前对象实例的互斥锁，然后<code>get</code>和<code>put</code>方法都是先对<code>mutex</code>加锁，才能继续后续操作</p>
+</li>
+</ul>
+<p>上述两种数据结构都是通过对整个实例对象加锁实现的多线程并发访问控制，但是并非能够完全实现并发安全</p>
+<p>单独对同步方法的调用是能够保证并发安全的，但是如果组合调用就无法保证了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">removeKey</span><span class="params">(String key)</span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(map.containsKey(key))&#123; <span class="comment">// containsKey方法是线程安全的方法</span></span><br><span class="line">  	map.remove(key); <span class="comment">// remove方法也是线程安全的方法。</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>比如线程1执行<code>containsKey</code>方法后释放锁还没获取<code>remove</code>的锁，线程2也执行<code>containsKey</code>方法后，后续继续执行，就会出现<code>remove</code>空的<code>key</code>，解决办法就是外层再进行锁封装，但是比较影响效率</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">removeKey</span><span class="params">(String key)</span>&#123;</span><br><span class="line">  <span class="keyword">synchronized</span>(object)&#123;</span><br><span class="line">    <span class="keyword">if</span>(map.containsKey(key))&#123;</span><br><span class="line">        map.remove(key);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="ConcurrentHashMap"><a href="#ConcurrentHashMap" class="headerlink" title="ConcurrentHashMap"></a>ConcurrentHashMap</h4><p><code>ConcurrentHashMap</code>虽然在JDK1.7和1.8的实现不一样，但是均不是将整个实例对象上锁，并发度有所提高。此外，<code>ConcurrentHashMap</code>是不允许<code>value</code>为<code>Null</code>的</p>
+<h4 id="JDK-1-7"><a href="#JDK-1-7" class="headerlink" title="JDK 1.7"></a>JDK 1.7</h4><p>底层是数组+链表，参考HashMap的JDK 1.7实现。在并发控制上采用分段锁，也就是将数组分为多个段，每段在逻辑上相当于一个小哈希表，每段上一个锁，不同段之间的锁不会互相影响，并发度取决于段的数量，因为默认是<code>16</code>，所以最多<code>16</code>个线程并发写，需要注意的是一旦初始化，后续不能修改，所以段的数量设置需要比较严谨</p>
+<p><strong>put</strong></p>
+<ol>
+<li>检测<code>key</code>或者<code>value</code>是不是空，都不为空再继续后续操作</li>
+<li>根据哈希找到对应的段，然后就是在段中进行<code>put</code>操作</li>
+<li>段中的<code>put</code>操作首先要获取独占写入锁，如果失败就自旋来多次尝试获取锁，这个方法退出有两种方式，一是获取到锁，二是超出尝试次数。获取到锁之后就是正常的分为有没有已经存在的链表来分别处理</li>
+<li>需要释放锁</li>
+</ol>
+<p><strong>resize</strong></p>
+<p>扩容操作不是对整个<code>map</code>进行扩容，也就是说段的数量是不会变的，并且扩容的对象是其中一个段，将其扩充为原本的两倍大小</p>
+<p>实际上如果从每个段都是一个小哈希表这个角度来看，就很好理解了，这一段不够了就扩容，没有必要影响别的段，相当于是局部扩容，而如果段的数量允许动态变化，甚至任意段的扩容都会触发全局扩容，那么考虑到触发频率[普通哈希表是整个表一次性触发，现在是任意段触发就全局扩容]，大范围迁移的成本是难以接受的</p>
+<h4 id="JDK-1-8"><a href="#JDK-1-8" class="headerlink" title="JDK 1.8"></a>JDK 1.8</h4><p>底层是数组+链表+红黑树，参考<code>HashMap</code>的JDK 1.8实现。在并发控制上，采用<code>CAS+Synchronized</code>，并且锁的粒度进一步细化到<code>Node</code>，也就是链表或者红黑树的头结点，这就意味着只要并发访问的节点不是同一个节点，那么就不会出现并发问题，不需要进行并发控制，并发度相较于JDK 1.7有了显著提升，但是并没有完全摒弃JDK 1.7的分段机制（多线程扩容）。</p>
+<p><strong>put</strong></p>
+<p>如果数组位置是空的，那么通过<code>CAS</code>尝试设置值，效率比较高</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> ((f = tabAt(tab, i = (n - <span class="number">1</span>) &amp; hash)) == <span class="literal">null</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (casTabAt(tab, i, <span class="literal">null</span>, <span class="keyword">new</span> <span class="title class_">Node</span>&lt;K,V&gt;(hash, key, value)))</span><br><span class="line">        <span class="keyword">break</span>;                   <span class="comment">// no lock when adding to empty bin</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果不是空的，那么就先获取<code>synchronized</code>锁，然后内部根据数据结构是红黑树还是链表进行插入</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">  <span class="type">V</span> <span class="variable">oldVal</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">  <span class="keyword">synchronized</span> (f) &#123;</span><br><span class="line">		<span class="comment">// 省略</span></span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p><strong>tryPresize</strong></p>
+<p>扩容包括两个操作，首先新建一个两倍大小的新数组，然后进行数据迁移</p>
+<p>这里的数据迁移实际上是并发的数据迁移，也就是会把整个数组的数据迁移任务划分为多个子任务[其实就是JDK 1.7的分段机制]，交给不同的线程完成，比如另外一个线程访问到某个<code>ForwardingNode</code>，发现当前线程正在扩容，就会先帮助完成扩容<code>helpTransfer()</code></p>
+<p>当然也有可能就是一个线程先后完成，比如第一个发起数据迁移的线程会从数组最后开始，往前走一段，这个区间的迁移任务属于该线程，然后下一个线程就是从新的位置开始计算步长，然后迁移</p>
+<p>相关成员变量</p>
+<ul>
+<li><code>sizeCtl</code>：判断当前<code>ConcurrentHashMap</code>所处的状态</li>
+<li><code>transferIndex</code>：表示已经完成数据迁移的索引位置</li>
+<li><code>ForwardingNode</code>：表示当前节点已经完成数据迁移，但是还没有完成全局数据迁移</li>
+</ul>
+<h3 id="相关并发容器（待补充）"><a href="#相关并发容器（待补充）" class="headerlink" title="相关并发容器（待补充）"></a>相关并发容器（待补充）</h3><h4 id="Fail-fast机制"><a href="#Fail-fast机制" class="headerlink" title="Fail-fast机制"></a>Fail-fast机制</h4><p>快速失败，就是<code>java</code>集合的一种错误检测机制。</p>
+<p>底层实际上就是检查<code>expectedModCount</code>和<code>modCound</code>是否相等，不相等就会报<code>ConcurrentModificationException</code></p>
+<p>对集合的修改会使得<code>modCound</code>发生变化，比如多线程环境下，有的线程在遍历，有的线程在修改，就会导致<code>expectedModCount</code>和<code>modCound</code>不相等</p>
+<p>单线程场景下，在增强<code>for</code>循环遍历集合时如果涉及到修改集合那么也会报<code>ConcurrentModificationException</code>，因为增强<code>for</code>循环底层实现是迭代器，迭代器在初始化时，<code>expectedModCount</code>就已经固定为初始的<code>modCount</code>了，然后修改集合，会使得<code>modCound</code>发生变化，就导致<code>expectedModCount</code>和<code>modCound</code>不相等</p>
+<h4 id="Fail-safe机制"><a href="#Fail-safe机制" class="headerlink" title="Fail-safe机制"></a>Fail-safe机制</h4><p>采用<code>Fail-safe</code>机制的并发容器[<code>java.util.concurrent</code>]在遍历时不是直接在原本的集合内容上访问的，而是先复制原有集合内容，在拷贝的集合上进行遍历。</p>
+<p>由于迭代时是对原集合的拷贝进行遍历，所以在遍历过程中对原集合所作的修改并不能被迭代器检测到，所以不会触发<code>ConcurrentModificationException</code>。</p>
+<h4 id="CopyOnWriteArrayList"><a href="#CopyOnWriteArrayList" class="headerlink" title="CopyOnWriteArrayList"></a>CopyOnWriteArrayList</h4><h5 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h5><p><code>ArrayList</code>的增删改查都是在原数组上进行操作的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.arraycopy(elementData, index, elementData, index + numNew, numMoved); <span class="comment">// 从elementData复制到elementData</span></span><br></pre></td></tr></table></figure>
+<p>而<code>CopyOnWriteArrayList</code>就是读写分离的，几乎所有操作都是通过<code>Arrays.copyOf()</code>拷贝后在新数组上操作，操作完后再将引用指向新的数组，同时写之间的并发控制通过<code>synchronized</code>实现</p>
+<p><code>add()</code>默认插入到末端，先获取原数组，然后将元素组复制到一个新的长度加1的数组，再在末尾增加值，最后将引用指向新数组</p>
+<p><code>set()</code>获取原数组以及原数组对应位置的值，然后复制 | 迁移，再在对应位置设置值，最后将引用指向新数组</p>
+<p><code>remove</code>()需要删除指定位置的元素，如果删除的元素是最后一个，那么直接复制，长度-1即可，否则，需要分别针对指定位置前和指定位置后做两次复制</p>
+<h5 id="对比Vector"><a href="#对比Vector" class="headerlink" title="对比Vector"></a>对比Vector</h5><p><code>Vector</code>是对单独的增删改查等方法都上了<code>synchronized</code>锁，类似<code>HashTable</code>，能够保证单个操作的同步，但是组合操作则无法保证，比如一个方法的目标是删除最后一个元素，那么一般是先获取size，然后删除size-1位置的值。</p>
+<p>那么假设有两个线程操作，线程1调用<code>size()</code>，线程2调用<code>remove()</code>，不会互斥，线程1得到的可能就是旧的<code>size</code>，中间线程2执行完<code>remove()</code>，线程1基于这个<code>size</code>计算下标再执行<code>remove()</code>就会报错，这时需要再加一个synchronized锁，双重锁，性能更低了</p>
+<p><code>CopyOnWriteArrayList</code>则是增删改加锁，读不加锁，在读方面比<code>Vector</code>好</p>
+<p>但是增删改操作是基于<code>Arrays.copyOf</code>的，如果原数组很大，可能也会得不偿失</p>
+<h5 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h5><p>读轻，写重，无法适用于实时性要求较高的场景，因为<code>add()|remove()|set()</code>等操作都需要时间来拷贝数组，调用<code>get</code>操作，读取到的数据可能还是旧值，因为<code>set()</code>可能还没完成，虽然能够保证最终的一致性，但是无法满足实时性要求</p>
+<p>此外，虽然<code>CopyOnWriteArrayList</code>看似适合读多写少的操作，但是无法保证到底要存多少数据，一旦数据量过大，一次写就得花大量时间进行拷贝，代价难以接受，即便读多写少，也可能出现问题</p>
+<p>而如果初始化后几乎没有任何写操作，虽然完美符合<code>CopyOnWriteArrayList</code>的设计理念，但是这样用<code>ArrayList</code>也可以了</p>
+<h4 id="ConcurrentLinkedQueue"><a href="#ConcurrentLinkedQueue" class="headerlink" title="ConcurrentLinkedQueue"></a>ConcurrentLinkedQueue</h4><p>底层通过<code>CAS</code>操作来更新头结点和尾结点，保证原子性，控制并发安全</p>
+<p><code>head</code>和<code>tail</code>的更新是一种延迟更新机制</p>
+<h4 id="BlockingQueue"><a href="#BlockingQueue" class="headerlink" title="BlockingQueue"></a>BlockingQueue</h4><p>如果要实现生产者-消费者模式，就需要一个队列存储任务，并实现以下功能</p>
+<ol>
+<li>队列满了，需要阻塞生产者，唤醒消费者</li>
+<li>队列空了，需要阻塞消费者，唤醒生产者</li>
+<li>考虑线程安全问题，避免重复消费和死锁</li>
+</ol>
+<p>这也就是<code>BlockingQueue</code>的设计目的，按照底层实现不同可以分为</p>
+<ol>
+<li><code>ArrayBlockingQueue</code>：基于数组的有界阻塞队列</li>
+<li><code>LinkedBlockingQueue</code>：基于链表的线程安全的无界[<code>Integer.MAX_VALUE</code>]阻塞队列</li>
+<li><code>PriorityBlockingQueue</code>：具有优先级排序特性的无界[<code>Integer.MAX_VALUE</code>]阻塞队列</li>
+<li><code>SynchronousQueue</code>：不存储任何元素，存一个必须消费一个</li>
+<li><code>LinkedTransferQueue</code>：基于链表结构的无界传输队列，同时允许一个元素直接从生产者传输给消费者，即如果消费者已经在等待，直接交付。如果没有等待的消费者，元素将入队</li>
+<li><code>LinkedBlockingDeque</code>：基于链表结构的双端阻塞队列。它同时支持从队列头部插入和移除元素，也支持从队列尾部插入和移除元素</li>
+<li><code>DelayQueue</code>：无界阻塞队列，用于存放实现了 <code>Delayed</code> 接口的元素，这些元素只能在其到期时才能从队列中取走</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag"># java基础知识</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/58446.html" rel="next" title="java-Map详解">
+                <i class="fa fa-chevron-left"></i> java-Map详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/16745.html" rel="prev" title="java-并发基础">
+                java-并发基础 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+                <a href="/archives">
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xzp314" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:seu_xuzhipeng@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap%E7%9A%84%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8"><span class="nav-number">1.</span> <span class="nav-text">HashMap的线程安全</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%AD%BB%E5%BE%AA%E7%8E%AF"><span class="nav-number">1.1.</span> <span class="nav-text">多线程死循环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HashMap%E5%85%81%E8%AE%B8%E5%AD%98%E6%94%BEvalue%E4%B8%BANull"><span class="nav-number">1.2.</span> <span class="nav-text">HashMap允许存放value为Null</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8%E7%9A%84HashMap"><span class="nav-number">2.</span> <span class="nav-text">并发安全的HashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HashTable-amp-synchronizedMap"><span class="nav-number">2.1.</span> <span class="nav-text">HashTable&amp;synchronizedMap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ConcurrentHashMap"><span class="nav-number">2.2.</span> <span class="nav-text">ConcurrentHashMap</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JDK-1-7"><span class="nav-number">2.3.</span> <span class="nav-text">JDK 1.7</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JDK-1-8"><span class="nav-number">2.4.</span> <span class="nav-text">JDK 1.8</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%B9%B6%E5%8F%91%E5%AE%B9%E5%99%A8%EF%BC%88%E5%BE%85%E8%A1%A5%E5%85%85%EF%BC%89"><span class="nav-number">3.</span> <span class="nav-text">相关并发容器（待补充）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Fail-fast%E6%9C%BA%E5%88%B6"><span class="nav-number">3.1.</span> <span class="nav-text">Fail-fast机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Fail-safe%E6%9C%BA%E5%88%B6"><span class="nav-number">3.2.</span> <span class="nav-text">Fail-safe机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CopyOnWriteArrayList"><span class="nav-number">3.3.</span> <span class="nav-text">CopyOnWriteArrayList</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="nav-number">3.3.1.</span> <span class="nav-text">实现原理</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AF%B9%E6%AF%94Vector"><span class="nav-number">3.3.2.</span> <span class="nav-text">对比Vector</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BC%BA%E9%99%B7"><span class="nav-number">3.3.3.</span> <span class="nav-text">缺陷</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ConcurrentLinkedQueue"><span class="nav-number">3.4.</span> <span class="nav-text">ConcurrentLinkedQueue</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#BlockingQueue"><span class="nav-number">3.5.</span> <span class="nav-text">BlockingQueue</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xu Zhipeng</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">160.6k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

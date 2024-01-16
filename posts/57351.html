@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学科基础知识," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="计算机网络概述，基于中科大郑烇计算机网络课程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络-概述">
+<meta property="og:url" content="http://example.com/posts/57351.html">
+<meta property="og:site_name" content="主页">
+<meta property="og:description" content="计算机网络概述，基于中科大郑烇计算机网络课程">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/posts/57351/image-20230524165550694.png">
+<meta property="article:published_time" content="2019-06-25T08:42:00.000Z">
+<meta property="article:modified_time" content="2023-08-28T06:05:55.000Z">
+<meta property="article:author" content="Xu Zhipeng">
+<meta property="article:tag" content="学科基础知识">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/posts/57351/image-20230524165550694.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/posts/57351.html"/>
+
+
+
+
+
+  <title>计算机网络-概述 | 主页</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="主页" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">主页</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">xzp个人小站</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/57351.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="主页">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">计算机网络-概述</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-06-25T16:42:00+08:00">
+                2019-06-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">课程学习</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  8.2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  28
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  计算机网络概述，基于中科大郑烇计算机网络课程
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="相关定义"><a href="#相关定义" class="headerlink" title="相关定义"></a>相关定义</h3><p><strong>网络</strong>：若干节点（node）和连接这些节点的边（链路，link）构成</p>
+<p><strong>互联网</strong>：多个网络通过路由器连接起来，构成一个覆盖范围更大的网络，即互联网，是“网络的网络（Network of Networks）”</p>
+<p><strong>因特网</strong>：世界上最大的互联网</p>
+<p><strong>internet</strong>：小写字母 i 开头的 internet（互联网）是通用名词，它泛指由多个计算机网络相互连接而成的网络。在这些网络之间的通信协议（即通信规则）可以是任意的。</p>
+<p><strong>Internet</strong>：大写字母 I 开头的 Internet（互联网）是专用名词，它指全球最大的，开放的，由众多网络相互连接而成的特定的互联网，并采用 TCP/IP 协议作为通信规则。</p>
+<p><strong>计算机网络</strong>：一些互连（通过有线或者无线的方式进行数据通信）、自治（计算机拥有自己的硬件和软件，能够独立运行）的计算机的集合（≥2）；计算机网络主要是由一些通用的、可编程的硬件（包括计算机和智能手机）互连而成的，而这些硬件并非专门用来实现某一特定目的（例如，传送数据或视频信号）。这些可编程的硬件能够用来传送多种不同类型的数据，并能支持广泛的和日益增长的应用。</p>
+<p><strong>交换技术分类</strong>：电路交换网络、报文交换网络、分组交换网络</p>
+<p><strong>使用者分类</strong>：专用网、公用网</p>
+<p><strong>传输介质</strong>：有线网络、无线网络</p>
+<p><strong>覆盖范围分类</strong>：广域网、城域网、局域网、个人区域网</p>
+<ul>
+<li><p><strong>广域网 WAN（Wide Area Network）</strong>：覆盖范围较广的网络，通常跨越城市、省份、甚至国家和地区。在WAN中，多个局域网通过路由器、交换机、调制解调器等设备相互连接，形成一个覆盖范围更广的网络。</p>
+</li>
+<li><p><strong>城域网 MAN（Metropolitan Area Network）</strong>：覆盖范围介于LAN和WAN之间的网络，通常跨越一个城市或一个城市的一部分。在MAN中，多个LAN通过路由器、交换机等设备相互连接，形成一个覆盖范围较大的网络。</p>
+</li>
+<li><p><strong>局域网 LAN（Local Area Network）</strong>：在一个相对较小的地理范围内，例如在一个建筑、校园、公司或家庭中建立的网络。</p>
+</li>
+<li><p><strong>个人区域网 PAN（Personal Area Network)</strong>：覆盖范围最小的网络，通常只包括一个人的设备，例如手机、电脑、平板电脑、蓝牙耳机等设备。</p>
+<blockquote>
+<p>一个大型跨国公司的网络可以被划分为多个LAN，每个LAN覆盖不同的办公室或部门，这些LAN之间通过WAN连接起来，形成一个覆盖全球的网络。而一个家庭中的网络可以是一个LAN，包括多台电脑、手机、智能电视等设备，这些设备之间通过路由器相互连接。在这个家庭中，每个人可以使用自己的设备，如手机、平板电脑等，形成一个PAN，这些设备之间可以通过Wi-Fi或蓝牙相互连接。如果这个家庭所在的小区内建立了一个公共的网络，那么这个公共网络可以被视为一个MAN，连接多个家庭的LAN，形成一个覆盖整个小区的网络。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Internet"><a href="#Internet" class="headerlink" title="Internet"></a>Internet</h3><h4 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h4><ul>
+<li><p><strong>节点 （node）</strong></p>
+<ol>
+<li>主机及其上运行的应用程序</li>
+<li>路由器、交换机等网络交换设备</li>
+</ol>
+</li>
+<li><p><strong>边，通信链路（link）</strong> : 从一个结点到另一个结点的一段物理线路。中间没有任何其他交点。</p>
+<ol>
+<li>接入网链路：主机连接到互联网的链路</li>
+<li>主干链路：路由器间的链路</li>
+</ol>
+</li>
+<li><p><strong>协议</strong>：Internet的所有通信行为都受协议制约</p>
+<p>协议定义了在两个或多个通信实体之间交换的<strong>报文格式</strong>和<strong>次序</strong>，以及在报文传输、接收或处理其他事件时所采取的<strong>动作</strong></p>
+<blockquote>
+<p>协议数据单元（Protocol Data Unit，PDU）</p>
+<p>语法:格式 字段 长度</p>
+<p>语义:字段的含义</p>
+<p>时序:什么时候发，什么条件发</p>
+<p>动作:收到请求报文，内部处理的动作</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>Internet： 计算机网络（简称网络）把许多计算机连接在一起，而互联网基于TCP/IP协议簇把许多网络连接在一起，是网络的网络，仅仅互联但是不提供内容</strong></p>
+<ul>
+<li><p><strong>组成角度</strong>：由节点和边构成，基于以TCP/IP协议为主的一簇协议来正常运行的网络，由许多这样的网络构成的互联网络</p>
+<p>包括数以亿计的互联设备（主机、网络应用程序）、通信链路（光纤、无线电等）、分组转发设备（路由器：网络层，连接不同的网络，局域网→互联网，通过IP识别不同地址；交换机：局域网内通信，连接多台计算机、服务器等，通过MAC地址识别不同设备）</p>
+</li>
+<li><p><strong>服务角度</strong>：互联网是分布式的应用进程（Web、email、网络游戏）及为分布式应用进程提供通信服务的基础设施</p>
+<ul>
+<li>将发送和接收数据的apps与互联网连接起来</li>
+<li>为app应用提供服务选择（无连接不可靠服务，面向连接的可靠服务）</li>
+</ul>
+</li>
+<li><p><strong>网络结构角度</strong>：互联网是一个一个子系统</p>
+<ul>
+<li>网络边缘（主机、网络应用：客户端和服务器）</li>
+<li>网络核心（互联的路由器、网络的网络）</li>
+<li>接入网、物理媒体（有线或者无线的通信链路）</li>
+</ul>
+</li>
+</ul>
+<h3 id="网络结构"><a href="#网络结构" class="headerlink" title="网络结构"></a>网络结构</h3><ol>
+<li><p>网络边缘：进行信息处理，用户直接使用的，用于通信、共享资源</p>
+<p>主机、应用程序</p>
+</li>
+<li><p>网络核心：提供连通性和交换，由大量网络和连接这些网络的路由器构成，为边缘部分提供服务</p>
+<p>互相连接的路由器、网络的网络</p>
+</li>
+<li><p>接入网、物理媒体：辅助网络核心提供连通性</p>
+<p>有线、无线通信链路</p>
+</li>
+</ol>
+<h4 id="网络边缘"><a href="#网络边缘" class="headerlink" title="网络边缘"></a>网络边缘</h4><p>端系统（主机）：运行应用程序，比如Web、email，在网络的边缘</p>
+<p>计算机通信是计算机中进程（即运行着的程序）之间的通信</p>
+<p>两种连接模式</p>
+<ol>
+<li><p>客户/服务器（C/S）模式</p>
+<ul>
+<li><p>客户端向服务器请求、接收服务 ，比如Web浏览器和服务器，email客户端和服务器</p>
+</li>
+<li><p>主从模式，主是服务器（所有资源都在服务器），从是客户端（资源需要从服务器那里请求）</p>
+</li>
+<li>缺陷在于 可扩展性差，随着请求载荷的增加，能力下降，但是是断崖式下降</li>
+</ul>
+</li>
+<li><p>对等（Peer to Peer，P2P）模式</p>
+<p>没有专门的服务器</p>
+<ul>
+<li>迅雷下载文件为例，我是一个迅雷的客户端，存储了某些资源，现在有远程的客户端对这些资源发出请求，那我其实也可是他的服务端，我同时也能够向另外一个迅雷客户端请求某个文件，此时我又是客户端</li>
+<li>既是客户端又是服务器，随着用户数量增多，客户端变多，但是作为资源提供的服务器也会变多，可扩展性好</li>
+</ul>
+</li>
+</ol>
+<h4 id="网络边缘服务"><a href="#网络边缘服务" class="headerlink" title="网络边缘服务"></a>网络边缘服务</h4><h5 id="面向连接的服务（TCP）"><a href="#面向连接的服务（TCP）" class="headerlink" title="面向连接的服务（TCP）"></a>面向连接的服务（TCP）</h5><p>在端系统之间传输数据</p>
+<p>握手：在数据传输之前做好准备，两个通信主机之间为连接建立状态</p>
+<p><strong>传输控制协议（Transmission Control Protocol，TCP）：TCP报文</strong></p>
+<ol>
+<li><p><strong>可靠地、保序地传输数据</strong></p>
+<p>确认和重传机制</p>
+</li>
+<li><p><strong>流量控制</strong></p>
+<p>发送方不会淹没接收方</p>
+</li>
+<li><p><strong>拥塞控制</strong></p>
+<p>网络拥塞时，发送方降低发送速率</p>
+</li>
+</ol>
+<p>应用：HTTP（Web服务）、文件传输协议（File Transmission Protocol，FTP）、email服务（Simple Mail Transfer Protocol，SMTP）等<strong>对传输可靠性要求较高的应用</strong></p>
+<p><strong>面向连接：通信的状态只有在端系统中维护，而中间节点不知道</strong></p>
+<p><strong>有连接：中间节点也需要维护通信状态</strong></p>
+<h5 id="无连接服务（UDP）"><a href="#无连接服务（UDP）" class="headerlink" title="无连接服务（UDP）"></a>无连接服务（UDP）</h5><p>在端系统之间传输数据</p>
+<p><strong>用户数据报协议（User Datagram Protocol，UDP）：UDP用户数据报</strong></p>
+<ol>
+<li><strong>无连接</strong></li>
+<li><strong>不可靠数据传输</strong></li>
+<li><strong>无流量控制</strong></li>
+<li><strong>无拥塞控制</strong></li>
+</ol>
+<p>应用：流媒体、远程会议之类<strong>对传输可靠性要求不高，但是对传输延迟要求较高的应用</strong></p>
+<h3 id="网络核心"><a href="#网络核心" class="headerlink" title="网络核心"></a>网络核心</h3><p>路由器的网状网络</p>
+<h4 id="路由器"><a href="#路由器" class="headerlink" title="路由器"></a>路由器</h4><p>路由器是实现分组交换的关键构件，其任务是路由和转发收到的分组，这是网络核心部分最重要的功能。分组交换采用存储转发技术，表示把一个报文（要发送的整块数据）分为几个分组后再进行传送。在发送报文之前，先把较长的报文划分成为一个个更小的等长数据段。在每个数据段的前面加上一些由必要的控制信息组成的首部后，就构成了一个分组。分组又称为包。分组是在互联网中传送的数据单元，正是由于分组的头部包含了诸如目的地址和源地址等重要控制信息，每一个分组才能在互联网中独立的选择传输路径，并正确地交付到分组传输的终点。</p>
+<h4 id="三种交换方式"><a href="#三种交换方式" class="headerlink" title="三种交换方式"></a>三种交换方式</h4><p>交换指的是按照某种方式动态分配传输线路的资源</p>
+<h5 id="电路交换"><a href="#电路交换" class="headerlink" title="电路交换"></a>电路交换</h5><p>电话交换机接通电话线的方式，实际实现不是两两连接，而是通过连接到电话交换机上来实现</p>
+<p>端到端的资源被分配给从源端到目标端的呼叫 “call”：  通过信令系统分配给源和目标的通讯分配一条独享线路（piece，两个路由器之间的链路通过各种方法划分为线路，即piece）</p>
+<p>工作过程</p>
+<ol>
+<li>建立连接（分配通信资源）</li>
+<li>通话（一直占用通信资源）</li>
+<li>释放连接（归还通信资源）</li>
+</ol>
+<p><strong>特点</strong></p>
+<ol>
+<li>独享资源（线路），不同享，每个呼叫一旦建立起来就能够保证性能</li>
+</ol>
+<ul>
+<li>为呼叫预留 端-端资源<ul>
+<li>链路带宽、交换能力</li>
+</ul>
+</li>
+<li>专用资源：不共享<ul>
+<li>性能可以保证</li>
+</ul>
+</li>
+<li>需要建立呼叫连接</li>
+</ul>
+<ol>
+<li>如果呼叫没有数据发送，被分配的资源就会被浪费</li>
+</ol>
+<p><strong>缺陷</strong></p>
+<ol>
+<li><p>连接建立时间长  </p>
+</li>
+<li><p>计算机之间的通信有突发性，如果使用线路交换，则浪费的片较多</p>
+<p>即使这个呼叫没有数据传递，其所占据的片也不能够被别的呼叫使用  </p>
+</li>
+<li><p>可靠性不高？</p>
+<p>维护piece到piece的映射关系，一旦宕机，全部玩完</p>
+</li>
+</ol>
+<h5 id="分组交换"><a href="#分组交换" class="headerlink" title="分组交换"></a>分组交换</h5><p>以分组为单位进行存储-转发，按照有无网络层的连接，可以分为</p>
+<ol>
+<li><p>数据报服务：分组的目标地址决定下一跳，在不同的阶段，路由可以改变，类比问路，Internet</p>
+<p>无需建立连接，有数据就传输，每个分组独立路由（路径不一样，可能失序、丢失、重复），路由器根据分组的目标地址进行路由，决定下一跳</p>
+</li>
+<li><p>虚电路服务：每个分组都带标签（虚电路标识 VC ID），标签决定下一跳  ，建立连接时决定路径，路径保持不变，路由器需要维护每个连接的状态信息（虚电路网络提供网络层的连接服务）</p>
+<p>有点类似电路交换，但是不是实际存在的物理电路，而是通过逻辑电路模拟物理电路，实现数据传输</p>
+<p>需要在传输前<strong>建立连接，</strong>建立连接的意思就是通信双方协商建立一个虚电路，并分配一个唯一的ID</p>
+<ol>
+<li>呼叫建立</li>
+<li>数据传输和虚电路释放</li>
+</ol>
+</li>
+</ol>
+<blockquote>
+<p><strong>分组（packet ）</strong>：因特网中传送的数据单元。由首部 header 和数据段组成。分组又称为包，首部可称为包头。</p>
+<p><strong>存储转发（store and forward ）</strong>：路由器收到一个分组，先检查分组是否正确，并过滤掉冲突包错误。确定包正确后，取出目的地址，通过查找表找到想要发送的输出端口地址，然后将该包发送出去。</p>
+</blockquote>
+<ul>
+<li><p>网络带宽资源无需划分，传输时使用全部带宽</p>
+</li>
+<li><p>需要传输的数据被划分为一个一个分组，将分组从一个路由器传到相邻路由器（一跳 hop），一段一段地从源传输到目的地</p>
+</li>
+<li><p>在转发之前，节点（路由器）必须收到整个分组（不是完整数据），并且存在排队情况，因此延迟比线路交换大</p>
+<p>分组到达速率&gt;链路的输出速率</p>
+<ol>
+<li>分组需要进行排队，等待传输</li>
+<li>如果路由器的缓存用完了，就会丢弃分组</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p><strong>循环冗余检验码（Cyclic Redundancy Check, CRC）</strong>：是一种校验码（Checksum）技术，用于检测数据传输过程中是否出现错误。它通过对数据进行特定的计算，生成一个叫做校验和的数值，然后将这个校验和附加到数据末尾，在接收方计算校验和，验证数据是否完整、正确。</p>
+</blockquote>
+<h5 id="分组-vs-电路"><a href="#分组-vs-电路" class="headerlink" title="分组 vs 电路"></a>分组 vs 电路</h5><p><strong>电路传输</strong></p>
+<p>适用范围广：数字信号和模拟信号都能传输</p>
+<p>灵活性差：物理线路中任何一个节点出错，就需要重新拨号，建立新的连接</p>
+<p>难以规格化：不同类型、规格、速率的终端很难相互进行通信</p>
+<p><strong>分组传输</strong></p>
+<p>提高线路利用率：某条线路出错，可以随时切换另外一条线路进行传输</p>
+<p>提供多目标服务：一个报文可以同时发给多个目标</p>
+<p>简化了存储过程：分组的大小是固定的，节点缓冲区的大小也是固定的，便于存储的管理</p>
+<p>加速传输：后一个分组的存储和前一个分组的转发同时进行</p>
+<p>出错概率和恢复代价：分组小于报文，出错概率小，只需重传出错的分组</p>
+<h4 id="路由和转发"><a href="#路由和转发" class="headerlink" title="路由和转发"></a>路由和转发</h4><ul>
+<li><p><strong>路由</strong>：计算路径，决定分组如何从源传输到目的地，路由选择算法</p>
+</li>
+<li><p><strong>转发</strong>：根据路径，查表决定当前分组从路由器的输入链路转移到哪一个输出链路</p>
+</li>
+<li><p><strong>统计多路复用</strong>：允许多个数据流共享一个通信信道，路由器通过识别每个数据流的目的地址决定从哪里输出，不需要分配固定的带宽、频率，根据实际需求动态分配，未被使用的带宽可以被共享，提高信道利用.</p>
+<blockquote>
+<p>例如，在一个局域网中，多个计算机可以共享同一通信信道，同时进行文件传输、Web浏览等不同类型的数据传输，这些数据流可以通过统计多路复用技术进行共享，从而提高带宽利用率，减少网络拥塞。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Internet结构和ISP"><a href="#Internet结构和ISP" class="headerlink" title="Internet结构和ISP"></a>Internet结构和ISP</h3><h4 id="相关概念-1"><a href="#相关概念-1" class="headerlink" title="相关概念"></a>相关概念</h4><ul>
+<li><p><strong>因特网内容提供者（Internet Content Provider，ICP）</strong>：提供网络服务，提供IP地址，导航服务、邮件服务、网络游戏服务</p>
+</li>
+<li><p><strong>因特网服务提供者（Internet Service Provider, ISP）：</strong>因特网服务提供商，提供接入互联网的服务，比如电信、联通、移动等</p>
+</li>
+<li><p><strong>接入ISP</strong>指的是提供互联网接入服务的服务提供商，例如电信运营商、有线电视公司等</p>
+</li>
+<li><p><strong>互联网交换点（Internet Exchange Point, IXP)：</strong>允许两个网络直接相连并交换分组，而不需要再通过第三个网络来转发分组。</p>
+</li>
+<li><p><strong>请求评议（Request For  Comments）：</strong>包含了关于 Internet 几乎所有的重要的文字资料。</p>
+</li>
+</ul>
+<p>Internet结构：网络的网络，端系统通过<strong>接入ISPs</strong>连接到互联网，<strong>接入ISPs</strong>必须是互联的，否则无意义了，如何互联呢？</p>
+<h4 id="ISP互联"><a href="#ISP互联" class="headerlink" title="ISP互联"></a>ISP互联</h4><p>给定数百万的<strong>接入ISP</strong>s，如何互联</p>
+<ol>
+<li><p>两两互连，$O(N^2)$的连接<strong>=&gt;</strong>不可扩展</p>
+</li>
+<li><p>将每个<strong>接入ISP</strong>都连接到<strong>全局ISP</strong>（全局范围内覆盖）<strong>=&gt;</strong>一个全局的ISP肯定不够，而且可能造成垄断</p>
+</li>
+<li><p><strong>接入ISP</strong>连接到<strong>不同的全局ISP=&gt;</strong>不同的全局ISP之间合作，业务拓展</p>
+</li>
+<li><p>不同的全局ISP互相连接，<strong>对等连接（peering link）或者IXP连接</strong>=&gt;<strong>业务细分，一个国家、省份</strong></p>
+<p>IXP同时连接到A B C A、C之间、B、C之间存在对等连接</p>
+<p>本来A可能需要到C再到B，但是通过IXP可以直接实现A-B</p>
+</li>
+<li><p><strong>区域ISP</strong>完成区域范围内的接入，再通过全局ISP访问互联网</p>
+<ol>
+<li>主干网内部的ISP直接互连，拥有高速链路和交换设备</li>
+<li>第二层ISP是第一层ISP的直接用户，和少量第一层ISP连接</li>
+<li>本地ISP是第二层ISP的用户</li>
+</ol>
+</li>
+</ol>
+<h3 id="网络性能衡量指标"><a href="#网络性能衡量指标" class="headerlink" title="网络性能衡量指标"></a>网络性能衡量指标</h3><ul>
+<li><p><strong>速率</strong>：连接在计算机网络上的主机在数字信道上传输bit的速率（比特率，bit/s b/s bps），这里的进制是10进制</p>
+<p>kb/s = 10^3bit/s</p>
+<p>计算机数据量的单位是2进制</p>
+<p>$1KB =2^{10}~Byte =2^{10}*8~bits$</p>
+</li>
+<li><p><strong>带宽（bandwidth）</strong>：</p>
+<ol>
+<li>信号所包含的各种不同频率成分所占据的频率范围，单位是Hz</li>
+<li>在计算机网络中，表示在单位时间内从网络中的某一点到另一点所能通过的“最高数据率”。常用来表示网络的通信线路所能传送数据的能力。单位是“比特每秒”，记为 b/s。</li>
+</ol>
+<blockquote>
+<p>带宽和速率：假设带宽是一条路，起点、终点都是停车场，每秒能够把多少汽车开出去叫速率（汽车之间有间隔），而当这条路满载（汽车之间紧贴着）时，每秒能够传输多少汽车是带宽</p>
+</blockquote>
+</li>
+<li><p><strong>吞吐量（throughput ）</strong>：表示在单位时间内通过某个网络（或信道、接口）的数据量。吞吐量更经常地用于对现实世界中的网络的一种测量，以便知道实际上到底有多少数据量能够通过网络。吞吐量受网络的带宽或网络的额定速率的限制</p>
+<blockquote>
+<p>可以将带宽类比为道路的宽度，吞吐量则类比为车流量。带宽就像道路的宽度一样，它决定了网络所能支持的最大数据传输速率，而吞吐量则类似于道路上实际能够通过的车流量，受到道路状况、车辆速度等因素的影响。</p>
+<p><strong>瓶颈链路</strong>：端到端路径上，限制端到端吞吐量的链路 ，平均吞吐$=min\{R_1，R_2,…,R_n\}$  </p>
+</blockquote>
+</li>
+<li><p><strong>时延</strong>：发送时延+传播时延+处理时延（包括排队时延）</p>
+</li>
+<li><p><strong>时延带宽积</strong>：传播时延×带宽，若发送端连续发送bit，则在第一个bit抵达目标节点时，发送端就发送了时延带宽积这么多个bit，也就是以比特为单位的链路长度</p>
+</li>
+<li><p>往返时间（Round Trip Time，RTT）：一次双向交互的时间</p>
+</li>
+<li><p><strong>利用率</strong></p>
+<ul>
+<li>信道利用率：表示某信道有百分之几的时间是使用着的，有数据在传输的</li>
+<li>网络利用率：全网络的信道利用率的加权平均<ul>
+<li>网络利用率达到0.5，时延加倍</li>
+<li>超过0.5，时延剧增</li>
+<li>接近1，时延趋于无穷大</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>丢包率</strong>：在一定时间范围内，传输过程中丢失的分组数量与总分组数量的比值</p>
+<p>丢包一般是因为</p>
+<ol>
+<li>分组在传输过程中出错，被转发节点丢弃，无用了</li>
+<li>分组到达某个转发节点，这个节点缓冲队列已经满了，被丢弃，也就是网络拥塞</li>
+</ol>
+</li>
+</ul>
+<h4 id="排队延时和丢失"><a href="#排队延时和丢失" class="headerlink" title="排队延时和丢失"></a>排队延时和丢失</h4><ol>
+<li>分组到达链路的速率<strong>超过了</strong>链路输出的能力</li>
+<li>分组需要排队等待被传输，造成<strong>延时</strong></li>
+<li>如果路由器缓冲区用完了，新来的分组就会被<strong>丢失</strong>，丢失的可能会被重传，也可能不重传（UDP）</li>
+</ol>
+<h4 id="延时分类"><a href="#延时分类" class="headerlink" title="延时分类"></a>延时分类</h4><ol>
+<li><p>节点处理延时，通常是微妙级，甚至更少</p>
+<ol>
+<li>检查bit级的错误</li>
+<li>根据分组首部决定路由</li>
+<li>包括排队延时，在缓冲区中等待输出的时间，受路由器拥塞程度的影响</li>
+</ol>
+</li>
+<li><p>传输延时（存储转发延时，或者叫发送时延），低速率链路的这一项延时比较大，通常是微妙级</p>
+<p>R=链路带宽（bps）</p>
+<p>L=分组长度（bits）</p>
+<p>T=L/R=s</p>
+</li>
+<li><p>传播延时，通常是微妙到毫秒</p>
+<p>d=物理链路的长度</p>
+<p>s=在物理链路上的传播速度（$2×10^8m/s$）</p>
+<p>传播延时=d/s</p>
+</li>
+</ol>
+<h4 id="排队延时"><a href="#排队延时" class="headerlink" title="排队延时"></a>排队延时</h4><p>a=分组到达队列的平均速率</p>
+<p>流量强度=La/R</p>
+<p>每秒有多少个分组抵达这个路由器，再乘上每个分组的长度，除链路的带宽，就是链路的流量强度</p>
+<p>La/R趋向于0：延时很小</p>
+<p>La/R趋向于1：延时急剧增大</p>
+<p>La/R超过1：延时趋于无穷大</p>
+<h4 id="Traceroute"><a href="#Traceroute" class="headerlink" title="Traceroute"></a>Traceroute</h4><p>Traceroute诊断程序:提供从源端，经过路由器，到目的的延时测量 Round Trip Time</p>
+<p>For all i:</p>
+<ul>
+<li>沿着目的的路径，向每个路由器发送3个探测分组</li>
+<li>路由器i将向发送方返回一个分组</li>
+<li>发送方对发送和回复之间间隔计时</li>
+</ul>
+<p>基于互联网控制报文协议（ICMP，Internet Control Message Protocol）实现</p>
+<p>报文的head里面有TTL，每过一跳就-1，直到为0，所抵达的路由器往回发送一个ICMP告知源，TTL设为1，到第一个路由器就结束了，路由器返回了ICMP，我的IP地址是啥，你的探测分组被我干掉了</p>
+<p>设置TTL足够大，肯定能够到达目标主机，但是端口没有进程监听，就返回另外一种ICMP，由于目标端口不可达，丢了</p>
+<h3 id="计算机网络体系结构"><a href="#计算机网络体系结构" class="headerlink" title="计算机网络体系结构"></a>计算机网络体系结构</h3><h4 id="术语"><a href="#术语" class="headerlink" title="术语"></a>术语</h4><p><strong>实体</strong>：任何可以发送或者接收信息的硬件或者软件进程，对等实体就是指收发双方位于相同层次的实体</p>
+<blockquote>
+<p>应用层的Web浏览器和Web服务器</p>
+</blockquote>
+<p><strong>协议</strong>：控制两个对等实体进行逻辑通信的规则的集合，包括语法（定义所交换信息的格式）语义（信息中各个字段的含义以及收发双方要完成的动作[请求报文→响应报文→绘制、渲染Web页面] ）和同步（收发双方的时序关系，必须先请求再响应），水平方向</p>
+<blockquote>
+<p>应用层的HTTP SMTP</p>
+<p>运输层的TCP UDP</p>
+<p>网络层的IP</p>
+<p>数据链路层的以太网的CSMA/CD</p>
+<p>物理层的传统以太网使用的曼彻斯特编码</p>
+</blockquote>
+<p><strong>服务</strong>：体系结构中，低层基于协议，对等实体能够实现逻辑通信，进而向上层提供服务，垂直方向</p>
+<p><strong>服务访问点（Service Access Point）</strong>：同一系统中，相邻两层实体交换信息的逻辑接口</p>
+<blockquote>
+<p>数据链路层的服务访问点是帧的类型字段</p>
+<p>网络层的服务访问点是IP数据报首部的协议字段</p>
+<p>运输层的服务访问点是端口</p>
+</blockquote>
+<p><strong>服务原语</strong>：上层使用下层的服务必须通过与下层交换一些命令，命令就是服务原语</p>
+<p><strong>协议数据单元（Protocol Data Unit）</strong>：对等层次之间传送的数据包称为该层的协议数据单元</p>
+<p><strong>服务数据单元（Service Data Unit，SDU）</strong>：服务数据单元是在计算机网络中传递的数据单位，它包含了应用程序要传输的数据和一些控制信息。在协议栈的不同层次中，服务数据单元可能会被封装为不同的数据单元</p>
+<h4 id="体系结构"><a href="#体系结构" class="headerlink" title="体系结构"></a>体系结构</h4><ol>
+<li><p>OSI体系结构</p>
+<p>自底向上依次是物理层、数据链路层、网络层、传输层、会话层、表示层、应用层</p>
+</li>
+<li><p>TCP/IP体系结构</p>
+<p>自底向上依次是网络接口层、网络层、传输层、应用层</p>
+</li>
+<li><p>五层结构</p>
+<p>自底向上依次是物理层、数据链路层、网络层、传输层、应用层</p>
+</li>
+</ol>
+<h3 id="协议层次和服务模型"><a href="#协议层次和服务模型" class="headerlink" title="协议层次和服务模型"></a>协议层次和服务模型</h3><p>计算机网络的各层以及其协议集合，称为网络的体系结构。</p>
+<p>网络是一个复杂的系统，如何组织和实现这个复杂的网络功能呢？OSI七层模型的设计理念</p>
+<h4 id="相关概念-2"><a href="#相关概念-2" class="headerlink" title="相关概念"></a>相关概念</h4><ul>
+<li><p><strong>服务（Service）</strong>：低层实体为高层实体提供服务</p>
+</li>
+<li><p><strong>原语（primitive ）</strong>：上层使用下层服务的形式，高层使用低层提供的服务，以及低层向高层提供服务都是通过服务访问原语来进行交互的—-形式</p>
+</li>
+<li><p><strong>服务访问点（Service Access Point，SAP）</strong>：上层使用下层提供的服务通过层间的接口—地点</p>
+</li>
+</ul>
+<h4 id="层次化的优势"><a href="#层次化的优势" class="headerlink" title="层次化的优势"></a>层次化的优势</h4><ul>
+<li>将网络的复杂功能分为功能明确的层次，每一层实现了其中一个或一组功能，每个层次实现功能为上层提供服务</li>
+<li>服务本层协议实体相互交互执行本层的协议动作，目的是实现本层功能，通过接口为上层提供更好的服务</li>
+<li>在实现本层协议的时候，直接利用了下层所提供的服务</li>
+<li>本层的服务：借助下层服务实现的本层协议实体之间交互带来的新功能（上层可以利用的）+更下层所提供的服务</li>
+</ul>
+<p>不需要关心下层协议的具体实现细节，能够屏蔽下层的差异，提供统一的接口，使得不同的网络设备和协议能够互相协作，从而实现了互联网的互通和互操作</p>
+<p>劣势在于效率比较低</p>
+<h4 id="服务-VS-协议"><a href="#服务-VS-协议" class="headerlink" title="服务 VS 协议"></a>服务 VS 协议</h4><ul>
+<li><p><strong>服务与协议的区别</strong></p>
+<ul>
+<li>服务(Service)：低层实体向上层实体提供它们之间的通信的能力，是通过原语(primitive)来操作的，垂直方向</li>
+<li>协议(Protocol)：对等层实体(peer entity)之间在相互通信的过程中，需要遵循的规则的集合，水平方向</li>
+</ul>
+</li>
+<li><p><strong>服务与协议的联系</strong></p>
+<ul>
+<li>本层协议的实现要靠下层提供的服务来实现</li>
+<li>本层实体通过协议为上层提供更高级的服务</li>
+</ul>
+</li>
+</ul>
+<h4 id="数据单元"><a href="#数据单元" class="headerlink" title="数据单元"></a>数据单元</h4><p>层次间传输的数据统一称为数据单元，不同层对数据单元的命名不同，</p>
+<ul>
+<li>应用层：报文(message)，报文是应用程序中的数据，屏蔽传输层差异，用于在应用程序之间传输数据。</li>
+<li>传输层：报文段(segment)：TCP段，UDP数据报，报文段包含了源和目的端口号、序号、确认号和数据等信息，屏蔽网络层差异，用于在端到端的通信中传输数据。最重要的是TCP和UDP协议</li>
+<li>网络层：分组packet（如果无连接方式：<strong>数据报datagram</strong>），分组包含了源和目的地址、路由信息和数据等信息，屏蔽数据链路层差异，用于在网络中传输数据。最重要的是IP协议</li>
+<li>数据链路层：帧(frame)，帧包含了数据和控制信息，屏蔽物理层差异，用于在物理介质上传输数据.</li>
+<li>物理层：比特(bit)，表示数字信号的最小单位</li>
+</ul>
+<blockquote>
+<p>假设有一个计算机A要向另一个计算机B发送一段数据，这时候就会涉及到各个层次的协议和相应的数据单元。</p>
+<p>首先，应用层协议（比如HTTP协议）在计算机A上将数据封装为一个报文（Message），该报文包含了要发送的数据、目的地址和端口号等信息。</p>
+<p>然后，传输层协议（比如TCP协议）在计算机A上将报文封装为一个报文段（Segment），该报文段包含了源端口号、目的端口号、序号、确认号和数据等信息，并将报文段发送给计算机B。</p>
+<p>接着，网络层协议（比如IP协议）在计算机A上将报文段封装为一个分组（Packet），该分组包含了源地址、目的地址、路由信息和数据等信息，并将数据包通过网络传输到计算机B。</p>
+<p>数据包到达计算机B后，网络层协议将数据包解封，将报文段交给传输层协议，传输层协议将报文段交给应用层协议，应用层协议将报文解封，提取出原始数据，并将数据传递给应用程序。</p>
+</blockquote>
+<p>数据单元的具体操作</p>
+<ul>
+<li><strong>服务数据单元（Service Data Unit，SDU）</strong>：服务数据单元是在计算机网络中传递的数据单位，它包含了应用程序要传输的数据和一些控制信息。在协议栈的不同层次中，服务数据单元可能会被封装为不同的数据单元进行传输。例如，在应用层，服务数据单元被封装为应用数据单元（Application Data Unit，ADU）进行传输。</li>
+<li><strong>服务访问点（Service Access Point，SAP）</strong>：服务访问点是在计算机网络中不同层次的协议之间进行通信的接口，它定义了相邻协议之间的数据交换方式和协议类型。每个协议层次都有自己的服务访问点，用于与相邻层次的协议进行通信和数据交换</li>
+<li><strong>接口数据单元（Interface Data Unit，IDU）</strong>：接口数据单元是在服务访问点之间传输的数据单位，它包含了服务访问点之间传输的数据和控制信息。接口数据单元是在协议栈的相邻层次之间传输的，用于实现不同层次之间的数据交换。</li>
+<li><strong>协议数据单元（Protocol Data Unit，PDU）</strong>：协议数据单元是在协议栈的不同层次之间传输的数据单位，它包含了该层次所需的数据和控制信息。每个协议层次都有自己的协议数据单元，用于实现不同层次之间的数据交换和协议操作。</li>
+<li><strong>接口控制信息（Interface Control Information，ICI)</strong>：接口控制信息是在服务访问点之间传输的控制信息，用于表示数据的类型、长度、校验和等控制信息。接口控制信息通常被封装在接口数据单元中，用于实现不同层次之间的数据交换和控制操作。</li>
+</ul>
+<p><img src="/posts/57351/image-20230524165550694.png" alt="image-20230524165550694"></p>
+<h4 id="Internet协议栈"><a href="#Internet协议栈" class="headerlink" title="Internet协议栈"></a>Internet协议栈</h4><p>自顶向下</p>
+<ol>
+<li><p>应用层</p>
+<p>目标：为用户或者其他应用程序提供网络应用服务</p>
+<p>问题：如何通过应用进程间的交互实现各种网络应用</p>
+<ol>
+<li>FTM、SMTP、HTTP、DNS等</li>
+</ol>
+</li>
+<li><p>传输层</p>
+<p>目标：进程之间的数据传输</p>
+<p>问题：如何解决进程间基于网络的通信（操作系统的进程间通信），出现传输错误时怎么处理</p>
+<ul>
+<li><p>在网络层提供的端到端通信基础上，细分为进程到进程，将不可靠的通信变成可靠地通信</p>
+</li>
+<li><p>TCP和UDP</p>
+</li>
+</ul>
+</li>
+<li><p>网络层</p>
+<p>目标：为数据报从源到目的地选择路由，进行转发（逻辑寻址）</p>
+<p>问题：如何标识各个网络和网络中的主机（网络和主机的编址问题，IP地址）、路由器如何转发分组、如何进行路由选择</p>
+<ul>
+<li>主机主机之间的通信，端到端通信，不可靠</li>
+<li>IP,路由协议</li>
+</ul>
+</li>
+<li><p>数据链路层</p>
+<p>目标：相邻网络节点间的数据传输（物理寻址）</p>
+<p>问题：如何标识网络中的各个节点（物理设备，主机、路由器，主机编址问题，MAC地址），如何从比特流中区分出数据和地址，如何协调各个主机使用总线的冲突</p>
+<ul>
+<li>2个相邻2点的通信，点到点通信，可靠或不可靠  </li>
+<li>点对对协议PPP, 802.11(wifi), Ethernet  </li>
+</ul>
+</li>
+<li><p>物理层</p>
+<p>目标：在线路上传输bit</p>
+<p>问题：采用怎样的传输介质，采用怎样的物理接口，使用什么信号表示比特0和1</p>
+</li>
+</ol>
+<h4 id="OSI七层模型"><a href="#OSI七层模型" class="headerlink" title="OSI七层模型"></a>OSI七层模型</h4><p>额外添加了表示层和会话层</p>
+<p>表示层：允许应用解释传输的数据，加密解密、压缩解压缩、编码解码、封装解封装</p>
+<p>会话层：管理应用程序之间的会话，数据交换的同步，检查点，恢复</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag"># 学科基础知识</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/16771.html" rel="next" title="IM项目-MVC vs DDD">
+                <i class="fa fa-chevron-left"></i> IM项目-MVC vs DDD
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/63069.html" rel="prev" title="计算机网络-应用层">
+                计算机网络-应用层 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+                <a href="/archives">
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xzp314" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:seu_xuzhipeng@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E5%AE%9A%E4%B9%89"><span class="nav-number">1.</span> <span class="nav-text">相关定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Internet"><span class="nav-number">2.</span> <span class="nav-text">Internet</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="nav-number">2.1.</span> <span class="nav-text">相关概念</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84"><span class="nav-number">3.</span> <span class="nav-text">网络结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E8%BE%B9%E7%BC%98"><span class="nav-number">3.1.</span> <span class="nav-text">网络边缘</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E8%BE%B9%E7%BC%98%E6%9C%8D%E5%8A%A1"><span class="nav-number">3.2.</span> <span class="nav-text">网络边缘服务</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%9D%A2%E5%90%91%E8%BF%9E%E6%8E%A5%E7%9A%84%E6%9C%8D%E5%8A%A1%EF%BC%88TCP%EF%BC%89"><span class="nav-number">3.2.1.</span> <span class="nav-text">面向连接的服务（TCP）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%97%A0%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1%EF%BC%88UDP%EF%BC%89"><span class="nav-number">3.2.2.</span> <span class="nav-text">无连接服务（UDP）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%A0%B8%E5%BF%83"><span class="nav-number">4.</span> <span class="nav-text">网络核心</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E5%99%A8"><span class="nav-number">4.1.</span> <span class="nav-text">路由器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E7%A7%8D%E4%BA%A4%E6%8D%A2%E6%96%B9%E5%BC%8F"><span class="nav-number">4.2.</span> <span class="nav-text">三种交换方式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%94%B5%E8%B7%AF%E4%BA%A4%E6%8D%A2"><span class="nav-number">4.2.1.</span> <span class="nav-text">电路交换</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%86%E7%BB%84%E4%BA%A4%E6%8D%A2"><span class="nav-number">4.2.2.</span> <span class="nav-text">分组交换</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%86%E7%BB%84-vs-%E7%94%B5%E8%B7%AF"><span class="nav-number">4.2.3.</span> <span class="nav-text">分组 vs 电路</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E5%92%8C%E8%BD%AC%E5%8F%91"><span class="nav-number">4.3.</span> <span class="nav-text">路由和转发</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Internet%E7%BB%93%E6%9E%84%E5%92%8CISP"><span class="nav-number">5.</span> <span class="nav-text">Internet结构和ISP</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5-1"><span class="nav-number">5.1.</span> <span class="nav-text">相关概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ISP%E4%BA%92%E8%81%94"><span class="nav-number">5.2.</span> <span class="nav-text">ISP互联</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E6%80%A7%E8%83%BD%E8%A1%A1%E9%87%8F%E6%8C%87%E6%A0%87"><span class="nav-number">6.</span> <span class="nav-text">网络性能衡量指标</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%92%E9%98%9F%E5%BB%B6%E6%97%B6%E5%92%8C%E4%B8%A2%E5%A4%B1"><span class="nav-number">6.1.</span> <span class="nav-text">排队延时和丢失</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BB%B6%E6%97%B6%E5%88%86%E7%B1%BB"><span class="nav-number">6.2.</span> <span class="nav-text">延时分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%92%E9%98%9F%E5%BB%B6%E6%97%B6"><span class="nav-number">6.3.</span> <span class="nav-text">排队延时</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Traceroute"><span class="nav-number">6.4.</span> <span class="nav-text">Traceroute</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-number">7.</span> <span class="nav-text">计算机网络体系结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AF%E8%AF%AD"><span class="nav-number">7.1.</span> <span class="nav-text">术语</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-number">7.2.</span> <span class="nav-text">体系结构</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE%E5%B1%82%E6%AC%A1%E5%92%8C%E6%9C%8D%E5%8A%A1%E6%A8%A1%E5%9E%8B"><span class="nav-number">8.</span> <span class="nav-text">协议层次和服务模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5-2"><span class="nav-number">8.1.</span> <span class="nav-text">相关概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%82%E6%AC%A1%E5%8C%96%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="nav-number">8.2.</span> <span class="nav-text">层次化的优势</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%8D%E5%8A%A1-VS-%E5%8D%8F%E8%AE%AE"><span class="nav-number">8.3.</span> <span class="nav-text">服务 VS 协议</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%8D%95%E5%85%83"><span class="nav-number">8.4.</span> <span class="nav-text">数据单元</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Internet%E5%8D%8F%E8%AE%AE%E6%A0%88"><span class="nav-number">8.5.</span> <span class="nav-text">Internet协议栈</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#OSI%E4%B8%83%E5%B1%82%E6%A8%A1%E5%9E%8B"><span class="nav-number">8.6.</span> <span class="nav-text">OSI七层模型</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xu Zhipeng</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">160.6k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

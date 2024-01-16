@@ -1,0 +1,1923 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学科基础知识," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="数据库并发访问控制，基于东南大学徐立臻数据库课程（研究生）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DBMS-并发">
+<meta property="og:url" content="http://example.com/posts/23083.html">
+<meta property="og:site_name" content="主页">
+<meta property="og:description" content="数据库并发访问控制，基于东南大学徐立臻数据库课程（研究生）">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220401192646289.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220401192820847.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20230823153430481.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220401192908416.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220511201803636.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220511202001401.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220515194142560.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220401202046628.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220402103100850.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220517185624440.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220518185724806.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220518191302484.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220519160452246.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220518195716029.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220518200328555.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220518201928010.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220519182841882.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220519193228836.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220520134837181.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220520141205882.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220520144012281.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220520151222496.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220520152858573.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220523190002851.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220524112352819.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220523193319195.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220523193425727.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220523193940924.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220523195525405.png">
+<meta property="og:image" content="http://example.com/posts/23083/image-20220523200654977.png">
+<meta property="article:published_time" content="2022-06-11T06:48:29.000Z">
+<meta property="article:modified_time" content="2023-08-28T02:10:10.000Z">
+<meta property="article:author" content="Xu Zhipeng">
+<meta property="article:tag" content="学科基础知识">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/posts/23083/image-20220401192646289.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/posts/23083.html"/>
+
+
+
+
+
+  <title>DBMS-并发 | 主页</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="主页" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">主页</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">xzp个人小站</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/23083.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="主页">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">DBMS-并发</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-06-11T14:48:29+08:00">
+                2022-06-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">课程学习</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库管理系统及其实现</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  9.9k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  35
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  数据库并发访问控制，基于东南大学徐立臻数据库课程（研究生）
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><h4 id="并发效用"><a href="#并发效用" class="headerlink" title="并发效用"></a>并发效用</h4><p>并发就是在一个多任务系统中允许多事务同时访问数据库</p>
+<ul>
+<li><p>并发提高响应时间和系统资源利用率</p>
+</li>
+<li><p>不同事务可能会访问数据库的不同部分，完全可以并行运行</p>
+<p>但是需要对事务的并发运行进行管理，防止出现以下问题：</p>
+<ul>
+<li>读写冲突</li>
+<li>写写冲突</li>
+</ul>
+</li>
+</ul>
+<h4 id="任意并发后果"><a href="#任意并发后果" class="headerlink" title="任意并发后果"></a>任意并发后果</h4><ol>
+<li><p>丢失更新(write-write 绝对杜绝)</p>
+<p><img src="/posts/23083/image-20220401192646289.png" alt="image-20220401192646289" style="zoom:33%;"></p>
+<p>按照如图所示的调度，最后$x$变成了$2x$，但是实际上要么应该是$2x+1$，要么是$2(x+1)$</p>
+</li>
+<li><p>读脏数据(write-read 可容忍)<a name="读脏数据"> </a></p>
+<p><img src="/posts/23083/image-20220401192820847.png" alt="image-20220401192820847" style="zoom:33%;"></p>
+<p>读完$t$数组$x$属性的数据后，对$t$进行了写操作，再读$y$属性，然后$T_1$rollback，导致的$t[y]$变成脏数据，和数据库内的数据不一致</p>
+<p><strong>$x$和$y$属性的数据不是同一时刻的数据</strong></p>
+<p>有可能出现恢复时的多米诺现象 <a name="多米诺"> </a></p>
+<p><img src="/posts/23083/image-20230823153430481.png" alt="image-20230823153430481"></p>
+<p>x y z都要滚回了</p>
+</li>
+</ol>
+<ol>
+<li><p>不可重复的读取(read-write 可容忍)<a name="不可重复读"> </a></p>
+<p><img src="/posts/23083/image-20220401192908416.png" alt="image-20220401192908416" style="zoom:33%;"></p>
+<p>前后读取x的数据不一致，能够感知到数据被修改了，$T_1$事务执行了两次读操作，数据不一样，而不是两个事务读，数据不一样，需要注意啥叫不可重复的读取</p>
+</li>
+</ol>
+<h4 id="可串行化"><a href="#可串行化" class="headerlink" title="可串行化"></a>可串行化</h4><h5 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h5><p>判断并发事务运行结果是否正确</p>
+<ul>
+<li>按照系统并行运行事务随机调度的运行结果和按照某种串行顺序的运行结果相同，那么说明是可串行化的。</li>
+<li>如果调度是可串行化的，那么调度是正确的</li>
+<li>也就是说$n$个事务的并发运行的正确结果有$n!$种，串行序列是其中一个，只要是其中一种就行，比如上面说的不管是$2x+1$还是$2(x+1)$都可以</li>
+</ul>
+<h4 id="等价-equivalent"><a href="#等价-equivalent" class="headerlink" title="等价(equivalent)"></a>等价(equivalent)</h4><h5 id="基本定义"><a href="#基本定义" class="headerlink" title="基本定义"></a>基本定义</h5><p>调度-表示执行并发事务指令的时间顺序的序列。</p>
+<ul>
+<li>一组事务的调度必须包括这些事务的所有指令</li>
+<li>必须保持每个事务中指令出现的顺序</li>
+</ul>
+<h5 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h5><p><img src="/posts/23083/image-20220511201803636.png" alt="image-20220511201803636" style="zoom: 50%;"><img src="/posts/23083/image-20220511202001401.png" alt="image-20220511202001401" style="zoom: 50%;"></p>
+<p>$T_1$:从A转账50元给B</p>
+<p>$T_2$:从A转账资产的10%给B</p>
+<p>上述左边的调度先做$T_1$再做$T_2$，是串行调度；右边是并行调度</p>
+<h5 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h5><ol>
+<li><p>view equivalent</p>
+<p>目标等价，$S$和$S’$是同一组事务的不同调度，如果执行完毕后两者对数据库的影响一致，那么就是目标等价</p>
+</li>
+<li><p>conflict equivalent</p>
+<ul>
+<li>冲突操作($R-W~W-W$)的顺序将影响执行的效果</li>
+<li>非冲突操作<ul>
+<li>$R-R$</li>
+<li>即使有写操作，所操作的数据项不同。如$R_i(x)$和$W_j(y),i$事务对$x$做读操作，$j$事务对$y$做写操作</li>
+</ul>
+</li>
+</ul>
+<p>冲突等价，如果一个调度$S$可以通过一系列非冲突相邻操作的交换而转化为一个调度$S’$，我们说$S$和$S’$是冲突等价的。</p>
+</li>
+</ol>
+<h5 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h5><ol>
+<li><p>$S$和$S’$是冲突等价，那么必然是目标等价，反之不一定<a name="目标冲突"></a></p>
+</li>
+<li><p>串行化可以分为目标可串行化和冲突可串行化</p>
+<p>一组并发运行的事务是和该组事务的某个串行执行序列是目标等价的，那么就是目标序列化，同理，冲突可串行化也是如此</p>
+<p>假设有$\{T_1,T_2,T_3\}$三个事务</p>
+<p>$s = R_2(x)W_3(x)R_1(y)W_2(y) → R_1(y)R_2(x)W_2(y)W_3(x) = s’$</p>
+<p>$R_1(y)$和$W_3(x)$交换得到$R_2(x)R_1(y)W_3(x)W_2(y)$</p>
+<p>$W_3(x)$和$W_2(y)$交换得到$R_2(x)R_1(y)W_2(y)W_3(x)$</p>
+<p>$R_2(x)$和$R_1(y)$交换得到$R_1(y)R_2(x)W_2(y)W_3(x)$</p>
+</li>
+</ol>
+<p>   冲突可串行化，因为$s’$是一个串行执行序列</p>
+<p>   <strong>目标等价不一定是冲突等价的示例</strong></p>
+<pre><code>$s = R_1(x)W_2(x)W_1(x)W_3(x)$
+</code></pre><p>   两两之间都是冲突，交换不了，不是冲突可串行化</p>
+<p>   但是与$s’ = R_1(x)W_1(x)W_2(x)W_3(x)$是目标等价</p>
+<p>   最后都是读了一开始的x，更新也是以$W_3$为准，目标可串行化</p>
+<p>目标等价的测试算法是一个NP问题，而冲突序列化涵盖了可序列化事务的大多数实例，所以我们在后面的部分所说的序列化如果没有特别说明，就会指向冲突序列化。</p>
+<h4 id="前驱图"><a href="#前驱图" class="headerlink" title="前驱图"></a>前驱图</h4><h5 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h5><p>判断是否是可串行化的调度</p>
+<p>$G=<V,E>$，有向图</V,E></p>
+<ol>
+<li>$V$-节点集合，包括所有的事务</li>
+<li>$E$-边集合，通过分析冲突操作来定义，只要满足以下条件之一，就构建$T_i→T_j$:<ol>
+<li>$R_i(x)$在$W_j(x)$之前</li>
+<li>$W_i(x)$在$R_j(x)$之前</li>
+<li>$W_i(x)$在$W_j(x)$之前</li>
+</ol>
+</li>
+</ol>
+<p>检查前序图中是否存在环，有环则不可串行化</p>
+<h5 id="寻找串行化调度"><a href="#寻找串行化调度" class="headerlink" title="寻找串行化调度"></a>寻找串行化调度</h5><p>拓扑排序的思路</p>
+<ol>
+<li>如果没有环路，说明肯定存在节点入度为0，将这些节点放入队列，删除这些节点以及对应的出边</li>
+<li>更新图的入度，重复1，将新的入度为0的节点删除</li>
+<li>直到所有节点都被纳入队列</li>
+</ol>
+<p>队列就是等价的串行队列</p>
+<h5 id="示例-1"><a href="#示例-1" class="headerlink" title="示例"></a>示例</h5><p>事务： ${T_1,T_2,T_3,T_4}$</p>
+<p>语句：$s = W<br>_3(y)R_1(x)R_2(y)W_3(x)W_2(x)W_3(z)R_4(z)W_4(x)$</p>
+<p>$W_3(y) → R_2(y)=&gt;3→2$</p>
+<p>$R_1(x) → W_3(x)=&gt;1→3$</p>
+<p>$R_1(x) → W_2(x)=&gt;1→2$</p>
+<p>$R_1(x) → W_4(x)=&gt;1→4$</p>
+<p>$W_3(z)→R_4(z)=&gt;3→4$</p>
+<p>$W_2(x)→W_4(x)=&gt;2→4$</p>
+<p><img src="/posts/23083/image-20220515194142560.png" alt="image-20220515194142560"></p>
+<p>并发控制的任务是执行可序列化的事务中执行的并发事务。</p>
+<p>实际数据库系统对系统产生的调度加以控制，使其一定是可串行化的，阻止产生不可串行化的调度，并不是随便让其并行，看一下是不是可串行化的。最常见的就是加锁协议</p>
+<h3 id="封锁协议"><a href="#封锁协议" class="headerlink" title="封锁协议"></a>封锁协议</h3><h4 id="核心想法"><a href="#核心想法" class="headerlink" title="核心想法"></a>核心想法</h4><p>要求某个事务对数据进行读写操作时要先申请一个锁，按照抢到锁的先后次序执行</p>
+<h4 id="两段加锁协议"><a href="#两段加锁协议" class="headerlink" title="两段加锁协议"></a>两段加锁协议</h4><p><strong>Two Phase Locking 2PL</strong></p>
+<h5 id="定义-1"><a href="#定义-1" class="headerlink" title="定义"></a>定义</h5><p>定义一：在一个事务里，如果所有的<strong>锁申请操作</strong>都在所有的<strong>锁释放</strong>之前，就是<strong>两段加锁协议</strong>，就是<strong>两阶段事务</strong>。</p>
+<p>两段加锁协议  <a name="两段加锁协议"> </a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">LOCK A // 申请锁</span><br><span class="line">LOCK B</span><br><span class="line">LOCK C</span><br><span class="line">…… // 读写操作</span><br><span class="line">UNLOCK A</span><br><span class="line">UNLOCK B</span><br><span class="line">UNLOCK C</span><br></pre></td></tr></table></figure>
+<p>就是要的锁一起申请完，然后一起释放</p>
+<p>定义二：如果在申请锁之后再访问数据就是well-formed,如果未申请锁就直接访问数据不是well-formed.</p>
+<h5 id="定理"><a href="#定理" class="headerlink" title="定理"></a>定理</h5><ul>
+<li>N个并发事务，任意一个都是<strong>well-fromed</strong>+<strong>2PL</strong>=&gt;可串行化的</li>
+<li>N个并发事务，任意一个都是<strong>well-fromed</strong>+<strong>2PL</strong>+<strong>更新操作的锁推迟到事务结束commit再释放，确保出问题回滚前锁没有被释放</strong>=&gt;可串行化的+在恢复时不会出现<a href="#多米诺">多米诺现象 </a>——仅仅加锁无法解决多米诺现象</li>
+<li><p>N个并发事务，任意一个都是<strong>well-fromed</strong>+<strong>2PL</strong>+<strong>所有的锁推迟到事务结束再释放</strong>=&gt;严格的两段加锁协议=&gt;在多粒度锁之前认为是最安全的</p>
+</li>
+<li><p>封锁法是保证可串行化的方法之一，不是唯一的方法</p>
+</li>
+</ul>
+<h4 id="锁协议"><a href="#锁协议" class="headerlink" title="锁协议"></a>锁协议</h4><h5 id="X锁协议"><a href="#X锁协议" class="headerlink" title="X锁协议"></a>X锁协议</h5><ul>
+<li><p>整个系统只有一种锁，排他锁</p>
+</li>
+<li><p>把并发运行的事务强行串行化</p>
+</li>
+</ul>
+<p>NL-no lock X-X lock</p>
+<p>Y-compatible N-imcompatible</p>
+<p>该矩阵表示某事务申请锁的时候能否申请到</p>
+<p>行-表示某一个数据对象上已经有的锁</p>
+<p>列-表示某一个事务想要申请的锁</p>
+<p><strong>相容矩阵</strong></p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>NL</strong></th>
+<th><strong>X</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NL</strong></td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td><strong>X</strong></td>
+<td>Y</td>
+<td>N</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>实现效果</strong></p>
+<p><img src="/posts/23083/image-20220401202046628.png" alt="image-20220401202046628" style="zoom: 50%;"></p>
+<p>不加控制，要么读到脏数据，要么存在不可重复读的问题</p>
+<p>假设A抢到了对封锁表的操作权限，查到关系R上面暂时没有锁，就可以获取锁，更新封锁表，然后A先更新，更新完释放数据，$T_B$才能开始读，不管读几次都不会出现不可重复读的问题，也不会出现先读的某属性和后读的某属性不是同一时间的（更新操作在两次读之间发生）</p>
+<p>封锁表:锁ID,数据对象ID,拥有锁的事务,…</p>
+<p>$X,R,T_B$:$T_B$事务拥有了对关系$R$的$X$锁</p>
+<h5 id="S-X-锁协议"><a href="#S-X-锁协议" class="headerlink" title="(S,X)锁协议"></a>(S,X)锁协议</h5><ul>
+<li>S是共享锁：允许同时进行的读操作【提高效率】</li>
+<li>X是排它锁：更新数据</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>NL</strong></th>
+<th><strong>S</strong></th>
+<th><strong>X</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NL</strong></td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td><strong>S</strong></td>
+<td>Y</td>
+<td><strong>Y</strong></td>
+<td>N</td>
+</tr>
+<tr>
+<td><strong>X</strong></td>
+<td>Y</td>
+<td>N</td>
+<td>N</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h5 id="S-U-X-锁协议"><a href="#S-U-X-锁协议" class="headerlink" title="(S,U,X)锁协议"></a>(S,U,X)锁协议</h5><ul>
+<li>尽量减少排它锁的使用场景，更新操作，不是直接改数据库的数据，需要将旧值读进内存做修改，事务提交时再写到数据库，真正修改的只有最后那一段，在前面那一段时间，数据库里面的数据没有动，可以允许其他事务见缝插针对数据进行读取，进一步提高系统运行的并行度</li>
+<li>要对数据更新操作时先申请U锁，U锁时仍可读，直到要写数据时把U锁升级成X锁</li>
+<li>把排他锁尽量后写【可以和数据库的<a href="#jump">A.I→DB after commit </a>策略配合使用】</li>
+<li>进一步提高运行效率</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>NL</strong></th>
+<th><strong>S</strong></th>
+<th><strong>U</strong></th>
+<th><strong>X</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NL</strong></td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td><strong>S($R$)</strong></td>
+<td>Y</td>
+<td>Y</td>
+<td><strong>Y</strong></td>
+<td>N</td>
+</tr>
+<tr>
+<td><strong>U($W_1$)</strong></td>
+<td>Y</td>
+<td><strong>Y</strong></td>
+<td><strong>N</strong></td>
+<td>N</td>
+</tr>
+<tr>
+<td><strong>X($W_2$)</strong></td>
+<td>Y</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="死锁与活锁"><a href="#死锁与活锁" class="headerlink" title="死锁与活锁"></a>死锁与活锁</h3><ul>
+<li><p>死锁：等待锁关系之间出现循环等待</p>
+<p><img src="/posts/23083/image-20220402103100850.png" alt="image-20220402103100850" style="zoom: 50%;"></p>
+<p>解决办法</p>
+<ol>
+<li>防止出现死锁——死锁预防</li>
+<li>找出牺牲者，解决死锁——死锁检测</li>
+</ol>
+</li>
+<li><p>活锁：某个时候等待相当长时间仍然申请不到锁。【饥饿现象】</p>
+<p><img src="/posts/23083/image-20220517185624440.png" alt="image-20220517185624440" style="zoom: 50%;"></p>
+<p>解决方法：</p>
+<ul>
+<li>按先进先出排个队</li>
+</ul>
+</li>
+</ul>
+<h4 id="死锁检测与死锁预防"><a href="#死锁检测与死锁预防" class="headerlink" title="死锁检测与死锁预防"></a>死锁检测与死锁预防</h4><h5 id="死锁检测"><a href="#死锁检测" class="headerlink" title="死锁检测"></a>死锁检测</h5><ul>
+<li><p>Timeout——超时法：设定一个等待时限，<strong>时限比较难以确定</strong></p>
+<p>某事务等待资源超过这个时限就认为是死锁了，自己中止并释放拥有的资源</p>
+</li>
+<li><p>构造等待图：顶点集合就是参与的事务，等待关系$T_i$等待$T_j$就是边$T_i-T_j$</p>
+<p>一旦等待图出现<strong>环路</strong>，那么就是出现<strong>死锁</strong>了</p>
+<p>检查环路的时机</p>
+<ul>
+<li>出现一条新边，新的等待关系：新事务等待某个被占用的资源</li>
+<li>安排一个后台线程，周期性检查</li>
+</ul>
+<p>解决死锁</p>
+<ul>
+<li>选择牺牲者，最年轻的事务？最小终止开销的事务（拥有最少锁的事务）？</li>
+<li>终止这个牺牲者，释放它所拥有的资源和锁</li>
+<li>等待相应资源的事务开始运行</li>
+<li>重启牺牲者，自动 or 手动（向用户报错，用户重新执行刚刚的事务）</li>
+</ul>
+</li>
+</ul>
+<h5 id="死锁预防"><a href="#死锁预防" class="headerlink" title="死锁预防"></a>死锁预防</h5><ol>
+<li><p>事务初始化时一次性申请所有锁<strong>（×）</strong></p>
+<p>动态SQL，根据用户输入临时决定执行什么语句，不能在初始化时就确定锁</p>
+<p>即便是单粒度，对表加锁，运行之前就把所有需要访问的表都确定不现实</p>
+</li>
+<li><p>给锁排序，只能按照某个顺序申请锁<strong>（×）</strong></p>
+<p>即便是单粒度，这么多表，新建表、删除表，动态变化，难以排序</p>
+<p>元组粒度，如何排序？</p>
+</li>
+<li><p>一旦冲突就终止<strong>（×）</strong></p>
+</li>
+<li><p>事务重置</p>
+</li>
+</ol>
+<ul>
+<li>给每个事务安排时间戳 TimeStamp<ul>
+<li>时间戳的作用：<ul>
+<li>TID 事务的标识符ID</li>
+<li>比较两个事务的年龄</li>
+</ul>
+</li>
+<li>Wait-die（等待死亡法）：当$T_A$要申请的锁被$T_B$占有了，比较两者时间戳，如果自己年龄更小，就杀了自己sleep一会再自动运行重新申请（时间戳不变），自己年龄更大，就等待。<ul>
+<li>等待关系单方面（年老事务等待年轻的事务），不会出现死锁</li>
+<li>比自己年老的肯定有限，比自己年轻的虽然无限，但是只要比自己年老的都结束了，那就可以运行了，不会出现活锁</li>
+</ul>
+</li>
+<li>Wound-wait（积伤等待法）：当$T_A$要申请的锁被$T_B$占有了，比较两者时间戳，如果自己年轻，就等待，自己年龄大，就杀了$T_B$，抢占他的资源进行自己的事务，$T_B$sleep一会再运行（时间戳不变）。<ul>
+<li>只会有年轻事务等待年老事务</li>
+<li>自己年老就会杀掉年轻的，就算有无限的年轻的，也会被kill掉；自己年轻，那比自己年老的，能kill自己的是有限的，自己总会变成老的，能kill别人了</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="锁粒度"><a href="#锁粒度" class="headerlink" title="锁粒度"></a>锁粒度</h3><p><strong>Lock Granularities</strong></p>
+<h4 id="多粒度封锁"><a href="#多粒度封锁" class="headerlink" title="多粒度封锁"></a>多粒度封锁</h4><p><strong>Locking in multi granularities</strong></p>
+<h5 id="平衡"><a href="#平衡" class="headerlink" title="平衡"></a>平衡</h5><ul>
+<li><p>为了提高事务的并发度，锁粒度应该越小越好</p>
+<p>比如某事务$T_1$想查询张三学生的电话号码，另外一个事务$T_2$修改李四的家庭地址，如果加锁在学生信息表上，那么$T_1$需要申请S锁，$T_2$需要申请X锁，就需要竞争。</p>
+<p>如果以元组为单位，并发度显著提高</p>
+</li>
+<li><p>为了减少锁的开销，锁粒度应该越大越好</p>
+<p>如果统一加锁到元组，那么也会出现问题</p>
+<p>新的事务$T_3$想要计算所有男生的平均年龄，此时如果以元组为锁粒度，就得把4w个学生都得上锁，开销太大</p>
+<p>此时把粒度限制在表级别显然更合适</p>
+</li>
+</ul>
+<h5 id="粒度"><a href="#粒度" class="headerlink" title="粒度"></a>粒度</h5><p>DB-&gt;File-&gt;Record-&gt;Field</p>
+<p>数据库-&gt;表（关系、文件）-&gt;记录（元组）-&gt;列（属性）</p>
+<p>在这种情况下，如果一个事务在某个级别的数据对象上获得了一个锁，那么它就会在该数据对象的每个子代上隐含地获得相同的锁——有点windows文件系统设置文件夹属性的意思</p>
+<p>两种锁——显式锁和隐含锁</p>
+<p>隐含(Implicit)锁和显式(Explicit)锁的冲突问题</p>
+<p>刚刚$T_3$对表加了S锁，隐含在每条记录上加了S锁，现在有事务$T_2$想要修改某学生的家庭地址，需要申请X锁，如何知道这个冲突？如何避免一个一个元组加锁，还能够告诉别的事务，我在某条元组上加锁了？在封锁表里面看到的都是显式的锁</p>
+<p>$T_3,Student,S$</p>
+<p>$T_2$去查，发现找不到$T_3,Record_{李四},S$，但是实际上还是不能申请到X 锁的</p>
+<h4 id="意向锁"><a href="#意向锁" class="headerlink" title="意向锁"></a>意向锁</h4><p><strong>Intention lock</strong></p>
+<p>插旗子的警告作用</p>
+<h5 id="新的锁"><a href="#新的锁" class="headerlink" title="新的锁"></a>新的锁</h5><ol>
+<li><p>意向共享锁</p>
+<p>Intension share lock</p>
+</li>
+<li><p>意向排它锁</p>
+<p>Intension exclusive lock</p>
+</li>
+<li><p>复合锁</p>
+<p>S+IX</p>
+</li>
+</ol>
+<p><img src="/posts/23083/image-20220518185724806.png" alt="image-20220518185724806"></p>
+<p>如果一个事务在某个低级别的数据对象<strong>(Record)</strong>上加了一个<strong>S(X)锁</strong>，那么所有包含它的高级别的数据对象<strong>(DB、File)</strong>都应该加一个<strong>IS(IX)锁</strong>以警告。如果另一个事务以后想在更高层次的数据对象上加一个<strong>X锁</strong>，它可以通过<strong>IS锁</strong>找到隐含的冲突。</p>
+<p><strong>SIX锁</strong>对应<strong>Update</strong>语句，更新操作寻找满足修改条件的记录时需要做全表扫描，这个时候需要在全表上加<strong>S锁</strong>，但是找到了满足条件的记录后只需要在这几条记录上加<strong>X锁</strong>，也就应该对所在的表加上<strong>IX锁</strong>，结合之前加的<strong>S锁</strong>，就是<strong>SIX锁</strong></p>
+<h5 id="发现冲突"><a href="#发现冲突" class="headerlink" title="发现冲突"></a>发现冲突</h5><p><img src="/posts/23083/image-20220518191302484.png" alt="image-20220518191302484" style="zoom:150%;"></p>
+<h5 id="相容矩阵"><a href="#相容矩阵" class="headerlink" title="相容矩阵"></a>相容矩阵</h5><p><img src="/posts/23083/image-20220519160452246.png" alt="image-20220519160452246"></p>
+<p><img src="/posts/23083/image-20220518195716029.png" alt="image-20220518195716029" style="zoom:67%;"></p>
+<p>按照No个数进行排他性排序</p>
+<p><strong>具有强排他性的锁可以在锁定时替代弱排他性的锁</strong></p>
+<h5 id="加锁规则"><a href="#加锁规则" class="headerlink" title="加锁规则"></a>加锁规则</h5><p><img src="/posts/23083/image-20220518200328555.png" alt="image-20220518200328555" style="zoom:33%;"></p>
+<p>加锁从根向叶子加，但是释放锁时需要从叶子往根释放</p>
+<p><strong>示例</strong></p>
+<p><img src="/posts/23083/image-20220518201928010.png" alt="image-20220518201928010"></p>
+<p>理论上，$T_1$事务要读取某个元组，要加S锁，然后往上加file的IS锁和DB的IS锁，<strong>这种申请顺序会出现什么问题</strong>？</p>
+<p>实际上，是按照DB的IS锁-&gt;file的IS锁-&gt;record的S锁，查询相容矩阵来进行申请的</p>
+<p><strong>如果一直到record才发现申请不到锁，是不是要把之前的锁释放掉？</strong></p>
+<p>释放锁反过来</p>
+<p>数据库申请IX锁，然后到表申请SIX锁，最后到满足条件的记录上申请X锁，最后修改，反过来释放</p>
+<h3 id="索引加锁"><a href="#索引加锁" class="headerlink" title="索引加锁"></a>索引加锁</h3><p>索引针对关系建立，事务插入、删除、更新会涉及到索引的维护更新</p>
+<p>传统数据库不支持多粒度封锁，不会同时有两个事务维护索引，不会出问题</p>
+<p>但是现在支持多粒度封锁后，事务也会并发的访问索引，并进行搜索、插入、删除等操作，因此也需要并发控制</p>
+<h4 id="示例-2"><a href="#示例-2" class="headerlink" title="示例"></a>示例</h4><p><img src="/posts/23083/image-20220519182841882.png" alt="image-20220519182841882"></p>
+<p>如何有效地锁定一个特定的叶子索引项？</p>
+<h4 id="暴力方法"><a href="#暴力方法" class="headerlink" title="暴力方法"></a>暴力方法</h4><p>忽略树状结构，只是在遍历树状结构时锁定，遵循两段加锁协议，就是遍历到树的哪个节点，就在哪个节点上加一个锁</p>
+<p><strong>问题</strong></p>
+<p>低效——根节点（和许多更高层次的节点）成为瓶颈，因为每个树的访问都是从根开始的，全部都会卡在树根这个地方</p>
+<h4 id="有效方法"><a href="#有效方法" class="headerlink" title="有效方法"></a>有效方法</h4><h5 id="B-树特征"><a href="#B-树特征" class="headerlink" title="B+树特征"></a>B+树特征</h5><ol>
+<li>对B+树的每一次访问都是从根部到叶子节点的访问。只有叶子才有数据的详细信息，如TID，而中间节点只是起到路标作用</li>
+<li>一个节点一般占用一个block，所以B+树的锁单位是block。不需要多粒度的锁，只需要block的S、X锁即可</li>
+<li>B+树是被频繁访问的关键资源，容易成为系统的瓶颈。在索引并发控制中，性能是非常重要的。</li>
+<li>如果在遍历树的过程中发生冲突，丢弃所有已经申请的锁，延迟一段时间后再从根部搜索，重新申请锁。避免因等待而导致的死锁，使得整个系统的死锁问题复杂化</li>
+<li>最初，<strong>索引上的锁只是用来保持索引本身的一致性</strong>。并发事务操作数据的正确性是由2PL负责的。 从这个意义上说，索引上的锁不需要保持到事务结束，索引的操作（搜索、更新、删除）<strong>结束后可以立即释放</strong>。但是后续<a href="#幽灵现象">幽灵现象</a>表明，在支持多粒度封锁的情况下，即使是严格的2PL也会有漏洞。在这种情况下，<strong>B+树的叶子上的锁应该保持到EOT</strong>，以弥补这个漏洞，而树上其他节点的锁可以在<strong>搜索</strong>结束后释放</li>
+</ol>
+<h5 id="索引加锁算法"><a href="#索引加锁算法" class="headerlink" title="索引加锁算法"></a>索引加锁算法</h5><h6 id="搜索"><a href="#搜索" class="headerlink" title="搜索"></a>搜索</h6><p>在遍历过程中，首先对根节点施加S锁，然后对所选的子节点施加S锁。一旦得到子节点的S锁，父节点的S锁就可以被释放，因为遍历不能返回，直到到达叶子节点。遍历之后，只剩下目标叶子上的S锁，保持这个S锁直到EOT。</p>
+<h6 id="插入"><a href="#插入" class="headerlink" title="插入"></a>插入</h6><p>在插入新的索引项时，首先遍历，找到应该插入新项的叶子节点，在这个叶子节点上加上X锁，接下来进行插入操作：</p>
+<ol>
+<li>如果它没有满，直接插入</li>
+<li>如果它是满的，根据B+树的规则分割节点。在拆分时，父节点需要增加新的指针，因此除了原来的叶子，新的叶子和它们的父本也要添加X锁。如果父节点也是满的，分裂将继续进行，同样也要向上加锁</li>
+</ol>
+<p>注意</p>
+<ol>
+<li>在每次拆分中，必须在每个要改变的节点上应用X锁，这些X锁可以在更新完成后释放</li>
+<li>在叶子节点的插入过程完成后，叶子节点上的X锁被改变为S锁并保持到EOT</li>
+</ol>
+<h6 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h6><p>当从树上删除一个索引项时，其过程与插入相似。删除可能会导致B+树中节点的组合，其父节点也要删除一个指针。因此同样遵循被改变的节点必须先被X锁，完成改变后释放X锁的原则。叶子节点上的X锁也被改变为S锁，并保持到EOT</p>
+<h3 id="幽灵现象及其预防"><a href="#幽灵现象及其预防" class="headerlink" title="幽灵现象及其预防 "></a>幽灵现象及其预防<a name="幽灵现象"> </a></h3><h4 id="本质"><a href="#本质" class="headerlink" title="本质 "></a>本质<a name="幽灵现象"> </a></h4><p>在允许多粒度锁的情况下，数据库是一个稳定的、可靠的数据集合的假设（隔离性——感受不到其他事务的存在，因此如果当前事务自身没有修改更新数据库的数据，那么读取时，读到的数据应该就是稳定可靠的，不应该经常变化）是不正确的。即使是严格的<a href="#两段加锁协议">两段加锁协议</a>也无法保证这种现象不会发生，这种现象就是<strong>幽灵现象</strong>。</p>
+<h4 id="示例-3"><a href="#示例-3" class="headerlink" title="示例"></a>示例</h4><p>没有一致的数据库状态支持T1的正确性</p>
+<p><img src="/posts/23083/image-20220519193228836.png" alt="image-20220519193228836"></p>
+<h4 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h4><p>T1隐含地假设它已经锁定了所有等级=1的水手记录集，这个问题其实是多粒度封锁造成的，如果没有多粒度封锁，T1想要查询就得申请获取S锁，T2想要插入就要申请X锁，T1有了S锁，T2申请不到X锁，不会出现上述幽灵现象</p>
+<p>或者 即使有多粒度封锁，但是T1需要全表扫描，并在表上设置S锁，那么也不会出现该问题，例如</p>
+<p>select s#, average(grade) from SC group by s#;</p>
+<ol>
+<li>只有在T1执行时没有添加水手记录的情况下，该假设才成立。</li>
+<li>需要一些机制来强制执行这个假设。 (索引锁定和谓词锁定)</li>
+</ol>
+<h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h4><h5 id="索引锁"><a href="#索引锁" class="headerlink" title="索引锁  "></a>索引锁 <a name="索引锁"> </a></h5><p><strong>索引上加的锁保留到EOT</strong></p>
+<p>现在T1找到了所有rating=1的水手，对应的索引项上就会被S锁 锁住，并且事务结束前不会被释放</p>
+<p><strong>如果没有rating=1的记录，T1必须锁定这样的数据条目所在的索引节点，如果它存在的话。</strong></p>
+<p>T2在插入新的记录前，需要维护这个索引，需要申请级别为1的水手的索引项上的X锁，本身已经有了S锁，不会申请成功，也就难以实现新记录的插入，避免了幽灵现象，返回T2执行前的正确结果</p>
+<p><strong>如果没有合适的索引，T1必须全表扫描才能确定哪些是等级为1的水手，而这需要锁定整个表(S锁)，在T1提交之前当然不能增加新的记录。</strong></p>
+<h5 id="谓词锁"><a href="#谓词锁" class="headerlink" title="谓词锁"></a>谓词锁</h5><p>了解即可</p>
+<p>对所有满足某些逻辑前提的记录授予锁，例如，年龄&gt;2*工资，将满足这个条件的记录锁起来</p>
+<p><strong>索引锁是谓词锁的一个特例，对它来说，索引支持谓词锁的有效实现</strong></p>
+<p>谓词：ranking = 1</p>
+<p>涉及到语句的语义，和业务规则相关，想要实现谓词锁的代价太大</p>
+<h3 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h3><p>从SQL-92开始增加了对事务隔离级别的支持，允许用户编程时根据应用需要通过语句去设定当前事务的隔离级别。每个事务都有一个访问模式，一个诊断大小，和一个隔离级别。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">ORACLE</span><br><span class="line"></span><br><span class="line">SET TRANSACTION READ ONLY // 只读事务</span><br><span class="line">ISOLATION LEVEL REPEATABLE READ;// 隔离级别</span><br><span class="line">/-----------------------------/</span><br><span class="line"></span><br><span class="line">Sql Server</span><br><span class="line"></span><br><span class="line">SET TRANSACTION ISOLATION LEVEL </span><br><span class="line">&#123;   READ COMMITTED |</span><br><span class="line">    READ UNCOMMITTED | </span><br><span class="line">    REPEATABLE READ | </span><br><span class="line">    SERIALIZABLE</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>隔离级别：</p>
+<p><img src="/posts/23083/image-20220520134837181.png" alt="image-20220520134837181"></p>
+<p>读写冲突可以放松，写写冲突是不可接受的底线</p>
+<ol>
+<li><p>Read Uncommitted</p>
+<ul>
+<li><p>影响</p>
+<p>实际应用中，发现用户在查询数据库时能容忍读脏数据，对数据一致性要求不高，此时就可以利用上述语句将当前事务的隔离级别设置成read uncommitted，此时也就意味着也能允许不可重复读和幽灵现象的发生</p>
+<p>比如楼层经理，每天商场快关门时，查询一下今天营业额，只需要一个大概的数据，和昨天比多了还是少了，现在还有一个人还在付钱，这一笔数据正在录入，但是可以忽略，不影响整体的收入，就可以设置为当前级别</p>
+</li>
+<li><p>锁命令</p>
+<p>该事务读取数据时不申请锁；<strong>写时上X锁，保持到EOT</strong></p>
+</li>
+<li><p>说明</p>
+<p>可以插队，效率很高，但是不申请锁也限制不了别的事务的写操作，如果别的事务需要进行写操作，就会发生<a href="#读脏数据">读脏数据</a>、<a href="#不可重复读">不可重复读</a>等问题；</p>
+<p>如果别的事务进行插入操作，没有申请锁，也不会对索引上锁，会发生<a href="#幽灵现象">幽灵现象</a></p>
+</li>
+</ul>
+</li>
+<li><p>Read Committed</p>
+<ul>
+<li><p>影响</p>
+<p>不能容忍读脏数据，但是可以容忍不可重复读和幽灵现象</p>
+</li>
+<li><p>锁命令</p>
+<p>读取时申请S锁，读完就释放；<strong>写时上X锁，保持到EOT</strong></p>
+</li>
+<li><p>说明</p>
+<p>之前脏数据示例中，$T_2$读申请S，然后释放，$T_1$写申请X，$T_2$再读申请不到S，无法读，$T_1$事务结束前回滚了，然后释放X，$T_2$再读，读到的也是回滚后的干净数据，避免<a href="#读脏数据">读脏数据</a>）</p>
+<p>正因为读后释放，$T_1$读完释放，$T_2$改写，$T_1$再读，两次读取的结果不一样，会发生<a href="#不可重复读">不可重复读</a>的问题；同理，读后释放也难以避免会发生<a href="#幽灵现象">幽灵现象</a></p>
+</li>
+</ul>
+</li>
+<li><p>Repeatable Reads</p>
+<ul>
+<li><p>影响</p>
+<p>不能容忍读脏数据、不可重复读，但是可以容忍幽灵现象</p>
+</li>
+<li><p>锁命令</p>
+<p>遵循严格的2PL(两段加锁协议)</p>
+</li>
+<li><p>说明</p>
+<p>前面两种自然都可以避免了，但是<a href="#幽灵现象">幽灵现象</a>依然无法避免，因为没有对索引加锁直到EOT</p>
+</li>
+</ul>
+</li>
+<li><p>Serializable</p>
+<ul>
+<li><p>影响</p>
+<p>均不能容忍</p>
+</li>
+<li><p>锁命令</p>
+<p>严格的两段加锁协议并且保持索引结构叶子节点的S锁直到EOT</p>
+</li>
+<li><p>说明</p>
+<p><a href="#索引锁">索引锁</a></p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="OODBMS的锁机制"><a href="#OODBMS的锁机制" class="headerlink" title="OODBMS的锁机制"></a>OODBMS的锁机制</h3><p>面向对象数据库管理系统的锁机制</p>
+<h4 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h4><ol>
+<li><p>锁粒度</p>
+<p>DB-Class-Object</p>
+<p><strong>除了锁粒度这个层次外，类之间存在继承关系的层次结构，如何加锁？</strong></p>
+</li>
+<li><p>单层加锁</p>
+<p>锁粒度限制在对象Object一级，只用S或X锁锁定所操作的对象。适用于面向CAD这样以单个复杂对象为主的机械制造类的应用，不适合用于经常有关联查询的应用场合</p>
+</li>
+<li><p>多粒度加锁</p>
+<p>OLTP应用（联机事务处理），使用上一节介绍的S、X、IS、IX、SIX锁，可以实现联想查询（Select），涉及到大量记录</p>
+<p>但是无法应对级联查询和更新</p>
+</li>
+<li><p>复杂多粒度加锁</p>
+<p>添加两种类层次锁，解决级联查询和更新的问题</p>
+</li>
+<li><p>锁定复杂的对象</p>
+<p><strong>职工-所在单位（复杂对象）</strong></p>
+<p><strong>所在单位-领导（复杂对象）</strong></p>
+<p><strong>领导-毕业院校-毕业时间</strong></p>
+<p>只在访问时锁定所指对象（根据一般的多粒度锁协议）</p>
+</li>
+</ol>
+<h4 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h4><p><strong>新问题：</strong>多粒度锁中的类级锁只能锁定直接属于这个类的对象，不能包括其子类中的对象。所以不适合用于<strong>对继承树的级联查询或模式更新（对这个类及其子类的所有对象做查询或者做更新）</strong></p>
+<h5 id="级联查询示例"><a href="#级联查询示例" class="headerlink" title="级联查询示例"></a>级联查询示例</h5><p><img src="/posts/23083/image-20220520141205882.png" alt="image-20220520141205882"></p>
+<h5 id="解决办法-1"><a href="#解决办法-1" class="headerlink" title="解决办法"></a>解决办法</h5><p>RL-如果在该类上添加了RL锁，相当于在该类和其子类上都添加了S锁</p>
+<p>WL-如果在该类上添加了WL锁，相当于在该类和其子类上都添加了X锁</p>
+<p>相容矩阵</p>
+<h4 id="加锁方法"><a href="#加锁方法" class="headerlink" title="加锁方法"></a>加锁方法</h4><p>真正申请锁还是先从根开始，释放从叶子开始</p>
+<p>如果需要对某个类申请RL(WL)锁</p>
+<ol>
+<li><p>在该类的任何超类链上添加IS(IX)锁，包括DB</p>
+</li>
+<li><p>在该类上申请RL(WL)锁</p>
+</li>
+<li><p>自上而下检查该类的子类上是否有与RL(WL)冲突的锁。</p>
+<ol>
+<li><p>如果没有冲突，在有多个父母的子类上添加一个RL(WL)锁</p>
+<p>多个父母说明有可能有涉及到其他父母的事务需要申请锁，会发生冲突，添加这个锁避免出现问题</p>
+</li>
+</ol>
+</li>
+</ol>
+<ol>
+<li>上述任何一个环节如果发现有冲突，则锁申请失败，需要等待（等待的时候，之前申请的锁需要释放吗？）</li>
+</ol>
+<h5 id="示例-4"><a href="#示例-4" class="headerlink" title="示例"></a>示例</h5><p><img src="/posts/23083/image-20220520144012281.png" alt="image-20220520144012281"></p>
+<h3 id="时间戳法"><a href="#时间戳法" class="headerlink" title="时间戳法"></a>时间戳法</h3><p>并发控制——保证并发事务调度的可串行化，前面可以利用锁机制，强行按照抢到锁的先后顺序执行，但是加锁并不是唯一方法——&gt;时间戳法</p>
+<h4 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h4><p>系统中运行的每一个事务拥有一个时间戳 T.S（begin transaction时赋予，TID作用，表征事务年龄）</p>
+<p>要求一组并发运行的事务按照时间戳从小到大的顺序执行，系统将强制要求并发事务以一种等价于<strong>基于时间戳的串行序列的顺序</strong>执行</p>
+<p>给数据库的每一个数据对象赋予时间戳</p>
+<ol>
+<li><p>read time(tr)</p>
+<p>已经读取该对象，并且拥有最高T.S的事务</p>
+</li>
+<li><p>write time(tw)</p>
+<p>已经更新该对象，并且拥有最高T.S的事务</p>
+</li>
+</ol>
+<p>通过<strong>数据对象的时间戳</strong>以及<strong>事务的时间戳</strong>就可以判断<strong>并行事务的执行顺序是否符合基于时间戳的串行序列的顺序</strong></p>
+<p>违反的，abort掉，重新赋予时间戳，重新执行</p>
+<h4 id="读写操作"><a href="#读写操作" class="headerlink" title="读写操作"></a>读写操作</h4><p><img src="/posts/23083/image-20220520151222496.png" alt="image-20220520151222496"></p>
+<p><img src="/posts/23083/image-20220520152858573.png" alt="image-20220520152858573"></p>
+<p><a href="#目标冲突">冲突可串行化-&gt;目标可串行化</a></p>
+<p>do nothing就是目标等价，但不是冲突等价</p>
+<h4 id="评价"><a href="#评价" class="headerlink" title="评价"></a>评价</h4><p>优势：无需加锁，不存在死锁</p>
+<p>劣势：</p>
+<ol>
+<li><p>每个事务和每个数据对象都要维持时间戳，每次操作都要更新数据对象的两个时间戳，系统维护开销比较大</p>
+<p>解决办法</p>
+<ol>
+<li><p>扩大数据对象加时间戳的粒度（低并发度）</p>
+<p>加锁粒度粗，存储、更新开销小，并发度低，效率低<br>加锁粒度细，存储、更新开销大，并发度大，效率高</p>
+</li>
+<li><p>数据对象的T.S实际上并不需要存储在非易失性存储器中，而是存储在内存中（缓冲信息表）</p>
+<p>事务需要访问某个数据对象时，就将其时间戳纳入内存，并且视为0，读写操作时再更新对应时间戳。如果后续经过较长时间（新进来的事务的时间戳都会增加这么久的时间），都没有运行的事务访问这个数据对象（数据对象的tr和tw不会变大），确保系统中正在运行的事务的时间戳t都比该数据对象的tr、tw大，那么其时间戳就可以从内存中删掉，没有必要存起来了，肯定都比它大。</p>
+<p>其它事务正在执行的条件</p>
+<p>读——t&gt;=tw</p>
+<p>写——t&gt;=tr and t&gt;=tw</p>
+</li>
+</ol>
+</li>
+<li><p>系统运行效率较低</p>
+<p>锁：互相竞争，n!种正确的串行序列</p>
+<p>时间戳：只接受一种正确的串行序列</p>
+</li>
+</ol>
+<h3 id="乐观法"><a href="#乐观法" class="headerlink" title="乐观法"></a>乐观法</h3><p><img src="/posts/23083/image-20220523190002851.png" alt="image-20220523190002851"></p>
+<h4 id="关键思想"><a href="#关键思想" class="headerlink" title="关键思想"></a>关键思想</h4><p>假定在并发事务执行时很少有冲突。</p>
+<p>在事务执行时不做任何检查，读取操作任意执行，但是更新操作并不直接写入数据库，而是存储在内存中，当一个事务结束时，检查事务的调度是否可串行化。如果它是可串行化的，就把内存中的更新副本写进DB；否则，就中止事务并重试。</p>
+<h4 id="事务执行"><a href="#事务执行" class="headerlink" title="事务执行"></a>事务执行</h4><h5 id="阶段"><a href="#阶段" class="headerlink" title="阶段"></a>阶段</h5><ol>
+<li><p>读阶段</p>
+<p>从数据库中读取数据并执行各种处理，但更新操作只在内存中形成更新副本</p>
+</li>
+<li><p>检验阶段</p>
+<p>检查事务的调度是否可串行化</p>
+</li>
+<li><p>写阶段</p>
+<p>如果成功通过检查，将内存中的更新副本写入DB并提交事务；或者丢弃内存中的更新副本并中止事务</p>
+</li>
+</ol>
+<h5 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h5><ol>
+<li><p>read set</p>
+<p>读集合——该事务读过哪些数据对象</p>
+</li>
+<li><p>write set</p>
+<p>写集合——该事务写过哪些数据对象</p>
+</li>
+<li><p>start/end time</p>
+<p>每个事务每种阶段的开始结束时间，即什么时候开始读/结束读，开始检查/结束检查，开始写/结束写</p>
+</li>
+</ol>
+<h5 id="可串行化检验"><a href="#可串行化检验" class="headerlink" title="可串行化检验"></a>可串行化检验</h5><p>检查对象：进入检查阶段的事务$T_i$，只需要检查$T_i$和已经提交的事务以及其他依然处于检查阶段的事务之间是否存在冲突，处于读取阶段的事务无需考虑</p>
+<p>$T_i$当前正在检查的事务，$T_j$是某个提交或者处于检查阶段的事务，说明$T_j$的任何操作其实都比$T_i$先完成，满足以下条件，$T_i$即可通过检查，进入写阶段，均等价于$T_j→T_i$的串行化序列</p>
+<p><img src="/posts/23083/image-20220524112352819.png" alt="image-20220524112352819"></p>
+<ol>
+<li><p>$T_i,T_j$之间不存在任何访问对象的冲突，即不会访问同一个对象</p>
+<p>读写都没有任何交集，自然不冲突</p>
+</li>
+<li><p>不管有啥交集，如果满足$T_i$开始读阶段之前，$T_j$已经完成了写阶段，$T_j→T_i$</p>
+<p>在此情况下，$T_j$在$T_i$开始前已结束，无任何冲突</p>
+</li>
+<li><p>$T_i$的读对象和$T_j$的写对象不存在交集，并且$T_i$在$T_j$完成写阶段后开始写阶段</p>
+<p>读写不相交，第一种冲突不会发生</p>
+<p>（即便写写对象有交集）由于$T_i$在$T_j$完成写阶段后才开始写阶段，自然等价于$T_j$先写，$T_i$后写，即$T_j→T_i$，第三种冲突不会发生</p>
+<p>（即便写读对象有交集）由于$T_i$在$T_j$完成写阶段后才开始写阶段，$T_j$的读肯定比$T_i$的写先完成，此时写读不冲突，等价于$T_j$先读，$T_i$在写，第二种冲突不会发生。两个读操作谁先完成不影响</p>
+</li>
+</ol>
+<ol>
+<li><p>$T_i$的读写对象和$T_j$的写对象交集为空</p>
+<p>首先排除第一、第三种冲突，唯一需要考虑的是$T_i、T_j$的写读冲突，但是$T_i$开始检验时，$T_j$至少进入了检验阶段，表明读阶段已经完成，而$T_i$还没开始写阶段，相当于$T_j$先读，$T_i$后写的串行化序列，即$T_j→T_i$，不冲突</p>
+</li>
+</ol>
+<h4 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h4><p>实现比较复杂</p>
+<p>以读为主，更新较少的使用场景——人口统计数据库，10年一次大更新，平时少量小修改，主要是读取数据</p>
+<h3 id="分布式数据库加锁"><a href="#分布式数据库加锁" class="headerlink" title="分布式数据库加锁"></a>分布式数据库加锁</h3><p>开销分析基于n个副本</p>
+<h4 id="问题-1"><a href="#问题-1" class="headerlink" title="问题"></a>问题</h4><ol>
+<li>多副本，如何发现全局冲突</li>
+<li>网络通讯开销</li>
+</ol>
+<h4 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h4><p>前三种类似</p>
+<h5 id="write-lock-all-read-lock-one"><a href="#write-lock-all-read-lock-one" class="headerlink" title="write lock all, read lock one"></a>write lock all, read lock one</h5><p>读R时，只在R的这个副本上加S锁</p>
+<p>写R时，需要在R的所有副本上加X锁</p>
+<p>锁保持到EOT</p>
+<p><strong>通讯开销分析</strong></p>
+<p><img src="/posts/23083/image-20220523193319195.png" alt="image-20220523193319195" style="zoom:50%;"></p>
+<p><img src="/posts/23083/image-20220523193425727.png" alt="image-20220523193425727" style="zoom:50%;"></p>
+<h5 id="Majority-locking"><a href="#Majority-locking" class="headerlink" title="Majority locking"></a>Majority locking</h5><p>读R时，在R的大部分（$\left \lceil \frac{n+1}{2} \right \rceil$）副本上加S锁</p>
+<p>写R时，在R的大部分（$\left \lceil \frac{n+1}{2} \right \rceil$）副本上加X锁</p>
+<p>锁保持到EOT</p>
+<p><strong>通讯开销分析</strong></p>
+<p><img src="/posts/23083/image-20220523193940924.png" alt="image-20220523193940924"></p>
+<p>比第1种，在避免死锁方面有一定优越性</p>
+<p>在前面那种方法中，如果有两个事务争夺更新的X锁，也许每个人都能得到一部分，但没有人能够得到全部的X锁。死锁就很容易发生。<strong>比如有三个副本，事务1获取了1个副本的锁，事务2获取了2个副本的锁，都要等待。</strong></p>
+<p><strong>在当前方法中，只要n是奇数，那么肯定有一个事务能获取多的锁，多的就可以成功，另外一个事务因为获取不到超过半数副本的锁，就要等待，</strong>这样就避免了这种死锁的发生。</p>
+<h5 id="k-out-of-n-locking"><a href="#k-out-of-n-locking" class="headerlink" title="k-out-of-n locking"></a>k-out-of-n locking</h5><p>读R时，在R的大部分n-k+1个副本上加S锁</p>
+<p>写R时，在R的大部分k个副本上加X锁，n=&gt;k&gt;n/2</p>
+<p>k=n时就是第一种方法</p>
+<p>k=(n+1)/2就是第二种方法</p>
+<p>锁保持到EOT</p>
+<p>对<strong>读写冲突</strong>而言，写操作需要对至少k个副本上X锁，读操作需要至少n-k+1个副本上S锁，k+n-k+1=n+1&gt;n，总有一个事务申请不到足够数量的锁，无法执行</p>
+<p>对<strong>写写冲突</strong>而言，k+k&gt;n，总是有一个事务拿不到足够数量的锁，无法执行</p>
+<p><strong>k越大，读取性能越优越</strong></p>
+<h5 id="primary-Copy-Method"><a href="#primary-Copy-Method" class="headerlink" title="primary Copy Method"></a>primary Copy Method</h5><p>与<a href="#主副本">主副本的更新策略</a>配合使用</p>
+<p>将锁住R的责任分配给一个给定的节点，这个站点被称为R的主节点</p>
+<p><img src="/posts/23083/image-20220523195525405.png" alt="image-20220523195525405"></p>
+<p>主节点会成为系统的瓶颈，如果崩溃了，那整个系统对关系R的操作都不能更新</p>
+<p>它是有效的，但容易失败，所以有许多改进版本。 它经常与初级复制更新策略一起使用</p>
+<h4 id="全局死锁-Global-Deadlock"><a href="#全局死锁-Global-Deadlock" class="headerlink" title="全局死锁(Global Deadlock)"></a>全局死锁(Global Deadlock)</h4><p><img src="/posts/23083/image-20220523200654977.png" alt="image-20220523200654977"></p>
+<p>红色等待关系是显式等待关系，绿色的是隐式等待关系</p>
+<p>单一节点均不存在死锁，但是存在全局死锁</p>
+<h5 id="全局等待图-Global-wait-for-graph"><a href="#全局等待图-Global-wait-for-graph" class="headerlink" title="全局等待图(Global wait-for graph)"></a>全局等待图(Global wait-for graph)</h5><p>根据一般的<a href="#等待图">等待图</a>添加EXT节点。如果事务T是一个分布式事务，并且在其他节点有子事务，并且T是当前站点等待链的头，则将EXT→T加入图中；如果T是当前站点等待链的尾，则将T→EXT加入图中。</p>
+<p>如果某个节点存在$EXT→T_i→T_j→ ┅  →T_k→EXT$这样的等待图</p>
+<ol>
+<li><p>检查其他节点是否存在，假设存在$EXT→T_k→T_l→ ┅ →T_x→EXT$，内部肯定不存在相同的，否则就已经死锁了</p>
+</li>
+<li><p>检查事务</p>
+<ol>
+<li><p>如果$T_x$和前面的($T_i→T_k$)任何一个事务相同，则死锁发生</p>
+</li>
+<li><p>否则，可以拼接起来</p>
+<p>$EXT→T_i→T_j→ ┅ →T_k →T_l→ ┅ →T_x→EXT$</p>
+</li>
+</ol>
+</li>
+<li><p>重复上述操作都一直没有检测到死锁，那么就没有发生全局死锁</p>
+</li>
+</ol>
+<p>比如刚刚那个</p>
+<p>EXT-&gt;<strong>T1</strong>-&gt;T2-&gt;EXT</p>
+<p>EXT-&gt;T2-&gt;<strong>T1</strong>-&gt;EXT</p>
+<p>EXT-&gt;<strong>T1</strong>-&gt;T2-&gt;T2-&gt;<strong>T1</strong>-&gt;EXT</p>
+<h3 id="分布式数据库时间戳法"><a href="#分布式数据库时间戳法" class="headerlink" title="分布式数据库时间戳法"></a>分布式数据库时间戳法</h3><h4 id="问题-2"><a href="#问题-2" class="headerlink" title="问题"></a>问题</h4><p><strong>全局时间戳</strong></p>
+<ol>
+<li>单机环境下时间戳能够保证事务的唯一性，但是分布式环境下不能保证唯一性</li>
+<li>节点的系统时钟不一致。节点2的操作实际先做，但是时间偏快（时间戳大），导致时间戳表现出来还是后做的，逻辑上就会出问题</li>
+</ol>
+<p><strong>多副本</strong></p>
+<p>检查数据对象每个副本你的tr和tw，只要任何一个违反都要终止</p>
+<h4 id="全局时间戳-global-time-stamp"><a href="#全局时间戳-global-time-stamp" class="headerlink" title="全局时间戳(global time stamp)"></a>全局时间戳(global time stamp)</h4><p><strong>唯一性——Global T.S = Local T.S + Site ID</strong></p>
+<p><strong>时钟不一致——接收时间&gt;=发送时间</strong></p>
+<p>不需要通讯的话，不一致不影响；受影响的是需要通讯的程序，需要保证发送时间在接收时间前</p>
+<p>$t_1$接收节点，$t_2$是发送节点，接收的时间置为两者较大值</p>
+<p>$t_{at~receipt~site}:= max(t_1, t_2)$</p>
+<p>$t_1=current~T.S~at~receipt~site$</p>
+<p>$t_2=T.S~of~MSG$</p>
+<h4 id="多副本的读写操作"><a href="#多副本的读写操作" class="headerlink" title="多副本的读写操作"></a>多副本的读写操作</h4><p><strong>需要保证至少在一个副本上检查出时间戳的冲突</strong></p>
+<p>写——更新所有副本的tw，检查冲突时需要检验所有副本的T.S(tw tr)，任意不满足（t&lt;tr or t&lt;tw）都需要终止</p>
+<p>读——更新读的那个副本的tr，检查当前副本的T.S，如果t&lt;tw就终止，因为只有对当前副本的写操作会对读的结果造成影响，所以只需要检查当前读的副本的T.S</p>
+<p><strong>前驱图</strong></p>
+<p>多个前驱图也要拼起来，看看有没有环路</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag"># 学科基础知识</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/26000.html" rel="next" title="DBMS-恢复">
+                <i class="fa fa-chevron-left"></i> DBMS-恢复
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/0.html" rel="prev" title="">
+                 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+                <a href="/archives">
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xzp314" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:seu_xuzhipeng@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E6%95%88%E7%94%A8"><span class="nav-number">1.1.</span> <span class="nav-text">并发效用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%BB%E6%84%8F%E5%B9%B6%E5%8F%91%E5%90%8E%E6%9E%9C"><span class="nav-number">1.2.</span> <span class="nav-text">任意并发后果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E4%B8%B2%E8%A1%8C%E5%8C%96"><span class="nav-number">1.3.</span> <span class="nav-text">可串行化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5"><span class="nav-number">1.3.1.</span> <span class="nav-text">概念</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AD%89%E4%BB%B7-equivalent"><span class="nav-number">1.4.</span> <span class="nav-text">等价(equivalent)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%AE%9A%E4%B9%89"><span class="nav-number">1.4.1.</span> <span class="nav-text">基本定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.4.2.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-number">1.4.3.</span> <span class="nav-text">分类</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%80%A7%E8%B4%A8"><span class="nav-number">1.4.4.</span> <span class="nav-text">性质</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%8D%E9%A9%B1%E5%9B%BE"><span class="nav-number">1.5.</span> <span class="nav-text">前驱图</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.5.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AF%BB%E6%89%BE%E4%B8%B2%E8%A1%8C%E5%8C%96%E8%B0%83%E5%BA%A6"><span class="nav-number">1.5.2.</span> <span class="nav-text">寻找串行化调度</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-1"><span class="nav-number">1.5.3.</span> <span class="nav-text">示例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%81%E9%94%81%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.</span> <span class="nav-text">封锁协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%83%B3%E6%B3%95"><span class="nav-number">2.1.</span> <span class="nav-text">核心想法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%A4%E6%AE%B5%E5%8A%A0%E9%94%81%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.2.</span> <span class="nav-text">两段加锁协议</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9A%E7%90%86"><span class="nav-number">2.2.2.</span> <span class="nav-text">定理</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%94%81%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.3.</span> <span class="nav-text">锁协议</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#X%E9%94%81%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.3.1.</span> <span class="nav-text">X锁协议</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#S-X-%E9%94%81%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.3.2.</span> <span class="nav-text">(S,X)锁协议</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#S-U-X-%E9%94%81%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.3.3.</span> <span class="nav-text">(S,U,X)锁协议</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%BB%E9%94%81%E4%B8%8E%E6%B4%BB%E9%94%81"><span class="nav-number">3.</span> <span class="nav-text">死锁与活锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%BB%E9%94%81%E6%A3%80%E6%B5%8B%E4%B8%8E%E6%AD%BB%E9%94%81%E9%A2%84%E9%98%B2"><span class="nav-number">3.1.</span> <span class="nav-text">死锁检测与死锁预防</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%AD%BB%E9%94%81%E6%A3%80%E6%B5%8B"><span class="nav-number">3.1.1.</span> <span class="nav-text">死锁检测</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%AD%BB%E9%94%81%E9%A2%84%E9%98%B2"><span class="nav-number">3.1.2.</span> <span class="nav-text">死锁预防</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%94%81%E7%B2%92%E5%BA%A6"><span class="nav-number">4.</span> <span class="nav-text">锁粒度</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E7%B2%92%E5%BA%A6%E5%B0%81%E9%94%81"><span class="nav-number">4.1.</span> <span class="nav-text">多粒度封锁</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B9%B3%E8%A1%A1"><span class="nav-number">4.1.1.</span> <span class="nav-text">平衡</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%B2%92%E5%BA%A6"><span class="nav-number">4.1.2.</span> <span class="nav-text">粒度</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%84%8F%E5%90%91%E9%94%81"><span class="nav-number">4.2.</span> <span class="nav-text">意向锁</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%B0%E7%9A%84%E9%94%81"><span class="nav-number">4.2.1.</span> <span class="nav-text">新的锁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8F%91%E7%8E%B0%E5%86%B2%E7%AA%81"><span class="nav-number">4.2.2.</span> <span class="nav-text">发现冲突</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9B%B8%E5%AE%B9%E7%9F%A9%E9%98%B5"><span class="nav-number">4.2.3.</span> <span class="nav-text">相容矩阵</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8A%A0%E9%94%81%E8%A7%84%E5%88%99"><span class="nav-number">4.2.4.</span> <span class="nav-text">加锁规则</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E5%8A%A0%E9%94%81"><span class="nav-number">5.</span> <span class="nav-text">索引加锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-2"><span class="nav-number">5.1.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9A%B4%E5%8A%9B%E6%96%B9%E6%B3%95"><span class="nav-number">5.2.</span> <span class="nav-text">暴力方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%89%E6%95%88%E6%96%B9%E6%B3%95"><span class="nav-number">5.3.</span> <span class="nav-text">有效方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#B-%E6%A0%91%E7%89%B9%E5%BE%81"><span class="nav-number">5.3.1.</span> <span class="nav-text">B+树特征</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E5%8A%A0%E9%94%81%E7%AE%97%E6%B3%95"><span class="nav-number">5.3.2.</span> <span class="nav-text">索引加锁算法</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%90%9C%E7%B4%A2"><span class="nav-number">5.3.2.1.</span> <span class="nav-text">搜索</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E6%8F%92%E5%85%A5"><span class="nav-number">5.3.2.2.</span> <span class="nav-text">插入</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%88%A0%E9%99%A4"><span class="nav-number">5.3.2.3.</span> <span class="nav-text">删除</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%BD%E7%81%B5%E7%8E%B0%E8%B1%A1%E5%8F%8A%E5%85%B6%E9%A2%84%E9%98%B2"><span class="nav-number">6.</span> <span class="nav-text">幽灵现象及其预防</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%AC%E8%B4%A8"><span class="nav-number">6.1.</span> <span class="nav-text">本质</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-3"><span class="nav-number">6.2.</span> <span class="nav-text">示例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0"><span class="nav-number">6.3.</span> <span class="nav-text">原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95"><span class="nav-number">6.4.</span> <span class="nav-text">解决办法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%B4%A2%E5%BC%95%E9%94%81"><span class="nav-number">6.4.1.</span> <span class="nav-text">索引锁 </span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%B0%93%E8%AF%8D%E9%94%81"><span class="nav-number">6.4.2.</span> <span class="nav-text">谓词锁</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB"><span class="nav-number">7.</span> <span class="nav-text">事务隔离级别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#OODBMS%E7%9A%84%E9%94%81%E6%9C%BA%E5%88%B6"><span class="nav-number">8.</span> <span class="nav-text">OODBMS的锁机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3%E6%A6%82%E5%BF%B5"><span class="nav-number">8.1.</span> <span class="nav-text">相关概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">8.2.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BA%A7%E8%81%94%E6%9F%A5%E8%AF%A2%E7%A4%BA%E4%BE%8B"><span class="nav-number">8.2.1.</span> <span class="nav-text">级联查询示例</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95-1"><span class="nav-number">8.2.2.</span> <span class="nav-text">解决办法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A0%E9%94%81%E6%96%B9%E6%B3%95"><span class="nav-number">8.3.</span> <span class="nav-text">加锁方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B-4"><span class="nav-number">8.3.1.</span> <span class="nav-text">示例</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E9%97%B4%E6%88%B3%E6%B3%95"><span class="nav-number">9.</span> <span class="nav-text">时间戳法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%9D%E8%B7%AF"><span class="nav-number">9.1.</span> <span class="nav-text">基本思路</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C"><span class="nav-number">9.2.</span> <span class="nav-text">读写操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%84%E4%BB%B7"><span class="nav-number">9.3.</span> <span class="nav-text">评价</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%90%E8%A7%82%E6%B3%95"><span class="nav-number">10.</span> <span class="nav-text">乐观法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B3%E9%94%AE%E6%80%9D%E6%83%B3"><span class="nav-number">10.1.</span> <span class="nav-text">关键思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E5%8A%A1%E6%89%A7%E8%A1%8C"><span class="nav-number">10.2.</span> <span class="nav-text">事务执行</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5"><span class="nav-number">10.2.1.</span> <span class="nav-text">阶段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">10.2.2.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8F%AF%E4%B8%B2%E8%A1%8C%E5%8C%96%E6%A3%80%E9%AA%8C"><span class="nav-number">10.2.3.</span> <span class="nav-text">可串行化检验</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF"><span class="nav-number">10.3.</span> <span class="nav-text">场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E5%8A%A0%E9%94%81"><span class="nav-number">11.</span> <span class="nav-text">分布式数据库加锁</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%98-1"><span class="nav-number">11.1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-number">11.2.</span> <span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#write-lock-all-read-lock-one"><span class="nav-number">11.2.1.</span> <span class="nav-text">write lock all, read lock one</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Majority-locking"><span class="nav-number">11.2.2.</span> <span class="nav-text">Majority locking</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#k-out-of-n-locking"><span class="nav-number">11.2.3.</span> <span class="nav-text">k-out-of-n locking</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#primary-Copy-Method"><span class="nav-number">11.2.4.</span> <span class="nav-text">primary Copy Method</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E6%AD%BB%E9%94%81-Global-Deadlock"><span class="nav-number">11.3.</span> <span class="nav-text">全局死锁(Global Deadlock)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E7%AD%89%E5%BE%85%E5%9B%BE-Global-wait-for-graph"><span class="nav-number">11.3.1.</span> <span class="nav-text">全局等待图(Global wait-for graph)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%BA%93%E6%97%B6%E9%97%B4%E6%88%B3%E6%B3%95"><span class="nav-number">12.</span> <span class="nav-text">分布式数据库时间戳法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%97%AE%E9%A2%98-2"><span class="nav-number">12.1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E6%97%B6%E9%97%B4%E6%88%B3-global-time-stamp"><span class="nav-number">12.2.</span> <span class="nav-text">全局时间戳(global time stamp)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%9A%E5%89%AF%E6%9C%AC%E7%9A%84%E8%AF%BB%E5%86%99%E6%93%8D%E4%BD%9C"><span class="nav-number">12.3.</span> <span class="nav-text">多副本的读写操作</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xu Zhipeng</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">160.6k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>

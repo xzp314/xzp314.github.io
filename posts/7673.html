@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="java基础知识," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="List的相关简单数据结构，包括ArrayList、ArrayDeque、PriorityQueue、LinkedList，额外包括一些Collection的方法介绍">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java-List详解">
+<meta property="og:url" content="http://example.com/posts/7673.html">
+<meta property="og:site_name" content="主页">
+<meta property="og:description" content="List的相关简单数据结构，包括ArrayList、ArrayDeque、PriorityQueue、LinkedList，额外包括一些Collection的方法介绍">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/posts/7673/image-20230911095555940.png">
+<meta property="og:image" content="http://example.com/posts/7673/image-20230911102523327.png">
+<meta property="og:image" content="http://example.com/posts/7673/image-20230911103906647.png">
+<meta property="og:image" content="http://example.com/posts/7673/image-20230911132141222.png">
+<meta property="og:image" content="http://example.com/posts/7673/image-20230911130025333.png">
+<meta property="og:image" content="http://example.com/posts/7673/image-20230911133708548.png">
+<meta property="og:image" content="http://example.com/posts/7673/image-20230911134500410.png">
+<meta property="og:image" content="http://example.com/posts/7673/image-20230914170714697.png">
+<meta property="article:published_time" content="2018-10-21T11:38:28.000Z">
+<meta property="article:modified_time" content="2023-10-10T02:39:22.666Z">
+<meta property="article:author" content="Xu Zhipeng">
+<meta property="article:tag" content="java基础知识">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/posts/7673/image-20230911095555940.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/posts/7673.html"/>
+
+
+
+
+
+  <title>java-List详解 | 主页</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="主页" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">主页</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">xzp个人小站</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/7673.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="主页">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">java-List详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-21T19:38:28+08:00">
+                2018-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
+                    <span itemprop="name">编程语言</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4.4k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  16
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  List的相关简单数据结构，包括ArrayList、ArrayDeque、PriorityQueue、LinkedList，额外包括一些Collection的方法介绍
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p>java中的集合框架是经常使用到的类族，基本都包含在<code>java.util</code>中，可以划分为<code>List</code>、<code>Map</code>和<code>Set</code>三大类</p>
+<p><img src="/posts/7673/image-20230911095555940.png" alt="image-20230911095555940"></p>
+<p>列表的特点就是存储的元素是有序的，允许重复的。根据底层数据结构一般可以划分为<code>ArrayList</code>、<code>LinkedList</code>，此外还有一个<code>Vector</code>是线程安全的，但是效率非常低，几乎不使用。</p>
+<p><strong>何为有序 | 无序？</strong></p>
+<p>无序性不是说完全随机，而是说不是按照添加的顺序进行存储或者遍历的，比如<code>HashMap</code>实际上底层也是数组，但是却是按照哈希值计算的下标进行存储 | 遍历的（如果没有发生哈希冲突），所以从数组层面，实际上是有序的，但是从插入的角度来看，就是无序的，如果要保留插入的顺序，可以使用<code>LinkedHashMap</code></p>
+<h3 id="ArrayList"><a href="#ArrayList" class="headerlink" title="ArrayList"></a>ArrayList</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>用数组存储元素的列表</p>
+<h5 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h5><p><code>ArrayList</code>的底层数据结构很简单，就是一个存储<code>Object</code>的数组<code>elementData</code>，因而具备快速随机查找的能力（<code>get()</code>、<code>set()</code>的开销均是<code>O(1)</code>），实现了<code>RandomAccess</code>接口，而该能力在我看来也是其能够作为<code>Map</code>底层数据结构的根本原因。此外，<code>ArrayList</code>的扩容使得我们不需要像数组一样，随时关心容量是否足够大。需要注意的是，考虑到效率问题，<code>ArrayList</code>本身是没有实现多线程并发访问的安全控制机制的</p>
+<p><code>ArrayList</code>还有两个比较重要的属性，一个是容量<code>capacity</code>，一个是当前大小<code>size</code></p>
+<p><code>size</code>表示的是当前数组中存储了多少元素，<code>capacity</code>指的是存储容量上限，实际上就是数组的大小</p>
+<h5 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h5><ol>
+<li>无参构造函数，其初始容量为10，实际上是将引用指向一个<code>final</code>修饰的<code>Object</code>数组，而并非临时创建</li>
+<li>指定初始容量的构造函数，这里是新建一个<code>Object</code>数组</li>
+<li>输入一个集合对象的构造函数<ol>
+<li>首先，调用<code>toArray</code>将输入转换为<code>Object</code>的临时数组</li>
+<li>其次，看集合类型是不是<code>ArrayList</code><ol>
+<li>是，直接将引用指向临时数组</li>
+<li>否，那就调用<code>Arrays.copyOf</code>方法进行转换</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h5 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h5><ol>
+<li><p><code>new</code>一个<code>ArrayList</code>，然后调用<code>add</code>方法添加元素</p>
+</li>
+<li><p><code>new</code>的时候以内部类的形式调用<code>add</code>方法添加元素</p>
+</li>
+<li><p>通过<code>Arrays.asList</code>方法传入<code>ArrayList</code>的构造函数</p>
+<p><code>ArrayList&lt;String&gt; list = new ArrayList&lt;String&gt;(Arrays.asList(&quot;aaa&quot;, &quot;bbb&quot;, &quot;ccc&quot;))</code>  </p>
+</li>
+<li><p>调用<code>Collections.nCopies</code> ，生成存储<code>n</code>份指定元素的<code>ArrayList</code></p>
+<p><code>ArrayList&lt;Integer&gt; list = new ArrayList&lt;Integer&gt;(Collections.nCopies(10, 0));</code>  </p>
+</li>
+</ol>
+<h5 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h5><p><code>add() | addAll()</code></p>
+<p>二者都是添加元素的方法</p>
+<ul>
+<li><code>add()</code>方法支持单个元素的插入，允许默认尾部插入（<code>O(1)</code>）,也允许在指定位置插入</li>
+<li><code>addAll()</code>方法支持集合形式（<code>size=m</code>）的插入，允许默认尾部插入（<code>O(m)</code>），也允许在指定位置插入</li>
+</ul>
+<p>算法流程</p>
+<p><img src="/posts/7673/image-20230911102523327.png" alt="image-20230911102523327"></p>
+<p><code>addAll()</code>整体流程类似<code>add()</code>方法，区别在于判断容量是否足够需要判断传入集合的大小<code>numNew</code>是否超过剩余存储空间（<code>capacity-size</code>），扩容时也需要考虑这部分元素数量<code>numNew</code>，此外，不是一个一个赋值，而是调用<code>arraycopy</code>方法直接复制过去，所以如果是带<code>index</code>的集合添加，那么就可能需要两次<code>arraycopy</code>，第一次是迁移原来的元素，长度基于<code>index</code>计算（<code>s-index</code>），位置偏移量自然就是<code>index→index+numNew</code>；第二次就是将集合内元素复制到数组里面去了，长度是<code>numNew</code>，位置偏移量是<code>0→index</code>。</p>
+<blockquote>
+<p><code>arraycopy(src, srcPos, dest, destPos, length)</code>:将<code>src</code>数组从<code>srcPos</code>开始，长度为<code>length</code>的区间内元素复制到<code>dest</code>数组从<code>destPos</code>开始的位置</p>
+</blockquote>
+<p><img src="/posts/7673/image-20230911103906647.png" alt="image-20230911103906647"></p>
+<hr>
+<p><code>remove()</code></p>
+<p>支持输入下标，删除指定下标的元素，并返回该元素；支持输入元素，删除遍历碰到的第一个满足<code>equals</code>的元素，返回是否删除成功</p>
+<p>实际上都是先把被删除元素右侧的元素复制（移动）到数组实现前移一位的操作，位置偏移量<code>index+1→index</code>，长度为<code>newSize-index</code>，然后将最后一位置为<code>null</code>，方便垃圾回收</p>
+<hr>
+<p><code>trimTosize()</code></p>
+<p>将底层数组的容量修改为当前数组的实际大小<code>size</code>，也是通过复制实现的，长度自然就是<code>size</code>，大小改变，也会导致<code>modCount++</code></p>
+<hr>
+<p><code>ensureCapacity()</code></p>
+<p>根据需要增加<code>ArrayList</code>实例的容量，以确保它至少可以容纳由<code>minCapacity</code>参数指定的元素。</p>
+<h4 id="核心"><a href="#核心" class="headerlink" title="核心"></a>核心</h4><h5 id="自动扩容"><a href="#自动扩容" class="headerlink" title="自动扩容"></a>自动扩容</h5><p>自动扩容的关键方法是<code>grow()</code>，自动扩容发生在添加元素前（初始容量为10，添加第11个元素时扩容），需要检查添加元素后的大小，也就是能够容纳这些元素的最小容量是否超过当前数组<code>length</code>，如果超过则需要扩容</p>
+<p>扩容的具体步骤为</p>
+<ol>
+<li><p>首先，明确新的容量是多少，传入能够容纳的最小容量一般是<code>size+1</code>或者<code>size+numNew</code></p>
+<p>新的容量首先初始化为老的数组的长度的大约1.5倍，然后如果所需要的最小容量还超过了这个1.5倍的新容量，那么新数组的大小应该赋值为这个所需要最小容量。此外，如果新容量已经超过默认的最大容量，那应该调用<code>hugeCapacity()</code>计算最终结果</p>
+</li>
+<li><p>然后新建一个新容量的数组，并将老数组的数据复制进去</p>
+</li>
+<li><p>最后返回这个新数组</p>
+</li>
+</ol>
+<p>扩容完之后，再将新元素进行插入</p>
+<p>这样的自动扩容机制能够使得我们在使用<code>arraylist</code>时不需要关心容量，但是频繁的递增式扩容的代价是比较大的，因此要么设定一个初始化容量，要么根据实际需求调用<code>ensureCapacity</code>方法手动进行扩容</p>
+<h5 id="ArrayList→HashMap"><a href="#ArrayList→HashMap" class="headerlink" title="ArrayList→HashMap"></a>ArrayList→HashMap</h5><p>如果给你一组元素：a b c d e f g需要放到<code>ArrayList</code>中，如果使得获取元素的开销是<code>O(1)</code></p>
+<ol>
+<li><p>利用哈希表的思想，总共<code>7</code>个元素，新建一个容量为<code>2^3=8</code>的<code>ArrayList</code>，初始化可以利用<code>Collections.nCopies(8, &quot;0&quot;)</code>方法进行填充</p>
+</li>
+<li><p>然后通过计算每个元素，比如a的哈希值，再与<code>8-1</code>也就是<code>7</code>做按位与，计算出元素的位置，存储起来就行了</p>
+<p><code>&quot;a&quot;.hashCode() &amp; (8-1)</code></p>
+</li>
+<li><p>获取元素的时候同样也要计算哈希值对应的数组下标</p>
+</li>
+</ol>
+<h4 id="拓展问题"><a href="#拓展问题" class="headerlink" title="拓展问题"></a>拓展问题</h4><p><strong>Fail-Fast机制是什么</strong></p>
+<p>快速失败，就是java集合针对更新操作的一种错误检测机制。</p>
+<p>底层实际上就是检查<code>expectedModCount</code>和<code>modCound</code>是否相等，不相等就会报<code>ConcurrentModificationException</code></p>
+<p>而<code>expectedModCount</code>在迭代器初始化时就确定，而<code>modCound</code>会随着对集合的操作而增加。</p>
+<p><strong>Fail-Safe机制是什么</strong></p>
+<p>采用安全失败机制的集合容器，在遍历时不是直接在集合内容上访问的，而是先复制原有集合内容，在拷贝的集合上进行遍历。</p>
+<p>原理：由于迭代时是对原集合的拷贝进行遍历，所以在遍历过程中对原集合所作的修改并不能被迭代器检测到，所以不会触发<code>ConcurrentModificationException</code>，其实就是<strong>快照遍历</strong>。</p>
+<p><code>java.util.concurrent</code>包下的容器都是安全失败的</p>
+<hr>
+<p><strong>Arrays.asList的特点？为什么会有这种特点</strong></p>
+<ol>
+<li><code>Arrays.asList</code>构建的集合不能直接赋值给<code>ArrayList</code>的引用，需要以传参的形式初始化<code>ArrayList</code></li>
+<li><code>Arrays.asList</code>构建的集合不能添加 | 删除元素</li>
+</ol>
+<p>归更到底<code>Arrays.asList</code>构建的不是一个<code>List</code>类的子类对象，而<code>ArrayList</code>才是<code>List</code>的子类，虽然都属于<code>Collcetion</code>类的子类</p>
+<hr>
+<p><strong>为什么初始化一个10大小的ArrayList，list.add(2,”1”)之后会报错IndexOutOfBoundsException</strong></p>
+<p>这是因为<code>add(index)</code>方法会调用<code>rangeCheckForadd</code>，内部如果发现<code>index</code>大于<code>size</code>，或者小于<code>0</code>就报错，而<code>size</code>实际上不是容量，而是每添加一个元素就<code>+1</code>，初始化后没有添加任何元素，<code>size</code>为<code>0</code>，<code>add</code>传入下标为<code>2</code>自然会报错</p>
+<h3 id="LinkedList"><a href="#LinkedList" class="headerlink" title="LinkedList"></a>LinkedList</h3><h4 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h4><p>双向链表存储元素的列表</p>
+<h5 id="数据结构-1"><a href="#数据结构-1" class="headerlink" title="数据结构"></a>数据结构</h5><p><code>LinkedList</code>实现了<code>list</code>接口和<code>deque</code>接口，既可以作为顺序容器，也可以充当队列和栈</p>
+<p><code>LinkedList</code>的底层是双向链表，维护了<code>first</code>和<code>last</code>两个引用分别指向首尾元素，链表为空时，均为<code>null</code>，允许存放<code>null</code>元素</p>
+<p>所有跟下标相关的操作都是线性的，而首尾的操作则是<code>O(1)</code>，为追求效率，没有实现同步，如需要，可以先用<code>Collections.synchronizedList()</code>方法进行包装</p>
+<h5 id="构造函数-1"><a href="#构造函数-1" class="headerlink" title="构造函数"></a>构造函数</h5><ol>
+<li>无参构造函数，没有任何操作</li>
+<li>输入一个集合对象的构造函数，调用<code>addAll()</code>方法</li>
+</ol>
+<h5 id="初始化-1"><a href="#初始化-1" class="headerlink" title="初始化"></a>初始化</h5><ol>
+<li><p><code>new</code>一个<code>LinekdList</code>，然后调用<code>add</code>方法添加元素</p>
+</li>
+<li><p><code>new</code>的时候以内部类的形式调用<code>add</code>方法添加元素</p>
+</li>
+<li><p>调用<code>Collections.nCopies</code> 生成存储<code>n</code>份指定元素的<code>LinkedList</code></p>
+<p><code>LinkedList&lt;Integer&gt; list = new LinkedList&lt;Integer&gt;(Collections.nCopies(10, 0) );</code> </p>
+</li>
+</ol>
+<h4 id="核心-1"><a href="#核心-1" class="headerlink" title="核心"></a>核心</h4><h5 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h5><p>删除元素时，被删除的元素自身需要置为<code>null</code>并且<code>next</code>也指向<code>null</code>，清空操作也需要将节点之间的引用关系置为空，帮助垃圾回收机制进行回收</p>
+<p>查找元素时，有一个小优化，头开始还是尾部开始取决于下标靠近哪一边</p>
+<h3 id="ArrayDeque"><a href="#ArrayDeque" class="headerlink" title="ArrayDeque"></a>ArrayDeque</h3><h4 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h4><p>基于数组和双指针实现的双端队列</p>
+<h5 id="数据结构-2"><a href="#数据结构-2" class="headerlink" title="数据结构"></a>数据结构</h5><p><code>ArrayDeque</code>实际上就是循环数组（<code>Object</code>数组）和双指针（<code>head|tail</code>）实现的双端队列，可模拟<code>LinkedList</code>能够实现的栈、队列、双端队列等数据结构</p>
+<p><code>head</code>执行第一个有效元素，<code>tail</code>指向最后一个有效元素，首尾互相衔接</p>
+<h5 id="初始化-2"><a href="#初始化-2" class="headerlink" title="初始化"></a>初始化</h5><ol>
+<li>无参初始化，默认大小是16</li>
+<li>指定大小初始化，最后会变成大于指定大小的最小2次幂</li>
+</ol>
+<h5 id="更新"><a href="#更新" class="headerlink" title="更新"></a>更新</h5><p>添加元素实际上<code>addFisrt</code>都是从尾部开始存储的</p>
+<p><img src="/posts/7673/image-20230911132141222.png" alt="image-20230911132141222"></p>
+<p><code>poll</code>元素时需要注意置为<code>null</code>，便于垃圾回收机制进行对象回收</p>
+<h4 id="核心-2"><a href="#核心-2" class="headerlink" title="核心"></a>核心</h4><p><strong>为什么容量大小是2次幂呢？</strong></p>
+<p>因为比如头插法插入元素实际上是通过<code>head</code>指针来进行插入的，如果不需要扩容，开销是<code>O(1)</code>，而<code>head</code>决定插入位置时，需要对长度取模，如果长度是<code>2</code>的幂次方，那么对长度取模可以用按位与优化</p>
+<p><code>elements[head = (head - 1) &amp; (elements.length - 1)] = e;</code>  </p>
+<p><strong>初始化是怎么找到最小2次幂的？</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="title function_">tableSizeFor</span><span class="params">(<span class="type">int</span> cap)</span> &#123;</span><br><span class="line">	<span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> cap - <span class="number">1</span>; </span><br><span class="line">    n |= n &gt;&gt;&gt; <span class="number">1</span>; </span><br><span class="line">    n |= n &gt;&gt;&gt; <span class="number">2</span>; </span><br><span class="line">    n |= n &gt;&gt;&gt; <span class="number">4</span>; </span><br><span class="line">    n |= n &gt;&gt;&gt; <span class="number">8</span>; </span><br><span class="line">    n |= n &gt;&gt;&gt; <span class="number">16</span>; </span><br><span class="line">    <span class="keyword">return</span> (n &lt; <span class="number">0</span>) ? <span class="number">1</span> : (n &gt;= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + <span class="number">1</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>类似<code>Hashmap</code>的初始化，也就是二进制向右移按位或的操作，右移按位或操作的目的在于将二进制的各个位置填上1。这样，得到的数字就是一个<code>2</code>的倍数<code>-1</code>了，比如<code>11111=1+2+4+8+16=31</code>，最后再把这个<code>1</code>补回来就得到比17大的32了</p>
+<p><img src="/posts/7673/image-20230911130025333.png" alt="image-20230911130025333"></p>
+<p><strong>扩容</strong></p>
+<p>和<code>ArrayList</code>先扩容后插入不一样，<code>ArrayDeque</code>的扩容发生在插入之后，即如果<code>head</code>和<code>tail</code>指向同一个位置，说明数组填满了需要扩容，扩容其实就是申请一个<strong>两倍大</strong>的数组，然后将原数组复制过去，因为是循环数组，<code>head</code>和<code>tail</code>不一定就是数组的起点和终点，所以复制分为两步进行，就是依次<strong>复制<code>head</code>的右半部分和左半部分</strong></p>
+<h3 id="PriorityQueue"><a href="#PriorityQueue" class="headerlink" title="PriorityQueue"></a>PriorityQueue</h3><h4 id="简介-3"><a href="#简介-3" class="headerlink" title="简介"></a>简介</h4><p>通过堆实现的容器，堆的底层数据结构就是数组，<strong>保证每次取出的元素都是队列中权值最小的</strong>，大小判断可以用自然顺序也可以传入自定义的<code>Comparator</code></p>
+<h5 id="数据结构-3"><a href="#数据结构-3" class="headerlink" title="数据结构"></a>数据结构</h5><p>底层是通过最小堆实现，而最小堆的底层实现就是数组，不允许放入<code>null</code>元素，每个元素都有两个子元素，他们的下标是有规律的，比如父亲的下标为<code>index</code>，则左右孩子的下标分别为<code>index*2+1</code>和<code>index*2+2</code>，反过来孩子是<code>index</code>，父亲就是<code>(index-1)/2</code></p>
+<h5 id="构造函数-2"><a href="#构造函数-2" class="headerlink" title="构造函数"></a>构造函数</h5><p>可以根据自然顺序进行排序，也可以传入一个自定义排序规则的<code>Comparator</code>，依据业务场景自己设计优先级</p>
+<h4 id="核心-3"><a href="#核心-3" class="headerlink" title="核心"></a>核心</h4><p><strong>扩容</strong></p>
+<p>类似<code>ArrayLiist</code></p>
+<p><strong>插入元素</strong></p>
+<p>首先将元素插入到数组最后一位，然后从最后一位的<code>parent</code>开始，自底向上调整，不断将优先级低于当前插入元素的<code>parent</code>向下移动，其实就是复制，然后向上走到<code>parent</code>，直到无法向上走，也就是<code>parent</code>优先级高于插入的元素，这个时候最后调整的<code>parent</code>的值实际上存在两个，因此需要把新的元素插入到最后调整的<code>parent</code>的位置</p>
+<p><img src="/posts/7673/image-20230911133708548.png" alt="image-20230911133708548"></p>
+<p><strong>删除元素</strong></p>
+<p>首先删除的肯定是下标为<code>0</code>的元素，调整是这样的</p>
+<ol>
+<li>首先将最后一个元素放到<code>0</code>的位置上，记录最后一个元素的值，并将最后一个元素置为<code>null</code>，便于垃圾回收</li>
+<li>然后从下标<code>0</code>开始，自顶向下调整，将左右孩子中更优的节移动到<code>parent</code>位置上，往下走到更优的孩子，直到左右孩子都不优于最后一个元素，再把最后一个元素的值赋值给最后一次移动的孩子，其实就是更优的左右孩子的父亲</li>
+</ol>
+<p><img src="/posts/7673/image-20230911134500410.png" alt="image-20230911134500410"></p>
+<h3 id="Collections常用方法"><a href="#Collections常用方法" class="headerlink" title="Collections常用方法"></a>Collections常用方法</h3><h4 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h4><p>底层调用的是<code>Arrays.sort()</code>，默认调用<code>DualPivotQuickSort()</code>，所以实际上使用的是双轴快排，使得大多数数组排序时间复杂度控制在<code>O(nlogn)</code></p>
+<h4 id="binarySearch"><a href="#binarySearch" class="headerlink" title="binarySearch"></a>binarySearch</h4><p>源码首先检测是不是<code>RandomAccess</code>的，因为<code>ArrayList</code>实现了<code>RandomAccess</code>，表示这个集合支持随机访问，而<code>LinkedList</code>没有实现<code>RandomAccess</code></p>
+<p>如果支持<code>RandomAccess</code>或者元素数量少于阈值<code>5000</code>，就用基于下标的二分搜索；否则，用迭代器的二分搜索</p>
+<h4 id="shuffle"><a href="#shuffle" class="headerlink" title="shuffle"></a>shuffle</h4><p>洗牌算法，其实就是将 <code>List</code> 集合中的元素进行打乱，一般可以用在抽奖、摇号、洗牌等各个场景中。  </p>
+<p>主要有这么两种方式，一种直接传入集合、另外一种还可以传入固定的随机种子这种方式可以控制洗牌范围</p>
+<p>源码实现简单来说就是</p>
+<ol>
+<li>从大到小遍历每个数字</li>
+<li>随机生成一个左侧的位置</li>
+<li>然后元素置换</li>
+</ol>
+<h4 id="rotate"><a href="#rotate" class="headerlink" title="rotate"></a>rotate</h4><p>可以把 <code>ArrayList</code> 或者 <code>Linkedlist</code>，从指定的某个位置开始，进行正旋或者逆旋操作</p>
+<p><img src="/posts/7673/image-20230914170714697.png" alt="image-20230914170714697"></p>
+<p>顺时针旋转2位</p>
+<p>源码实现，如果能够随机访问或者元素数量较少，则</p>
+<ol>
+<li><p>计算取余之后旋转多少，比如size是5，旋转12和旋转2都是2</p>
+</li>
+<li><p>循环不断将元素放到新的位置上</p>
+<blockquote>
+<p>比如1 2 3 4 5，旋转2位，就是1到3的位置，3到5的位置，5到2的位置，2到4的位置，4到1的位置，闭环结束</p>
+</blockquote>
+</li>
+</ol>
+<p>否则，则把链表分成前后两块，分别倒转，最后合在一起倒转</p>
+<blockquote>
+<p>比如1 2 3 4 5，旋转2位，以下标2为分界线，1 2 3倒转为3 2 1，4 5倒转为5 4，一起倒转为4 5 1 2 3</p>
+</blockquote>
+<h3 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h3><h4 id="ArrayList-vs-LinkedList"><a href="#ArrayList-vs-LinkedList" class="headerlink" title="ArrayList vs LinkedList"></a>ArrayList vs LinkedList</h4><ol>
+<li><p>底层的数据结构不同，<code>ArrayList</code>的底层实现是动态数组，支持随机访问，<code>LinkedList</code>基于双向链表实现，只能顺序访问</p>
+</li>
+<li><p>插入的时间开销不同，可以分为头插、尾插和中间来说明</p>
+<ol>
+<li>头插：<code>ArrayList</code>需要以拷贝的形式移动数据，并且可能需要扩容，线性开销；而<code>LinkedList</code>只需要用头指针插入即可，<code>O(1)</code>开销</li>
+<li>尾插：<code>ArrayList</code>和<code>LinkedList</code>都是<code>O(1)</code>的开销，但是<code>ArrayList</code>可能会扩容，<code>LinkedList</code>则需要实例化对象，相对来说还是<code>ArrayList</code>好</li>
+<li>中间：<code>ArrayList</code>需要以拷贝的形式移动数据，线性开销；<code>LinkedList</code>需要遍历找到插入位置，也是线性；但是实际运行<code>ArrayList</code>比<code>LinkedList</code>快不少。我觉得主要原因是双向链表的遍历开销太花时间了，比<code>ArrayList</code>的<code>copy</code>和扩容慢得多</li>
+</ol>
+<p><code>LinkedList</code>还有一个额外开销就是每次添加元素都要申请堆空间</p>
+</li>
+<li><p>空间的开销不同，<code>ArrayList</code>空间浪费体现在可能在数组末尾预留一些无用空间，但是<code>trimToSize()</code>可以解决这个问题；而<code>LinkedList</code>存储每一个元素都要额外保存前驱、后继</p>
+</li>
+<li><p>应用场景不同，<code>ArrayList</code>可以用来模拟堆这样的树结构，<code>LinkedList</code>可以用来模拟栈、队列和双向队列</p>
+</li>
+</ol>
+<h4 id="ArrayDeque-vs-LinkedList"><a href="#ArrayDeque-vs-LinkedList" class="headerlink" title="ArrayDeque vs LinkedList"></a>ArrayDeque vs LinkedList</h4><ol>
+<li><code>ArrayDeque</code>底层数据结构是循环数组和双指针，<code>LinkedList</code>就是双向链表</li>
+<li><code>ArrayDeque</code>的性能开销主要体现在扩容上，总体比<code>LinkedList</code>（申请堆空间）要好</li>
+<li><code>ArrayDeque</code>不需要保存前驱后继，<code>LinkedList</code>需要，在空间性能上也是<code>ArrayDeque</code>好一点</li>
+</ol>
+<h4 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h4><ol>
+<li><p>for循环遍历</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; list.size(); i++) &#123;</span><br><span class="line"> xx += list.get(i);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>增强for循环遍历</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (Integer itr : list) &#123;</span><br><span class="line"> xx += itr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>Iterator遍历</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Iterator&lt;Integer&gt; iterator = list.iterator();</span><br><span class="line"><span class="keyword">while</span> (iterator.hasNext()) &#123;</span><br><span class="line">    <span class="type">Integer</span> <span class="variable">next</span> <span class="operator">=</span> iterator.next();</span><br><span class="line">    xx += next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>forEach遍历</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list.forEach(integer -&gt; &#123;</span><br><span class="line"> xx += integer;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>stream流遍历</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list.stream().forEach(integer -&gt; &#123;</span><br><span class="line"> xx += integer;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag"># java基础知识</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/56443.html" rel="next" title="java-代理机制详解">
+                <i class="fa fa-chevron-left"></i> java-代理机制详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/58446.html" rel="prev" title="java-Map详解">
+                java-Map详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+                <a href="/archives">
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xzp314" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:seu_xuzhipeng@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ArrayList"><span class="nav-number">2.</span> <span class="nav-text">ArrayList</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">2.1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">2.1.1.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.2.</span> <span class="nav-text">构造函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-number">2.1.3.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">2.1.4.</span> <span class="nav-text">常用方法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83"><span class="nav-number">2.2.</span> <span class="nav-text">核心</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E6%89%A9%E5%AE%B9"><span class="nav-number">2.2.1.</span> <span class="nav-text">自动扩容</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ArrayList%E2%86%92HashMap"><span class="nav-number">2.2.2.</span> <span class="nav-text">ArrayList→HashMap</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%93%E5%B1%95%E9%97%AE%E9%A2%98"><span class="nav-number">2.3.</span> <span class="nav-text">拓展问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LinkedList"><span class="nav-number">3.</span> <span class="nav-text">LinkedList</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B-1"><span class="nav-number">3.1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-1"><span class="nav-number">3.1.1.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0-1"><span class="nav-number">3.1.2.</span> <span class="nav-text">构造函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96-1"><span class="nav-number">3.1.3.</span> <span class="nav-text">初始化</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83-1"><span class="nav-number">3.2.</span> <span class="nav-text">核心</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C"><span class="nav-number">3.2.1.</span> <span class="nav-text">操作</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ArrayDeque"><span class="nav-number">4.</span> <span class="nav-text">ArrayDeque</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B-2"><span class="nav-number">4.1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-2"><span class="nav-number">4.1.1.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96-2"><span class="nav-number">4.1.2.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0"><span class="nav-number">4.1.3.</span> <span class="nav-text">更新</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83-2"><span class="nav-number">4.2.</span> <span class="nav-text">核心</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PriorityQueue"><span class="nav-number">5.</span> <span class="nav-text">PriorityQueue</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B-3"><span class="nav-number">5.1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84-3"><span class="nav-number">5.1.1.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0-2"><span class="nav-number">5.1.2.</span> <span class="nav-text">构造函数</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83-3"><span class="nav-number">5.2.</span> <span class="nav-text">核心</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Collections%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">6.</span> <span class="nav-text">Collections常用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#sort"><span class="nav-number">6.1.</span> <span class="nav-text">sort</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#binarySearch"><span class="nav-number">6.2.</span> <span class="nav-text">binarySearch</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#shuffle"><span class="nav-number">6.3.</span> <span class="nav-text">shuffle</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#rotate"><span class="nav-number">6.4.</span> <span class="nav-text">rotate</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8B%93%E5%B1%95"><span class="nav-number">7.</span> <span class="nav-text">拓展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ArrayList-vs-LinkedList"><span class="nav-number">7.1.</span> <span class="nav-text">ArrayList vs LinkedList</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ArrayDeque-vs-LinkedList"><span class="nav-number">7.2.</span> <span class="nav-text">ArrayDeque vs LinkedList</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%81%8D%E5%8E%86"><span class="nav-number">7.3.</span> <span class="nav-text">遍历</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xu Zhipeng</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">160.6k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

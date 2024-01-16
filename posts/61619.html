@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="学科基础知识," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="计算机网络数据链路层相关概念，基于中科大郑烇计算机网络课程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络-数据链路层">
+<meta property="og:url" content="http://example.com/posts/61619.html">
+<meta property="og:site_name" content="主页">
+<meta property="og:description" content="计算机网络数据链路层相关概念，基于中科大郑烇计算机网络课程">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/posts/61619/image-20230531154806604.png">
+<meta property="og:image" content="http://example.com/posts/61619/image-20230531154857997.png">
+<meta property="og:image" content="http://example.com/posts/61619/image-20230531155442327.png">
+<meta property="og:image" content="http://example.com/posts/61619/image-20230531162619239.png">
+<meta property="og:image" content="http://example.com/posts/61619/image-20230531163021643.png">
+<meta property="og:image" content="http://example.com/posts/61619/image-20230531163740992.png">
+<meta property="og:image" content="http://example.com/posts/61619/image-20221214183009928.png">
+<meta property="og:image" content="http://example.com/posts/61619/image-20230526152410596.png">
+<meta property="og:image" content="http://example.com/posts/61619/image-20230526155129089.png">
+<meta property="og:image" content="http://example.com/posts/61619/image-20230602132437548.png">
+<meta property="og:image" content="http://example.com/posts/61619/image-20230602132537204.png">
+<meta property="article:published_time" content="2019-07-01T07:31:00.000Z">
+<meta property="article:modified_time" content="2023-08-28T07:14:19.000Z">
+<meta property="article:author" content="Xu Zhipeng">
+<meta property="article:tag" content="学科基础知识">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/posts/61619/image-20230531154806604.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/posts/61619.html"/>
+
+
+
+
+
+  <title>计算机网络-数据链路层 | 主页</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="主页" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">主页</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">xzp个人小站</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/61619.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="主页">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">计算机网络-数据链路层</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-01T15:31:00+08:00">
+                2019-07-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">课程学习</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index">
+                    <span itemprop="name">计算机网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  6.6k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  23
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  计算机网络数据链路层相关概念，基于中科大郑烇计算机网络课程
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>网络层解决了一个网络到另一个网络的路由问题，那么网络内部如何实现节点（路由器、主机）间的数据传输呢？需要链路层提供点到点传输功能。</p>
+<p><strong>链路</strong>：从一个节点到相邻节点的物理线路，中间没有任何其他交换节点</p>
+<p><strong>数据链路</strong>：在链路的基础上增加了一些必要的硬件（如网络适配器）和软件（如协议的实现），以帧为单位传输和处理数据</p>
+<blockquote>
+<p>主机和路由器（包括网桥和交换机）都是节点（nodes），连接相邻节点的通信信道是链路（links），链路是从一个结点到相邻结点的一段物理链路，数据链路则在链路的基础上增加了一些必要的硬件（如网络适配器）和软件（如协议的实现）</p>
+</blockquote>
+<p>网络节点的连接方式包括：</p>
+<ol>
+<li><p>点到点连接：计算机的广域网，距离比较远，寻址不重要，已经是点对点了，传输介质的使用也不会冲突</p>
+<p>海底电缆直连</p>
+</li>
+<li><p>多点连接（共享型介质、通过网络交换机）：局域网内部，存在多点冲突问题（两个节点同时发，大家都要收，怎么收），需要实现多点接入协议（协调各节点对共享性介质的访问和使用），此外如何为硬件节点进行编址，如何寻址也需要解决</p>
+<p>通过同轴电缆、网络交换机连接多个节点</p>
+</li>
+</ol>
+<p><strong>广域网如果采用多点连接方式</strong></p>
+<ol>
+<li><p>物理布局很麻烦</p>
+</li>
+<li><p>带宽需求大、延迟大→链路容量大，冲突发生时很难处理</p>
+<blockquote>
+<p>比如A B C D这四个节点依次连接到同轴电缆</p>
+<p>A发送数据 花了很长时间</p>
+<p>B侦听 A的数据没到达 以为没人发数据 自己也发了 </p>
+<p>就造成了冲突 A发的数据都无效了</p>
+</blockquote>
+</li>
+<li><p>用令牌的形式协调冲突，通信代价大</p>
+</li>
+</ol>
+<p><strong>局域网如果用点对点连接方式</strong></p>
+<p>局域网内任意节点之间都要连接，开销太大</p>
+<p>数据链路层的数据单元叫做帧，将网络层获取的数据包封装成帧（frame）</p>
+<p>数据链路层负责从一个节点通过链路将（帧中的）数据报发送到相邻的物理节点（一个子网内部的2节点），一跳</p>
+<p>数据报（分组）在不同链路上以不同的链路协议进行传送，不同的链路协议提供不同的服务</p>
+<ol>
+<li>第一跳链路：以太网</li>
+<li>中间链路：帧中继链路</li>
+<li>最后一跳：802.11</li>
+</ol>
+<p>网卡（适配器）实现链路层功能：</p>
+<ol>
+<li>发送方：<ol>
+<li>在帧中封装数据报：帧头、帧尾</li>
+<li>加上差错控制编码，实现可靠数据传输和流量控制功能等</li>
+</ol>
+</li>
+<li>接收方：<ol>
+<li>检查有无出错，执行可靠数据传输和流量控制功能等</li>
+<li>解封装数据报，将至交给上层</li>
+</ol>
+</li>
+</ol>
+<h3 id="链路层服务"><a href="#链路层服务" class="headerlink" title="链路层服务"></a>链路层服务</h3><p>封装成帧、差错检测和可靠传输</p>
+<h3 id="封装成帧"><a href="#封装成帧" class="headerlink" title="封装成帧"></a>封装成帧</h3><p>将数据报封装在帧中，加上帧头、帧尾部，作用之一就是帧定界（不是所有数据链路层的协议都有帧定界标</p>
+<blockquote>
+<p>物理层添加8字节的前导码（帧头前面），其中前7个字节为同步码，用于接收双方的时钟同步，剩余一个字节表示帧开始的位置，其后紧跟MAC地址，此外，以太网帧还规定了96比特的帧间间隔，因此也不需要帧结束标志</p>
+</blockquote>
+<p>帧头包含了定位所需的物理地址信息（Media Access Control Address, MAC)，帧尾包含数据的校验和</p>
+<p><strong>透明传输</strong>：指数据链路层对上层交付的传输数据没有任何限制，就好像数据链路层不存在一样，数据链路层需要实现的功能</p>
+<ul>
+<li><p>面向字节的物理链路使用字节填充（或称字符填充，填充转义字符ESC 1个字节）的方法实现透明传输。</p>
+</li>
+<li><p>面向比特的物理链路使用比特填充的方法实现透明传输。</p>
+</li>
+</ul>
+<blockquote>
+<p>帧的数据部分，发送方碰到连续5个1补充1个0，接收方碰到连续5个1删除那个0</p>
+</blockquote>
+<p><strong>最大传输单元（Maximum Transmission Unit，MTU）</strong>:表示数据链路层的一个帧所能携带的最大数据长度，因此对于大的数据报，一个MTU存不下，就需要分片</p>
+<h3 id="差错检测"><a href="#差错检测" class="headerlink" title="差错检测"></a>差错检测</h3><p><strong>比特差错</strong>：实际的通信链路都不是理想的，比特在传输过程中可能会产生差错：1可能会变成0，而0也可能变成1。这称为。<br><strong>误码率（Bit Error Rate，BER）</strong>：在一段时间内，传输错误的比特占所传输比特总数的比率称为误码率。</p>
+<p><strong>差错检验码</strong>；帧尾包含数据的校验和，差错校验码，用于差错检验</p>
+<p><strong>错误检测</strong>：接收方检测出的错误，通知发送端进行重传或丢弃帧  </p>
+<p><strong>差错纠正</strong>：接收端检查和纠正bit错误，不通过重传来纠正错误</p>
+<p><strong>帧校验序列（Frame Check Sequence, FCS）字段</strong>：数据帧（Data Frame）中用来验证数据完整性和正确性的字段。FCS Field通常采用CRC计算出的校验和作为值，将该值附加到数据帧的末尾。</p>
+<p>没有通过校验：肯定出错</p>
+<p>通过检验：不一定没有出错，这种没有检测出来的错误叫做残存错误</p>
+<h4 id="奇偶校验"><a href="#奇偶校验" class="headerlink" title="奇偶校验"></a>奇偶校验</h4><p>在待发送的数据后面添加1位奇偶校验位，使整个数据（包括所添加的校验位在内）中“1”的个数为奇数（奇校验）或偶数（偶校验）。</p>
+<p>单bit奇偶检验：检测单个bit级别错误，无法纠正偶数项错误</p>
+<p><img src="/posts/61619/image-20230531154806604.png" alt="image-20230531154806604"></p>
+<p>二维奇偶校验：检测和纠正单个bit错误</p>
+<p><img src="/posts/61619/image-20230531154857997.png" alt="image-20230531154857997"></p>
+<p>但是比如</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>1</th>
+<th>0</th>
+<th>变为</th>
+<th>0</th>
+<th>1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td></td>
+<td><strong>1</strong></td>
+<td><strong>0</strong></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>无法检验错误</p>
+<h4 id="Internet校验和"><a href="#Internet校验和" class="headerlink" title="Internet校验和"></a>Internet校验和</h4><p>检测在传输报文段时的错误（如位翻转），（注：仅仅用在传输层）</p>
+<p><img src="/posts/61619/image-20230531155442327.png" alt="image-20230531155442327"></p>
+<h4 id="CRC循环冗余检验码"><a href="#CRC循环冗余检验码" class="headerlink" title="CRC循环冗余检验码"></a>CRC循环冗余检验码</h4><p>Cyclic Redundancy Check</p>
+<ol>
+<li><p>模2运算⊕</p>
+<p>位与位之间独立，加法不进位，减法不借位，就是异或运算，相同为0，不同为1</p>
+<p>1 0 1 1 0</p>
+<p>0 1 0 1 0</p>
+<hr>
+<p>1 1 1 0 0</p>
+</li>
+<li><p>比特序列的两种表示</p>
+<ol>
+<li>1 0 1 1</li>
+<li>$x^3+0·x^2+x^1+x^0=x^3+x^2+1$</li>
+</ol>
+</li>
+<li><p>生成多项式G：r次方的一个多项式，总共r+1位</p>
+<p>发送、接收双方<strong>约定</strong>的一个序列</p>
+<p>例如，1001，$x^3+1$，4位，3次方的多项式</p>
+</li>
+<li><p>性能分析</p>
+<ol>
+<li>1bit的错误都能检测</li>
+<li>双bit错误都能检测</li>
+<li>长度&lt;=r的错误都能检测</li>
+<li>长度=r+1的突发错误，检测不出的概率为$\frac{1}{2^{r-1}}$</li>
+<li>长度&gt;r+1的突发错误，检测不出的概率为$\frac{1}{2^r}$</li>
+</ol>
+</li>
+<li><p>广泛应用于以太网、802.11WiFi、ATM</p>
+</li>
+</ol>
+<p>生成多项式：$x^4+x^2+x+1&lt;=&gt;10111$，就是除法用到的除数</p>
+<p>如下是常用的生成多项式：必须包含最低次项</p>
+<p><img src="/posts/61619/image-20230531162619239.png" alt="image-20230531162619239"></p>
+<p><strong>数据为101001，生成多项式是x\^3+x^2+1&lt;=&gt;1101，计算余数</strong></p>
+<p>101001|000=&gt;101001 000</p>
+<p>101001 000/1101</p>
+<p><img src="/posts/61619/image-20230531163021643.png" alt="image-20230531163021643"></p>
+<p><strong>接收到信息为101101001，多项式为x\^3+x^2+1，是否出现错误?</strong></p>
+<p><img src="/posts/61619/image-20230531163740992.png" alt="image-20230531163740992"></p>
+<h3 id="可靠数据传输"><a href="#可靠数据传输" class="headerlink" title="可靠数据传输"></a>可靠数据传输</h3><p>Reliable Data Transfer，RDT</p>
+<p>一般化的链路层服务，不是所有的链路层都提供这些服务一个特定的链路层只是提供其中一部分的服务，取决于为上层提供什么样的服务</p>
+<ul>
+<li>不可靠传输服务：仅仅丢弃有误码的帧，其他什么也不做</li>
+<li>可靠传输服务：想办法实现发送端发送什么，接收端就收到什么。</li>
+</ul>
+<blockquote>
+<p>以太网的链路层不提供可靠数据传输</p>
+<p>WLAN这种无线局域网提供可靠数据传输</p>
+</blockquote>
+<ol>
+<li><p>本身比较可靠的链路，不需要实现可靠传输</p>
+<p>出错率低，没有必要在每一个帧中做差错控制的工作，协议复杂  </p>
+<ul>
+<li>发送端对每一帧进行差错控制编码，根据反馈做相应的动作</li>
+<li>接收端进行差错控制解码，反馈给发送端（ACK，NAK）  </li>
+</ul>
+</li>
+<li><p>数据链路层放弃可靠传输，在网络层和传输层实现可靠控制，或者完全不做可靠控制</p>
+</li>
+<li><p>在高差错链路上需要进行可靠的数据传输，但是为什么还要在传输层做端到端的可靠性控制</p>
+<p>出错率高，如果在链路层不做差错控制工作，漏出去的错误比较高；到了上层如果需要可靠控制的数据传输代价会很大</p>
+</li>
+</ol>
+<blockquote>
+<p>如果链路层不做差错控制，分组的帧可能被丢弃，目标主机没收到，只能源主机重传，代价太大</p>
+</blockquote>
+<p>一般情况下，<strong>有线链路</strong>的误码率比较低，为了减小开销，并不要求数据链路层向上提供可靠传输服务。即使出现了误码，可靠传输的问题由其上层处理。<br><strong>无线链路</strong>易受干扰，误码率比较高，因此要求数据链路层必须向上层提供可靠传输服务。</p>
+<p>实际上传输出错，还要考虑分组丢失、分组失序、分组重复等问题，这些问题通常不在数据链路层出现，因此也会把可靠数据传输弄到上层去</p>
+<p>实现可靠数据传输的三种协议包括停止等待、回退N步以及选择重传，这几种协议的基本原理在整个计算机网络体系结构是通用的</p>
+<h4 id="粗粒度"><a href="#粗粒度" class="headerlink" title="粗粒度"></a>粗粒度</h4><h5 id="停止等待协议"><a href="#停止等待协议" class="headerlink" title="停止等待协议"></a>停止等待协议</h5><p>Stop-and-Wait</p>
+<h6 id="确认与否认"><a href="#确认与否认" class="headerlink" title="确认与否认"></a>确认与否认</h6><p>接收到返回确认，数据包发生错误或者乱序接收，返回否认</p>
+<p><strong>新的问题：如果DATA丢失了，接收方没收到不会返回任何信息，发送方没有收到ACK不会发送下一条数据，死锁</strong></p>
+<h6 id="超时重传"><a href="#超时重传" class="headerlink" title="超时重传"></a>超时重传</h6><p>为解决该问题，可以在发送方发送完一个数据分组时，启动一个超时计时器。若到了超时计时器所设置的重传时间<br>而发送方仍收不到接收方的任何ACK或NAK,则重传原来的数据分组，这就叫做超时重传。</p>
+<p>一般可将重传时间选为略大于“从发送方到接收方的平均往返时间”（数据链路层，相邻节点之间的往返时间比较好确定，但是传输层的往返时间不固定，比较难以确定）</p>
+<p><strong>新的问题：接收方实际上收到了数据，返回ACK，但是ACK丢失了，发送方没有收到，出发超时重传，就会出现重复分组</strong></p>
+<h6 id="序号"><a href="#序号" class="headerlink" title="序号"></a>序号</h6><p>为解决该问题，为每个分组引入序号，碰到相同序号的分组，就丢弃，由于停止等待协议是发一个收一个再发，因此只需要0 1即可表示序号，1个比特位足以，接收方用一个比特位表示期待收到的序号，如果不匹配就丢弃</p>
+<p><strong>新的问题：发送方接收到ACK到底是哪个分组的ACK</strong></p>
+<p>DATA0延误了，再次发送DATA0，接收方收到第一个DATA0，返回ACK，又收到第二个DATA0，丢弃，为了防止再次重传，需要再次返回ACK，发送方在超时重传之后，接收到第一个ACK，发送DATA1，这个时候又收到了ACK，无法区分这个ACK是DATA0还是DATA1的</p>
+<p>返回的ACK信号也需要序号</p>
+<p>实际上，数据链路层其实不会出现分组迟到的情况（链路点对点，往返时间相对固定），因此不需要对ACK编号，传输层不行</p>
+<h5 id="GBN"><a href="#GBN" class="headerlink" title="GBN"></a><a href="# 流水线">GBN</a></h5><p>发送窗口的大小不是随意设置的，构成序号的比特数量为n，则$1&lt;W_T&lt;=2^n-1$</p>
+<p>比如分组序号是0-7(3个比特位)，那么窗口大小应该1&lt;W&lt;=2^3-1，否则会出现分组重复问题</p>
+<blockquote>
+<p>窗口设为8</p>
+<p>发送方发送0 1 2 3 4 5 6 7（old） 接收方接收后返回ACK（丢失了或者延误），触发超时重传</p>
+<p>此时，接收方期待0 1 2 3 4 5 6 7（new）</p>
+<p>发送方重传0 1 2 3 4 5 6 7（new），0与0匹配，发生了重复</p>
+<p>窗口设为7</p>
+<p>0 1 2 3 4 5 6 接收方接收后返回ACK（丢失了或者延误）触发超时重传</p>
+<p>此时，接收方期待7 0 1 2 3 4 5 6</p>
+<p>发送方重传 0 1 2 3 4 5 6，0和7不匹配，不会出现分组重复问题</p>
+</blockquote>
+<p>通信线路质量不好时，分组出错重传代价太大，信道利用率不一定优于停止等待协议</p>
+<h5 id="SR"><a href="#SR" class="headerlink" title="SR"></a><a href="# 流水线">SR</a></h5><p>发送、接收窗口的大小不是随意设置的，构成序号的比特数量为n，则$1&lt;W_T=W_R&lt;=2^{n-1}$</p>
+<p>比如分组序号是0-7(3个比特位)，那么窗口大小应该1&lt;W&lt;=2^2=4，否则会出现分组重复问题</p>
+<p>其实就是窗口分成两段，前后不能交集</p>
+<blockquote>
+<p>窗口设为5</p>
+<p>发送方发送0 1 2 3 4（old） 接收方接收后返回ACK（0的丢失了或者延误），触发超时重传</p>
+<p>此时，接收方期待5 6 7 0 1（new）</p>
+<p>发送方重传0，0与0匹配，发生了重复</p>
+<p>窗口设为4</p>
+<p>0 1 2 3接收方接收后返回ACK（0的丢失了或者延误）触发超时重传</p>
+<p>此时，接收方期待4 5 6 7</p>
+<p>发送方重传0，均不匹配，不会出现分组重复问题</p>
+</blockquote>
+<p><img src="/posts/61619/image-20221214183009928.png" alt="image-20221214183009928"></p>
+<h4 id="细粒度"><a href="#细粒度" class="headerlink" title="细粒度"></a>细粒度</h4><h5 id="rdt1-0"><a href="#rdt1-0" class="headerlink" title="rdt1.0"></a>rdt1.0</h5><p>可靠信道，没有比特错误，没有分组丢失，不需要额外机制实现可靠数据传输</p>
+<p><strong>问题</strong>：过于理想</p>
+<h5 id="rdt2-0"><a href="#rdt2-0" class="headerlink" title="rdt2.0"></a>rdt2.0</h5><p>信道是不可靠的</p>
+<p><strong>问题</strong>：会发生bit错误</p>
+<p><strong>解决思路</strong>：如何发现错误？如何修正错误？</p>
+<ol>
+<li><p>发现错误</p>
+<p><strong>校验和</strong>来检测bit级的错误</p>
+</li>
+<li><p>告知错误</p>
+<p>接收方用<strong>ACK 和NAK</strong>信号显式告知发送方，数据的发生状况，成功或者失败</p>
+</li>
+<li><p>修正错误</p>
+<p>发送方缓存已发送的数据，当接收到NAK后，<strong>重发</strong>数据</p>
+</li>
+</ol>
+<h5 id="rdt2-1"><a href="#rdt2-1" class="headerlink" title="rdt2.1"></a>rdt2.1</h5><p>解决rdt2.0的致命缺陷</p>
+<p><strong>问题</strong>：如果ACK和NAK出错怎么办？发送方完全不知道接收方发生了啥</p>
+<p><strong>解决思路</strong>：首先需要能够检测出ACK和NAK的错误，其次检测到错误了，不重发导致死锁，重发可能内容重复</p>
+<ol>
+<li><p>重发是肯定要重发的，需要引入序号来避免重复，相同序号的内容抛弃掉</p>
+<blockquote>
+<p>停止等待协议中，因为是发一个接收一个，所以只需要0和1，发送端给数据编号，接收端比较接收到的数据是不是想要的数据来判断是否要抛弃掉</p>
+</blockquote>
+</li>
+</ol>
+<p>此外，接收方实际上是不知道自己的ACK和NAK有没有被正确返回给发送方的，但是可以通过发送方的下一步动作来判断</p>
+<ol>
+<li>接收方返回ACK<ol>
+<li>发送方重发，ACK出错</li>
+<li>发送方发送下一个分组，ACK无误</li>
+</ol>
+</li>
+<li>接收方返回NAK<ol>
+<li>发送方重发，NAK出错、无误</li>
+</ol>
+</li>
+</ol>
+<h5 id="rdt2-2"><a href="#rdt2-2" class="headerlink" title="rdt2.2"></a>rdt2.2</h5><p>简化控制信息</p>
+<p><strong>问题</strong>：ACK和NAK作为控制信息，在逻辑上需要两个，true or false，但是在实现上，是否可以简化</p>
+<p><strong>解决思路</strong>：接收方既然可以通过发送方的下一步动作隐式判断发送方接收控制信息成功与否，那么接收方其实也可以通过带序号的ACK信息来表达自己接收分组成功与否。实际上，发送方只有明确知道接收方接收到上一个数据，才会发下一个数据</p>
+<blockquote>
+<p>比如发送方发了0的分组</p>
+<ol>
+<li>接收方接收到了，返回0的确认，告诉发送方，我收到0的数据了，发送方就能发送1了</li>
+</ol>
+<p>继续发1的分组</p>
+<ol>
+<li>接收方没接到或者出错，再次返回0的确认，告诉发送方，我收到0的数据了，但是需要1的数据，发送方需要重发1</li>
+</ol>
+<p>重发1的分组</p>
+<ol>
+<li>接收方接收到了，返回1的确认，告诉发送方，我收到1的数据了，发送方就能发送2了</li>
+</ol>
+<p><img src="/posts/61619/image-20230526152410596.png" alt="image-20230526152410596"></p>
+</blockquote>
+<h5 id="rdt3-0"><a href="#rdt3-0" class="headerlink" title="rdt3.0"></a>rdt3.0</h5><p><strong>分组丢失的新危机</strong></p>
+<p><strong>问题</strong>：如果分组丢失了，怎么办？比如数据丢失了，接收方没收到，也不会返回确认信息，发送方也不会发送下一个数据，死锁；或者数据收到了，但是确认信息丢了，还是死锁</p>
+<p><strong>解决思路</strong>：超时重传或者叫自动重传请求（Automatic Repeat Request，ARQ），在发送方设置一个时钟，超时都没有收到确认信息就重传最后一次发送的分组；</p>
+<blockquote>
+<p><strong>超时的时间</strong></p>
+<ul>
+<li>在传输层是动态变化的，因为在传输层，有很多中转节点，往返延迟检测改变</li>
+<li>在数据链路层，一般是固定的，因为数据链路层就是转发给相邻的节点，往返延迟变化不大</li>
+</ul>
+<p><strong>过早超时</strong></p>
+<ul>
+<li>能工作，但是经常出发重传，信道中存在很多无效数据，接收方也需要进行去重</li>
+</ul>
+</blockquote>
+<p><strong>停止等待协议</strong>：发一个，收一个，返回一个，确认一个，再发一个</p>
+<h5 id="流水线"><a href="#流水线" class="headerlink" title="流水线"></a>流水线</h5><p>优化效率，信道利用率</p>
+<p><strong>问题</strong>：停止等待太慢了，每次发一个都要等待正确接收才能发下一个，每一个分组的发送都得要一次往返时间RTT</p>
+<p><strong>解决思路</strong>：流水线，发送方设置发送缓冲区，缓冲区内的未发送的分组可以依次打出去，打出去而没有接收到确认的分组放置在滑动窗口（发送窗口）内，便于重传</p>
+<ol>
+<li>需要增加序号的范围，0  1肯定是不够的</li>
+<li>发送方设置缓冲区，便于重传</li>
+<li>接收方也得设置缓冲区，上层取数据的速率和接收速率不匹配，并且还需要保存有序性，也就是收到乱序的不能直接交付，需要放到缓冲区内，进行重排，将完整的数据递交给上层</li>
+</ol>
+<p><strong>通用流水线协议</strong></p>
+<p><strong>发送端：滑动窗口协议实现依次发送多个分组</strong></p>
+<ul>
+<li><p><strong>发送缓冲区</strong></p>
+<p>内存中的一块区域，在缓冲区内的分组可以发送，便于重传</p>
+<p>缓冲区的大小决定了在没有得到确认信息前一次性最多可以发送多少个分组</p>
+<p>在停止等待协议中缓冲区大小为1，而在流水线协议中缓冲区大小&gt;1</p>
+<p>缓冲区内有两种分组，未发送的、已发送未确认的，未发送的直接发送，因此可以认为<strong>缓冲区就是用来存放已经发送但是没有得到确认的分组</strong>，一旦确认就可以删除了，<strong>缓冲区也就可以前移（右移）了</strong></p>
+</li>
+<li><p><strong>发送窗口</strong></p>
+<p>缓冲区内部的一个区域，实际上是用后沿和前沿标识已发送但是未确认的分组的边界</p>
+<p>发送窗口的大小$\le$发送缓冲区的大小</p>
+<p>初始化，后沿=前沿，发送窗口的大小为0，发送缓冲区的大小为5</p>
+<p>不断发送，前沿前移，直到达到缓冲区边界</p>
+<p>某个分组确认了，后沿前移，直到抵达前沿</p>
+<p>实际上发送缓冲区也会前移（右移），然后新的分组落入发送缓冲区，可以发送了，前沿前移</p>
+<blockquote>
+<p>发送缓冲区大小为5</p>
+<p>依次发送 0 1 2 3 4，前沿到了4，后沿还是0</p>
+<p>接到0 1的确认，后沿前移到2，发送缓冲区前移到6，新的分组5 6可以发送</p>
+<p>发送之后前沿到了6</p>
+<p><img src="/posts/61619/image-20230526155129089.png" alt="image-20230526155129089"></p>
+</blockquote>
+</li>
+<li><p><strong>接收窗口=接收缓冲区</strong></p>
+<p>用于控制哪些分组可以接收，只有序号在接收窗口范围内的分组可以接收，其余分组丢弃</p>
+<p>接收窗口大小</p>
+<ul>
+<li>GBN=1，只允许顺序接收，累积确认（cumulative ack，当前分组和之前分组都收到，因此返回ACK1 2 3 4即便1 2 3丢失，4到达也是OK的）</li>
+<li>SR>1，允许乱序接收（缓存而不交付），非累积确认（individual ack，只能表示当前分组收到），但是需要进行重排，保证有序后才能递交给上层</li>
+</ul>
+<p>接收动作</p>
+<ul>
+<li>最低序号的分组到来，接收，右移</li>
+<li>非最低序号的分组到来，接收、缓存、不交付，无法右移</li>
+</ul>
+</li>
+<li><p><strong>异常处理</strong></p>
+<ul>
+<li><p>回退N步（Go Back N，GBN）</p>
+<p>接收方接到非最低序号的分组，丢弃，导致出错时重传代价大</p>
+<p>发送方接收到错误的ACK，或者触发超时重传机制，需要将发送窗口内的所有分组都发送出去（因为发送方收到了老分组x的确认，接收方的窗口大小只有1，说明x+1都没收到，即便x+2收到也会被丢弃，因此需要全部重发）</p>
+<p>只需为最老未确认的分组设置定时器，超时全部重发</p>
+</li>
+<li><p>选择重传（Selective Repeat，SR）</p>
+<p>接收方接到较高序号的分组，缓存，接收窗口不右移</p>
+<p>发送方接收到错误的ACK，或者触发超时重传机制，只需要将出错的分组重传即可</p>
+<p>为每一个已发送未确认的分组设置定时器，超时对应重发</p>
+</li>
+</ul>
+</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>回退N步</th>
+<th>选择重传</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>发送窗口大小</td>
+<td>&gt;1</td>
+<td>&gt;1</td>
+</tr>
+<tr>
+<td>接收窗口大小</td>
+<td>=1</td>
+<td>&gt;1</td>
+</tr>
+<tr>
+<td>重传机制</td>
+<td>窗口内全部重传，比如已经发送0 1 2 3 4，0成功，1没有成功，需要重发1 2 3 4</td>
+<td>只需重传失败分组，比如已经发送0 1 2 3 4，发现3失败了，只需重发3</td>
+</tr>
+<tr>
+<td>接收机制</td>
+<td>必须顺序接收，高序号的丢弃</td>
+<td>允许乱序接收</td>
+</tr>
+<tr>
+<td>定时器</td>
+<td>最老未确认分组的定时器</td>
+<td>每一个已发送未确认分组的定时器</td>
+</tr>
+<tr>
+<td>优势</td>
+<td>实现简单，所需资源比较少</td>
+<td>出错的重传代价小</td>
+</tr>
+<tr>
+<td>劣势</td>
+<td>出错重传代价大</td>
+<td>复杂，所需资源比较多</td>
+</tr>
+<tr>
+<td>应用场景</td>
+<td>出错率比较低的应用</td>
+<td>链路容量大=&gt;发送缓冲区大，出错代价非常大，需要用SR</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="点对点协议"><a href="#点对点协议" class="headerlink" title="点对点协议"></a>点对点协议</h3><p><strong>Point to Point Protocol，PPP</strong>：目前使用最广泛的数据链路层协议，比如因特网</p>
+<h4 id="标准方法"><a href="#标准方法" class="headerlink" title="标准方法"></a>标准方法</h4><ol>
+<li>对各种协议数据报的封装方法（封装成帧）</li>
+<li>链路控制协议LCP：用于建立、配置和测试数据链路的连接</li>
+<li>一套网络控制协议NCPs：其中的每一个协议支持不同的网络层协议</li>
+</ol>
+<h4 id="帧格式"><a href="#帧格式" class="headerlink" title="帧格式"></a>帧格式</h4><p><img src="/posts/61619/image-20230602132437548.png" alt="image-20230602132437548"></p>
+<blockquote>
+<p>MAC是数据链路层广播信道特有的，而且一般使用总线网拓扑，简言之就相当于是一个局域网范围内的主机通信，需要共享各自的软硬件资源，所以需要mac地址。ppp协议是点对点信道，基本只有通讯功能，不需要获取MAC，点对点通信是基于IP而不是MAC通讯的 。</p>
+</blockquote>
+<h4 id="透明传输"><a href="#透明传输" class="headerlink" title="透明传输"></a>透明传输</h4><p><img src="/posts/61619/image-20230602132537204.png" alt="image-20230602132537204"></p>
+<p>发送方：正变换</p>
+<ol>
+<li>将<strong>7D</strong>插入到定界符7E前面，（<strong>01111101</strong>,01111110）=&gt;<strong>01111101</strong>01011110</li>
+<li>将<strong>7D</strong>插入到转义字符7D前面，（<strong>01111101</strong>,01111101）=&gt;<strong>01111101</strong> 01111101</li>
+<li>ASCII控制字符，数值小于0x20的字符</li>
+</ol>
+<p>接收方：反变换</p>
+<p>比如发送方发现5个连续的1，就填充一个0；接收方发现5个连续的1，就把后面紧跟着的0删掉</p>
+<h4 id="差错检测-1"><a href="#差错检测-1" class="headerlink" title="差错检测"></a>差错检测</h4><p>FCS字段填充循环冗余校验码</p>
+<h4 id="可靠数据传输-1"><a href="#可靠数据传输-1" class="headerlink" title="可靠数据传输"></a>可靠数据传输</h4><p>没有</p>
+<h3 id="媒体接入控制"><a href="#媒体接入控制" class="headerlink" title="媒体接入控制"></a>媒体接入控制</h3><p>单个共享的广播型链路</p>
+<p>冲突（collision）：2个或者更多站点同时传送，多个信号叠加，不可取</p>
+<p>Medium Access Control，MAC：分布式协调各个节点对共享介质的使用，决定节点什么时候可以发送，同时控制信息也需要利用这个共享信道进行传输（没有带外信道）</p>
+<p>协议能够实现的理想情况：</p>
+<ol>
+<li>一个节点发送，以最高速率R发送</li>
+<li>M个节点发送，每个节点能够以R/M的平均速率发送</li>
+<li>完全分布的，没有特殊节点协调，没有时钟和时隙的同步</li>
+<li>实现需要简单</li>
+</ol>
+<h4 id="静态划分信道"><a href="#静态划分信道" class="headerlink" title="静态划分信道"></a>静态划分信道</h4><p>预先固定分配好信道，不灵活，对于突发性数据传输，信道利用率比较低</p>
+<p>通常在物理层中使用，而不是在数据链路层中使用</p>
+<p>信道复用：通过一条物理线路同时传输多路用户的信号</p>
+<h4 id="动态接入控制"><a href="#动态接入控制" class="headerlink" title="动态接入控制"></a>动态接入控制</h4><h5 id="受控接入"><a href="#受控接入" class="headerlink" title="受控接入"></a>受控接入</h5><p>已经退出历史舞台</p>
+<h6 id="集中控制"><a href="#集中控制" class="headerlink" title="集中控制"></a>集中控制</h6><p>有一个主站以循环方式轮询每个站点有无数据要发送，只有被轮询到的站点才能发送数据，存在单点故障问题</p>
+<h6 id="分散控制"><a href="#分散控制" class="headerlink" title="分散控制"></a>分散控制</h6><p>各站点是平等的，并连接成一个环形网络。令牌（一个特殊的控制帧）沿环逐站传递，接收到令牌的站点才有权发送数据，并在发送完数据后将令牌传递给下一个站点</p>
+<h5 id="随机接入"><a href="#随机接入" class="headerlink" title="随机接入"></a>随机接入</h5><p>所有站点通过竞争，随机地在信道上发送数据。如果恰巧有两个或更多的站点在同一时刻发送数据，则信号在共享媒体上就要产生碰撞（即发生了冲突）。使得这些站点的发送都失败。因此，这类协议要解决的关键问题是如何尽量避免冲突及在发生冲突后如何尽使恢复通信。著名的共享式以太网采用的就是随机接入。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag"># 学科基础知识</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/34443.html" rel="next" title="计算机网络-网络层">
+                <i class="fa fa-chevron-left"></i> 计算机网络-网络层
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/48147.html" rel="prev" title="计算机网络-物理层">
+                计算机网络-物理层 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+                <a href="/archives">
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xzp314" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:seu_xuzhipeng@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%93%BE%E8%B7%AF%E5%B1%82%E6%9C%8D%E5%8A%A1"><span class="nav-number">2.</span> <span class="nav-text">链路层服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%81%E8%A3%85%E6%88%90%E5%B8%A7"><span class="nav-number">3.</span> <span class="nav-text">封装成帧</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%AE%E9%94%99%E6%A3%80%E6%B5%8B"><span class="nav-number">4.</span> <span class="nav-text">差错检测</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A5%87%E5%81%B6%E6%A0%A1%E9%AA%8C"><span class="nav-number">4.1.</span> <span class="nav-text">奇偶校验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Internet%E6%A0%A1%E9%AA%8C%E5%92%8C"><span class="nav-number">4.2.</span> <span class="nav-text">Internet校验和</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CRC%E5%BE%AA%E7%8E%AF%E5%86%97%E4%BD%99%E6%A3%80%E9%AA%8C%E7%A0%81"><span class="nav-number">4.3.</span> <span class="nav-text">CRC循环冗余检验码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E9%9D%A0%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93"><span class="nav-number">5.</span> <span class="nav-text">可靠数据传输</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B2%97%E7%B2%92%E5%BA%A6"><span class="nav-number">5.1.</span> <span class="nav-text">粗粒度</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%81%9C%E6%AD%A2%E7%AD%89%E5%BE%85%E5%8D%8F%E8%AE%AE"><span class="nav-number">5.1.1.</span> <span class="nav-text">停止等待协议</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%A1%AE%E8%AE%A4%E4%B8%8E%E5%90%A6%E8%AE%A4"><span class="nav-number">5.1.1.1.</span> <span class="nav-text">确认与否认</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E8%B6%85%E6%97%B6%E9%87%8D%E4%BC%A0"><span class="nav-number">5.1.1.2.</span> <span class="nav-text">超时重传</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%BA%8F%E5%8F%B7"><span class="nav-number">5.1.1.3.</span> <span class="nav-text">序号</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#GBN"><span class="nav-number">5.1.2.</span> <span class="nav-text">GBN</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#SR"><span class="nav-number">5.1.3.</span> <span class="nav-text">SR</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%86%E7%B2%92%E5%BA%A6"><span class="nav-number">5.2.</span> <span class="nav-text">细粒度</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#rdt1-0"><span class="nav-number">5.2.1.</span> <span class="nav-text">rdt1.0</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#rdt2-0"><span class="nav-number">5.2.2.</span> <span class="nav-text">rdt2.0</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#rdt2-1"><span class="nav-number">5.2.3.</span> <span class="nav-text">rdt2.1</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#rdt2-2"><span class="nav-number">5.2.4.</span> <span class="nav-text">rdt2.2</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#rdt3-0"><span class="nav-number">5.2.5.</span> <span class="nav-text">rdt3.0</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B5%81%E6%B0%B4%E7%BA%BF"><span class="nav-number">5.2.6.</span> <span class="nav-text">流水线</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%82%B9%E5%AF%B9%E7%82%B9%E5%8D%8F%E8%AE%AE"><span class="nav-number">6.</span> <span class="nav-text">点对点协议</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E6%96%B9%E6%B3%95"><span class="nav-number">6.1.</span> <span class="nav-text">标准方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%A7%E6%A0%BC%E5%BC%8F"><span class="nav-number">6.2.</span> <span class="nav-text">帧格式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%8F%E6%98%8E%E4%BC%A0%E8%BE%93"><span class="nav-number">6.3.</span> <span class="nav-text">透明传输</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B7%AE%E9%94%99%E6%A3%80%E6%B5%8B-1"><span class="nav-number">6.4.</span> <span class="nav-text">差错检测</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E9%9D%A0%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93-1"><span class="nav-number">6.5.</span> <span class="nav-text">可靠数据传输</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AA%92%E4%BD%93%E6%8E%A5%E5%85%A5%E6%8E%A7%E5%88%B6"><span class="nav-number">7.</span> <span class="nav-text">媒体接入控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%92%E5%88%86%E4%BF%A1%E9%81%93"><span class="nav-number">7.1.</span> <span class="nav-text">静态划分信道</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E6%8E%A5%E5%85%A5%E6%8E%A7%E5%88%B6"><span class="nav-number">7.2.</span> <span class="nav-text">动态接入控制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8F%97%E6%8E%A7%E6%8E%A5%E5%85%A5"><span class="nav-number">7.2.1.</span> <span class="nav-text">受控接入</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E9%9B%86%E4%B8%AD%E6%8E%A7%E5%88%B6"><span class="nav-number">7.2.1.1.</span> <span class="nav-text">集中控制</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%88%86%E6%95%A3%E6%8E%A7%E5%88%B6"><span class="nav-number">7.2.1.2.</span> <span class="nav-text">分散控制</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E6%8E%A5%E5%85%A5"><span class="nav-number">7.2.2.</span> <span class="nav-text">随机接入</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xu Zhipeng</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">160.6k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>主页</title>
+  
+  <subtitle>xzp个人小站</subtitle>
+  <link href="http://example.com/atom.xml" rel="self"/>
+  
+  <link href="http://example.com/"/>
+  <updated>2024-01-16T10:13:04.236Z</updated>
+  <id>http://example.com/</id>
+  
+  <author>
+    <name>Xu Zhipeng</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title></title>
+    <link href="http://example.com/posts/0.html"/>
+    <id>http://example.com/posts/0.html</id>
+    <published>2024-01-16T10:00:31.136Z</published>
+    <updated>2024-01-16T10:13:04.236Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h1 id=&quot;Git&quot;&gt;&lt;a href=&quot;#Git&quot; class=&quot;headerlink&quot; title=&quot;Git&quot;&gt;&lt;/a&gt;Git&lt;/h1&gt;&lt;h2 id=&quot;git是什么&quot;&gt;&lt;a href=&quot;#git是什么&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>DBMS-并发</title>
+    <link href="http://example.com/posts/23083.html"/>
+    <id>http://example.com/posts/23083.html</id>
+    <published>2022-06-11T06:48:29.000Z</published>
+    <updated>2023-08-28T02:10:10.000Z</updated>
+    
+    
+    <summary type="html">数据库并发访问控制，基于东南大学徐立臻数据库课程（研究生）</summary>
+    
+    
+    
+    <category term="课程学习" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="数据库管理系统及其实现" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/"/>
+    
+    
+    <category term="学科基础知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DBMS-恢复</title>
+    <link href="http://example.com/posts/26000.html"/>
+    <id>http://example.com/posts/26000.html</id>
+    <published>2022-06-11T06:48:24.000Z</published>
+    <updated>2023-08-30T04:27:45.164Z</updated>
+    
+    
+    <summary type="html">数据库故障恢复，基于东南大学徐立臻数据库课程（研究生）</summary>
+    
+    
+    
+    <category term="课程学习" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="数据库管理系统及其实现" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/"/>
+    
+    
+    <category term="学科基础知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DBMS-查询优化</title>
+    <link href="http://example.com/posts/19931.html"/>
+    <id>http://example.com/posts/19931.html</id>
+    <published>2022-06-11T06:48:20.000Z</published>
+    <updated>2023-08-28T02:01:48.000Z</updated>
+    
+    
+    <summary type="html">查询语句的优化原理，基于东南大学徐立臻数据库课程（研究生）</summary>
+    
+    
+    
+    <category term="课程学习" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="数据库管理系统及其实现" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/"/>
+    
+    
+    <category term="学科基础知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DBMS-目录分布</title>
+    <link href="http://example.com/posts/61373.html"/>
+    <id>http://example.com/posts/61373.html</id>
+    <published>2022-06-11T06:48:14.000Z</published>
+    <updated>2023-08-28T02:01:26.000Z</updated>
+    
+    
+    <summary type="html">分布式数据库的目录分布，基于东南大学徐立臻数据库课程（研究生）</summary>
+    
+    
+    
+    <category term="课程学习" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="数据库管理系统及其实现" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/"/>
+    
+    
+    <category term="学科基础知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DBMS-数据分布</title>
+    <link href="http://example.com/posts/33675.html"/>
+    <id>http://example.com/posts/33675.html</id>
+    <published>2022-06-11T06:48:09.000Z</published>
+    <updated>2023-08-28T02:01:12.000Z</updated>
+    
+    
+    <summary type="html">分布式数据库的数据分布，基于东南大学徐立臻数据库课程（研究生）</summary>
+    
+    
+    
+    <category term="课程学习" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="数据库管理系统及其实现" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/"/>
+    
+    
+    <category term="学科基础知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DBMS-数据库访问管理</title>
+    <link href="http://example.com/posts/27905.html"/>
+    <id>http://example.com/posts/27905.html</id>
+    <published>2022-06-11T06:48:02.000Z</published>
+    <updated>2023-09-24T05:18:15.357Z</updated>
+    
+    
+    <summary type="html">访问类型、文件组织形式、索引，基于东南大学徐立臻数据库课程（研究生）</summary>
+    
+    
+    
+    <category term="课程学习" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="数据库管理系统及其实现" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/"/>
+    
+    
+    <category term="学科基础知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DBMS-体系结构</title>
+    <link href="http://example.com/posts/97.html"/>
+    <id>http://example.com/posts/97.html</id>
+    <published>2022-06-11T06:18:29.000Z</published>
+    <updated>2023-08-28T02:00:57.000Z</updated>
+    
+    
+    <summary type="html">数据库体系结构，基于东南大学徐立臻数据库课程（研究生）</summary>
+    
+    
+    
+    <category term="课程学习" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="数据库管理系统及其实现" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/"/>
+    
+    
+    <category term="学科基础知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DBMS-引言</title>
+    <link href="http://example.com/posts/57766.html"/>
+    <id>http://example.com/posts/57766.html</id>
+    <published>2022-06-11T06:16:27.000Z</published>
+    <updated>2023-08-28T02:00:37.000Z</updated>
+    
+    
+    <summary type="html">数据库基本概念，基于东南大学徐立臻数据库课程（研究生）</summary>
+    
+    
+    
+    <category term="课程学习" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="数据库管理系统及其实现" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/"/>
+    
+    
+    <category term="学科基础知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring-Spring Boot</title>
+    <link href="http://example.com/posts/50141.html"/>
+    <id>http://example.com/posts/50141.html</id>
+    <published>2022-05-27T09:23:53.000Z</published>
+    <updated>2023-08-27T10:06:35.896Z</updated>
+    
+    
+    <summary type="html">Spring Boot相关概念</summary>
+    
+    
+    
+    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+    <category term="Spring" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Spring/"/>
+    
+    
+    <category term="框架" scheme="http://example.com/tags/%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring-事务</title>
+    <link href="http://example.com/posts/24314.html"/>
+    <id>http://example.com/posts/24314.html</id>
+    <published>2022-05-26T07:53:22.000Z</published>
+    <updated>2023-10-11T10:47:16.737Z</updated>
+    
+    
+    <summary type="html">Spring事务管理相关概念</summary>
+    
+    
+    
+    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+    <category term="Spring" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Spring/"/>
+    
+    
+    <category term="框架" scheme="http://example.com/tags/%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring-MVC</title>
+    <link href="http://example.com/posts/6963.html"/>
+    <id>http://example.com/posts/6963.html</id>
+    <published>2021-05-25T06:57:11.000Z</published>
+    <updated>2023-10-11T10:40:23.125Z</updated>
+    
+    
+    <summary type="html">Spring MVC相关概念</summary>
+    
+    
+    
+    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+    <category term="Spring" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Spring/"/>
+    
+    
+    <category term="框架" scheme="http://example.com/tags/%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring-AOP</title>
+    <link href="http://example.com/posts/17849.html"/>
+    <id>http://example.com/posts/17849.html</id>
+    <published>2021-05-24T06:57:11.000Z</published>
+    <updated>2023-10-11T09:13:57.529Z</updated>
+    
+    
+    <summary type="html">Spring面向切面编程相关概念</summary>
+    
+    
+    
+    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+    <category term="Spring" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Spring/"/>
+    
+    
+    <category term="框架" scheme="http://example.com/tags/%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring-IoC</title>
+    <link href="http://example.com/posts/19065.html"/>
+    <id>http://example.com/posts/19065.html</id>
+    <published>2021-05-23T10:20:45.000Z</published>
+    <updated>2023-10-11T09:09:29.707Z</updated>
+    
+    
+    <summary type="html">Spring控制反转相关概念</summary>
+    
+    
+    
+    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+    <category term="Spring" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Spring/"/>
+    
+    
+    <category term="框架" scheme="http://example.com/tags/%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Spring-概览</title>
+    <link href="http://example.com/posts/40135.html"/>
+    <id>http://example.com/posts/40135.html</id>
+    <published>2021-05-23T10:10:44.000Z</published>
+    <updated>2023-08-27T09:21:51.368Z</updated>
+    
+    
+    <summary type="html">Spring基础概念</summary>
+    
+    
+    
+    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+    <category term="Spring" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/Spring/"/>
+    
+    
+    <category term="框架" scheme="http://example.com/tags/%E6%A1%86%E6%9E%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>IM项目-服务端如何正确调用合适的处理器</title>
+    <link href="http://example.com/posts/62638.html"/>
+    <id>http://example.com/posts/62638.html</id>
+    <published>2019-08-17T05:59:04.000Z</published>
+    <updated>2023-09-04T10:05:01.824Z</updated>
+    
+    
+    <summary type="html">IM项目开发过程中对服务端pipeline执行流程的理解</summary>
+    
+    
+    
+    <category term="项目" scheme="http://example.com/categories/%E9%A1%B9%E7%9B%AE/"/>
+    
+    <category term="即时通讯系统" scheme="http://example.com/categories/%E9%A1%B9%E7%9B%AE/%E5%8D%B3%E6%97%B6%E9%80%9A%E8%AE%AF%E7%B3%BB%E7%BB%9F/"/>
+    
+    
+    <category term="项目开发总结" scheme="http://example.com/tags/%E9%A1%B9%E7%9B%AE%E5%BC%80%E5%8F%91%E6%80%BB%E7%BB%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据库重点知识解析-MySQL日志</title>
+    <link href="http://example.com/posts/64597.html"/>
+    <id>http://example.com/posts/64597.html</id>
+    <published>2019-07-20T08:09:00.000Z</published>
+    <updated>2023-09-04T10:27:25.025Z</updated>
+    
+    
+    <summary type="html">MySQL中的undo log, redo log, binlog</summary>
+    
+    
+    
+    <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="数据库" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+    
+    <category term="学科扩展知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E6%89%A9%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
+    
+    <category term="待补充图片" scheme="http://example.com/tags/%E5%BE%85%E8%A1%A5%E5%85%85%E5%9B%BE%E7%89%87/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>计算机网络重点知识解析-HTTP的发展和演变</title>
+    <link href="http://example.com/posts/60485.html"/>
+    <id>http://example.com/posts/60485.html</id>
+    <published>2019-07-20T08:09:00.000Z</published>
+    <updated>2023-09-04T10:26:18.401Z</updated>
+    
+    
+    <summary type="html">计算机网络HTTP协议的发展和演变</summary>
+    
+    
+    
+    <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="计算机网络" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+    
+    <category term="学科扩展知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E6%89%A9%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
+    
+    <category term="待补充图片" scheme="http://example.com/tags/%E5%BE%85%E8%A1%A5%E5%85%85%E5%9B%BE%E7%89%87/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>计算机网络重点知识解析-优化HTTP/1.1的可行措施</title>
+    <link href="http://example.com/posts/22398.html"/>
+    <id>http://example.com/posts/22398.html</id>
+    <published>2019-07-20T08:09:00.000Z</published>
+    <updated>2023-09-04T10:27:36.159Z</updated>
+    
+    
+    <summary type="html">对于采用HTTP/1.1的环境，如何进行优化</summary>
+    
+    
+    
+    <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="计算机网络" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+    
+    <category term="学科扩展知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E6%89%A9%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
+    
+    <category term="待补充图片" scheme="http://example.com/tags/%E5%BE%85%E8%A1%A5%E5%85%85%E5%9B%BE%E7%89%87/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>计算机网络重点知识解析-输入URL后发生了什么</title>
+    <link href="http://example.com/posts/37373.html"/>
+    <id>http://example.com/posts/37373.html</id>
+    <published>2019-07-18T04:18:00.000Z</published>
+    <updated>2023-09-03T12:15:50.180Z</updated>
+    
+    
+    <summary type="html">在浏览器中输入url回车到浏览器显示网页的过程, 基于小林coding学习笔记</summary>
+    
+    
+    
+    <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="计算机网络" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/"/>
+    
+    
+    <category term="学科扩展知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E6%89%A9%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+</feed>

@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="java基础知识," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Map的相关数据结构，包括HashMap、LinkedHashMap、TreeMap、WeakHashMap，相关的Set也是基于Map实现的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="java-Map详解">
+<meta property="og:url" content="http://example.com/posts/58446.html">
+<meta property="og:site_name" content="主页">
+<meta property="og:description" content="Map的相关数据结构，包括HashMap、LinkedHashMap、TreeMap、WeakHashMap，相关的Set也是基于Map实现的">
+<meta property="og:locale">
+<meta property="og:image" content="http://example.com/posts/58446/image-20230914194831073.png">
+<meta property="og:image" content="http://example.com/posts/58446/image-20230911130025333.png">
+<meta property="og:image" content="http://example.com/posts/58446/image-20230914202509838.png">
+<meta property="og:image" content="http://example.com/posts/58446/image-20230915190459398.png">
+<meta property="og:image" content="http://example.com/posts/58446/image-20230915210503389.png">
+<meta property="og:image" content="http://example.com/posts/58446/image-20230915195709110.png">
+<meta property="og:image" content="http://example.com/posts/58446/image-20230915200343434.png">
+<meta property="article:published_time" content="2018-10-21T11:38:28.000Z">
+<meta property="article:modified_time" content="2023-10-10T02:39:16.134Z">
+<meta property="article:author" content="Xu Zhipeng">
+<meta property="article:tag" content="java基础知识">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/posts/58446/image-20230914194831073.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/posts/58446.html"/>
+
+
+
+
+
+  <title>java-Map详解 | 主页</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="主页" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">主页</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">xzp个人小站</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/58446.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="主页">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">java-Map详解</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-21T19:38:28+08:00">
+                2018-10-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/" itemprop="url" rel="index">
+                    <span itemprop="name">编程语言</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  12
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  Map的相关数据结构，包括HashMap、LinkedHashMap、TreeMap、WeakHashMap，相关的Set也是基于Map实现的
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h3><p><code>Map</code>在功能上相当于<code>Python</code>中的字典，以键值对<code>&lt;key,value&gt;</code>的形式存储数据，根据实现方式、设计目的的不同有多种<code>Map</code>的实现，包括<code>HashMap</code>、<code>LinkedHashMap</code>、<code>TreeMap</code>、<code>WeakHashMap</code></p>
+<h3 id="HashMap-Set"><a href="#HashMap-Set" class="headerlink" title="HashMap | Set"></a>HashMap | Set</h3><h4 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h4><p>JDK1.8之前，底层实现就是数组+链表，JDK1.8引入红黑树，红黑树和链表都是用于处理哈希冲突的，所以<code>HashMap</code>处理哈希冲突的方法本质上是冲突链表，<code>HashMap</code>是允许<code>key</code>或者<code>value</code>为<code>null</code>的</p>
+<ol>
+<li><p><code>Node&lt;K,V&gt;[] table</code>，存储节点的数组</p>
+</li>
+<li><p><code>size</code>，元素数量，实际存储了多少元素</p>
+</li>
+<li><p><code>threshold</code>，阈值，默认是<code>16</code></p>
+</li>
+<li><p><code>loadFactor</code>，负载因子，默认是<code>0.75</code></p>
+<p>当<code>size&gt;=threshold*loadFactor</code>时扩容</p>
+</li>
+</ol>
+<p><img src="/posts/58446/image-20230914194831073.png" alt="image-20230914194831073"></p>
+<h5 id="负载因子"><a href="#负载因子" class="headerlink" title="负载因子"></a>负载因子</h5><p>或者说 为什么<code>HashMap</code>的扩容不像<code>ArrayList</code>那样是装不下了才扩容</p>
+<p>其实就是负载因子为什么默认是<code>0.75</code>，而不是<code>1</code>，其实这是时间和空间的平衡</p>
+<p>首先，明确负载因子就是用来决定扩容阈值的，而扩容是解决哈希冲突的有效方法，因此可以认为负载因子比较低，扩容更容易发生，哈希冲突的概率也会有所下降，但是不可否认的是，负载因子越低，数组的空间利用率也就会越低。</p>
+<p>综上所述，<code>0.75</code>就是同时兼顾哈希冲突概率和空间利用率的理想值</p>
+<h5 id="容量"><a href="#容量" class="headerlink" title="容量"></a>容量</h5><p>原始计算出来的哈希值的范围是很大的，冲突基本不会发生，但是内存放不下，因此需要根据数组的长度来做取模运算，得到的余数作为存储位置，对于取模运算，如果除数是2的幂次方，则取模运算等价于<code>(length-1) &amp; hash</code>，采用二进制的按位与操作比取模运算开销小，所以<code>HashMap</code>的大小是<code>2</code>的幂次方，扩容也是两倍来扩容</p>
+<h5 id="初始容量"><a href="#初始容量" class="headerlink" title="初始容量"></a>初始容量</h5><p>如果入参设置了初始容量，那么需要找到比这个初始容量大或者相等的最小<code>2</code>的幂次方，比如输入<code>17</code>，那就应该是<code>32</code></p>
+<p>源码中对这个计算有所优化，比较重要的是二进制向右移按位或的操作，右移按位或操作的目的在于将二进制的各个位置填上<code>1</code>，这样，得到的数字就是一个2的幂次-1了，比如1111=1+2+4+8=15，最后再把这个1补回来就行了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="title function_">tableSizeFor</span><span class="params">(<span class="type">int</span> cap)</span> &#123;</span><br><span class="line">	<span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> cap - <span class="number">1</span>; </span><br><span class="line">    n |= n &gt;&gt;&gt; <span class="number">1</span>; </span><br><span class="line">    n |= n &gt;&gt;&gt; <span class="number">2</span>; </span><br><span class="line">    n |= n &gt;&gt;&gt; <span class="number">4</span>; </span><br><span class="line">    n |= n &gt;&gt;&gt; <span class="number">8</span>; </span><br><span class="line">    n |= n &gt;&gt;&gt; <span class="number">16</span>; </span><br><span class="line">    <span class="keyword">return</span> (n &lt; <span class="number">0</span>) ? <span class="number">1</span> : (n &gt;= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + <span class="number">1</span>; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/posts/58446/image-20230911130025333.png" alt="image-20230911130025333"></p>
+<h5 id="扰动函数"><a href="#扰动函数" class="headerlink" title="扰动函数"></a>扰动函数</h5><p>扰动函数的目的在于优化散列的效果</p>
+<p>一般来说，哈希值是<code>int</code>型的，其表示的范围很大，理论上发生哈希冲突的概率是非常小的，但是我们不可能用这么大的数组表示哈希表，所以默认大小是<code>16</code>，那就需要进行取余操作来得到下标，而对<code>2</code>的幂次方取余，可以优化为<code>length-1</code>的按位与操作，那么<code>16-1=15</code>的二进制表示是<code>001111</code>，如果直接按位与，那么只有哈希值的低位发挥作用（高位都是<code>0</code>嘛），按位与操作是不太好改动的，因此引入扰动函数其实就是对将原哈希值的高<code>16</code>位和低<code>16</code>位混合起来，异或后能够保留高位的信息，再按位与能够增大随机性</p>
+<p><img src="/posts/58446/image-20230914202509838.png" alt="image-20230914202509838"></p>
+<h5 id="迁移"><a href="#迁移" class="headerlink" title="迁移"></a>迁移</h5><p><strong>迁移数据不需要重新计算哈希值</strong></p>
+<p>数据迁移计算元素新位置时，直接看哈希值中新发挥作用的位是不是<code>0</code>，如果为<code>0</code>，则位置不改变，否则右移原始容量的位置</p>
+<p>这是因为比如我们正常计算位置，是用<code>hash</code>值和<code>length-1</code>做按位与嘛，而对于<code>2</code>的幂次方来说，<code>length-1</code>，其实就是低位全是<code>1</code>，高位全是<code>0</code>，扩大两倍，只不过是最近的高位从<code>0</code>变成了<code>1</code>，也就是说，对新的位置的计算只需要考虑这个多出来的<code>1</code>，而这个多出来的<code>1</code>反映到哈希值中，就是哈希值多了一位对计算下标有影响的位，这一位如果是<code>0</code>，说明这个多出来的<code>1</code>没有影响，如果是<code>1</code>，说明有影响，且影响刚刚好就是右移原始容量这么多位置</p>
+<p>比如原本是<code>16</code>，<code>16-1=15=1111</code>，现在扩容为<code>32</code>，<code>32-1=31=11111</code>，如果哈希值中多出来的这一位对应<code>2^4</code>是<code>1</code>，那么就右移<code>2^4=16</code>，否则不变。</p>
+<h4 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h4><h5 id="put"><a href="#put" class="headerlink" title="put"></a>put</h5><ol>
+<li><p>首先计算哈希值，同时进行扰动操作</p>
+<p><code>(key == null) ? 0 : (h= key.hashCode()) ^ (h &gt;&gt;&gt; 16);</code></p>
+</li>
+<li><p>如果数组为<code>null</code>或者长度为<code>0</code>，则需要初始化</p>
+</li>
+<li><p>根据哈希值计算下标，如果下标没有存数据，直接存，否则转4</p>
+<p><code>tab[i = (n - 1) &amp; hash])</code>  </p>
+</li>
+<li><p>根据这个地方是链表还是红黑树做不同的插入操作</p>
+<p>需要注意链表插入的时候，如果链表长度大于<code>8</code>，需要考虑转换为红黑树</p>
+</li>
+<li><p>如果元素数量超过负载时，进行扩容</p>
+</li>
+</ol>
+<h5 id="get"><a href="#get" class="headerlink" title="get"></a>get</h5><ol>
+<li><p>结合扰动函数计算哈希值</p>
+<p><code>(key == null) ? 0 : (h= key.hashCode()) ^ (h &gt;&gt;&gt; 16);</code></p>
+</li>
+<li><p><code>table</code>数组是否为空，为空则结束，否则转3</p>
+</li>
+<li><p>计算下标</p>
+<p><code>tab[i = (n - 1) &amp; hash])</code>  </p>
+</li>
+<li><p>然后就是依据红黑树还是链表进行查找 | 遍历操作了</p>
+</li>
+</ol>
+<h5 id="remove"><a href="#remove" class="headerlink" title="remove"></a>remove</h5><p>除了删除<code>key</code>对应项外，还需要返回删除的<code>key</code>对应的<code>value</code></p>
+<p>JDK 1.7底层是数组+链表，所以<code>remove</code>方法的实现如下</p>
+<ol>
+<li><p>首先根据<code>key</code>计算在数组中的下标</p>
+</li>
+<li><p>然后遍历链表，根据<code>key</code>和哈希值找到目标节点</p>
+</li>
+<li><p>判断是否是头结点</p>
+<ul>
+<li>不是，直接按照链表的方式进行移除</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>是，将下一个节点放到数组中，相当于更新链表头结点</li>
+</ul>
+<ol>
+<li>返回<code>value</code></li>
+</ol>
+<p>JDK 1.8底层是数组+链表和红黑树，区别主要在于需要根据底层数据结构的不同做不同处理</p>
+<ol>
+<li>首先根据<code>key</code>计算在数组中的下标，得到该位置的节点</li>
+<li>然后判断节点<code>p</code>是不是就是要删除的节点<ol>
+<li>是，暂存需要被删除的节点</li>
+<li>不是，看存储结构是红黑树还是链表分别遍历，寻找并暂存需要被删除的节点</li>
+</ol>
+</li>
+<li>删除找到的节点</li>
+<li>返回被删除的节点</li>
+</ol>
+<h4 id="遍历"><a href="#遍历" class="headerlink" title="遍历"></a>遍历</h4><p>性能由高到低</p>
+<ol>
+<li><p>迭代器 直接获取<code>EntrySet</code>，通过<code>hasNext</code>进行遍历</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Iterator&lt;Map.Entry&lt;Integer, String&gt;&gt; iterator = map.entrySet().iterator();</span><br><span class="line"><span class="keyword">while</span>(iterator.hasNext)&#123;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>增强<code>for</code>循环获取<code>EntrySet</code> </p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (Map.Entry&lt;Integer, String&gt; entry : map.entrySet())&#123;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上述1 2底层生成的代码实际上一致</p>
+</blockquote>
+</li>
+<li><p><code>Stream API</code></p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">map.entrySet().stream().forEach((entry) -&gt; &#123;</span><br><span class="line">      System.out.println(entry.getKey());</span><br><span class="line">      System.out.println(entry.getValue());</span><br><span class="line">&#125;);<span class="comment">// 以单线程版本 比较性能</span></span><br><span class="line"></span><br><span class="line">map.entrySet().parallelStream().forEach((entry) -&gt; &#123;</span><br><span class="line">  <span class="type">Integer</span> <span class="variable">k</span> <span class="operator">=</span> entry.getKey();</span><br><span class="line">  <span class="type">String</span> <span class="variable">v</span> <span class="operator">=</span> entry.getValue();</span><br><span class="line">&#125;);<span class="comment">// 多线程 性能必定最好</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>迭代器 获取<code>KeySet</code></p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (Integer key : map.keySet()) &#123;&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>增强<code>for</code>循环获取<code>KeySet</code></p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (Map.Entry&lt;Integer, String&gt; entry : map.entrySet()) &#123;&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>上述4 5生成的代码一致</p>
+</blockquote>
+</li>
+<li><p><code>lambda:forEach</code>遍历<code>key</code>和<code>value</code></p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">map.forEach((key, value) -&gt; &#123;</span><br><span class="line">    System.out.println(key);</span><br><span class="line">    System.out.println(value);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><strong>为什么Map.Entry比KeySet快呢？</strong></p>
+<p>因为获取<code>KeySet</code>返回<code>key</code>遍历了一遍，通过<code>map.get(key)</code>获取所有的<code>value</code>又要去查一遍</p>
+<p>而<code>Map.entry</code>是一次查询就保存了下来，不需要第二次遍历</p>
+<p><strong>安全性</strong></p>
+<p>迭代器方式可以边遍历，边删除</p>
+<p>增强<code>for</code>循环、<code>lambda</code>不行，<code>lambda</code>可以先使用<code>removeIf</code>进行删除，<code>stream</code>可以用<code>filter</code>进行过滤，再遍历</p>
+<h4 id="HashSet"><a href="#HashSet" class="headerlink" title="HashSet"></a>HashSet</h4><p><code>HashSet</code>实际上就是对<code>HashMap</code>做了一层包装，也就是说<code>HashSet</code>内部持有一个<code>HashMap</code>，对<code>HashSet</code>的方法调用基本都会转为对<code>HashMap</code>的方法调用，但是需要注意的是，<code>HashSet</code>的去重功能依赖于<code>HashMap</code>的<code>key</code>，所以<code>HashSet</code>的<code>value</code>在<code>HashMap</code>中是<code>key</code>，<code>value</code>则是同一个<code>final static</code>的<code>Object</code>对象</p>
+<h3 id="LinkedHashMap"><a href="#LinkedHashMap" class="headerlink" title="LinkedHashMap"></a>LinkedHashMap</h3><p>额外设置<code>LinkedList</code>进行有序性功能增强的<code>HashMap</code>，自然也是没有进行多线程安全控制的，具体来讲就是通过双向链表将所有<code>entry</code>进行连接，保证元素的迭代顺序和插入的顺序一致，同时遍历时间只与<code>entry</code>的数目相关，和<code>table</code>的大小无关</p>
+<p><code>Entry</code>实际上是<code>Node</code>的子类，并扩展了<code>before</code>和<code>after</code>两个指针用于维护双向链表</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Entry</span>&lt;K,V&gt; <span class="keyword">extends</span> <span class="title class_">HashMap</span>.Node&lt;K,V&gt; &#123;</span><br><span class="line">      Entry&lt;K,V&gt; before, after;</span><br><span class="line">      Entry(<span class="type">int</span> hash, K key, V value, Node&lt;K,V&gt; next) &#123;</span><br><span class="line">          <span class="built_in">super</span>(hash, key, value, next);</span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/posts/58446/image-20230915190459398.png" alt="image-20230915190459398"></p>
+<h4 id="put-1"><a href="#put-1" class="headerlink" title="put"></a>put</h4><ol>
+<li>从哈希表角度看，冲突链表尾插法</li>
+<li>从双向链表角度看，插入新元素，是插入到双向链表的尾部</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// link at the end of list</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">linkNodeLast</span><span class="params">(LinkedHashMap.Entry&lt;K,V&gt; p)</span> &#123;</span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; last = tail;</span><br><span class="line">    tail = p;</span><br><span class="line">    <span class="keyword">if</span> (last == <span class="literal">null</span>)</span><br><span class="line">        head = p;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        p.before = last;</span><br><span class="line">        last.after = p;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="/posts/58446/image-20230915210503389.png" alt="image-20230915210503389"></p>
+<h4 id="FIFO缓存"><a href="#FIFO缓存" class="headerlink" title="FIFO缓存"></a>FIFO缓存</h4><p><code>LinkedHashMap</code>提供一个叫<code>removeEldestEntry</code>的方法用来设置是否要移除最老的项，也就是最早插入的项，只要继承<code>LinkedHashMap</code>并将其重写比如元素数量超过多少就返回<code>true</code>，这样<code>LinkedHashMap</code>会自动删除<code>head</code>指向的元素，实际上就是最先插入的元素，这样就能实现<code>FIFO</code>的缓存策略</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">afterNodeInsertion</span><span class="params">(<span class="type">boolean</span> evict)</span> &#123; <span class="comment">// possibly remove eldest</span></span><br><span class="line">  LinkedHashMap.Entry&lt;K,V&gt; first;</span><br><span class="line">  <span class="keyword">if</span> (evict &amp;&amp; (first = head) != <span class="literal">null</span> &amp;&amp; removeEldestEntry(first)) &#123;</span><br><span class="line">    <span class="type">K</span> <span class="variable">key</span> <span class="operator">=</span> first.key;</span><br><span class="line">    removeNode(hash(key), key, <span class="literal">null</span>, <span class="literal">false</span>, <span class="literal">true</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">protected</span> <span class="type">boolean</span> <span class="title function_">removeEldestEntry</span><span class="params">(Map.Entry&lt;K,V&gt; eldest)</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="LRU缓存"><a href="#LRU缓存" class="headerlink" title="LRU缓存"></a>LRU缓存</h4><p>在FIFO实现的基础上，只要将<code>accessOrder</code>设置为<code>true</code>，那么访问一个节点后，<code>afterNodeAccess</code>方法就会自动将该节点移到链表的最后，相当于就是最新插入的项，这样就实现了<code>LRU</code>的删除最久未使用的策略</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">afterNodeAccess</span><span class="params">(Node&lt;K,V&gt; e)</span> &#123; <span class="comment">// move node to last</span></span><br><span class="line">  LinkedHashMap.Entry&lt;K,V&gt; last;</span><br><span class="line">  <span class="keyword">if</span> (accessOrder &amp;&amp; (last = tail) != e) &#123;</span><br><span class="line">    LinkedHashMap.Entry&lt;K,V&gt; p =</span><br><span class="line">        (LinkedHashMap.Entry&lt;K,V&gt;)e, b = p.before, a = p.after;</span><br><span class="line">    p.after = <span class="literal">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (b == <span class="literal">null</span>)</span><br><span class="line">        head = a;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        b.after = a;</span><br><span class="line">    <span class="keyword">if</span> (a != <span class="literal">null</span>)</span><br><span class="line">        a.before = b;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        last = b;</span><br><span class="line">    <span class="keyword">if</span> (last == <span class="literal">null</span>)</span><br><span class="line">        head = p;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        p.before = last;</span><br><span class="line">        last.after = p;</span><br><span class="line">    &#125;</span><br><span class="line">    tail = p;</span><br><span class="line">    ++modCount;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="LinkedHashSet"><a href="#LinkedHashSet" class="headerlink" title="LinkedHashSet"></a>LinkedHashSet</h4><p><code>LinkedHashSet</code>也是对<code>LinkedHashMap</code>进行了一层包装，<code>LinkedHashSet</code>持有一个<code>LinkedHashMap</code>的成员变量，对<code>LinkedHashSet</code>的方法调用实际上就是对<code>LinkedHashMap</code>的方法的调用</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LinkedHashSet</span>&lt;E&gt; <span class="keyword">extends</span> <span class="title class_">HashSet</span>&lt;E&gt; <span class="keyword">implements</span> <span class="title class_">Set</span>&lt;E&gt;, Cloneable, java.io.Serializable &#123;&#125;</span><br><span class="line"><span class="comment">// 继承了HashSet</span></span><br></pre></td></tr></table></figure>
+<h3 id="WeakHashMap"><a href="#WeakHashMap" class="headerlink" title="WeakHashMap"></a>WeakHashMap</h3><p><code>Weak</code>的意思就是<code>HashMap</code>中对<code>key</code>的引用是一种弱引用，弱引用的特性在于不管内存空间是否足够，只要垃圾回收器扫描到仅有弱引用指向的对象，就会立马将其回收，所以<code>WeakHashMap</code>可以用来做缓存，由垃圾回收器管理缓存对象的有效时间，缓存命中可以提高访问效率，<code>miss</code>也不会报错，再去查就行了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">Entry</span>&lt;K,V&gt; <span class="keyword">extends</span> <span class="title class_">WeakReference</span>&lt;Object&gt; <span class="keyword">implements</span> <span class="title class_">Map</span>.Entry&lt;K,V&gt; &#123;</span><br><span class="line">  V value;</span><br><span class="line">  <span class="keyword">final</span> <span class="type">int</span> hash;</span><br><span class="line">  Entry&lt;K,V&gt; next;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不存在<code>WeakHashMap</code>，但是可以通过</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;Object&gt; weakHashSet = Collections.newSetFromMap(</span><br><span class="line">        new WeakHashMap&lt;Object, Boolean&gt;());</span><br></pre></td></tr></table></figure>
+<p>封装一个<code>WeakHashSet</code></p>
+<h3 id="TreeMap"><a href="#TreeMap" class="headerlink" title="TreeMap"></a>TreeMap</h3><p><code>TreeMap</code>底层用红黑树实现，使得大部分方法的时间开销都是<code>O(logn)</code>，并且红黑树本身是一种二叉搜索树，自然能够维护顺序，该顺序是基于<code>key</code>的自然顺序或者传入<code>Comparator</code>的自定义顺序</p>
+<h4 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h4><p>红黑树是一种近似平衡的二叉查找树，它能够确保任何一个节点的左右子树的高度差不会超过二者中较低那个的一倍</p>
+<p><strong>特点</strong></p>
+<ol>
+<li>节点要么是红，要么是黑</li>
+<li>根节点是黑，所有叶子节点（<code>Null</code>）是黑的</li>
+<li>红色节点不能连续出现</li>
+<li>对于每个节点，从该节点到叶子节点，黑色节点的个数一致，所以新插入的节点必须是红色</li>
+</ol>
+<p><img src="/posts/58446/image-20230915195709110.png" alt="image-20230915195709110"></p>
+<p><strong>调整</strong></p>
+<p>左旋、右旋、改颜色，左旋就是将<code>x</code>的右子树逆时针旋转，将右孩子节点变为<code>x</code>的父节点，<code>x</code>变为左孩子，然后还涉及到一些引用的修改，右旋就是反过来</p>
+<p><strong>节点后继</strong></p>
+<p>节点后继就是树中大于t的最小元素</p>
+<ol>
+<li>如果有右子树，就是右子树的最小元素</li>
+<li>没有右子树，就是祖先节点中第一个向左走的节点</li>
+</ol>
+<p><img src="/posts/58446/image-20230915200343434.png" alt="image-20230915200343434"></p>
+<h4 id="TreeSet"><a href="#TreeSet" class="headerlink" title="TreeSet"></a>TreeSet</h4><p><code>TreeSet</code>也是对<code>TreeMap</code>进行包装</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">TreeSet</span><span class="params">()</span> &#123;</span><br><span class="line">		<span class="built_in">this</span>(<span class="keyword">new</span> <span class="title class_">TreeMap</span>&lt;&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/java%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/" rel="tag"># java基础知识</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/posts/7673.html" rel="next" title="java-List详解">
+                <i class="fa fa-chevron-left"></i> java-List详解
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/posts/58141.html" rel="prev" title="java-ConcurrentHashMap详解">
+                java-ConcurrentHashMap详解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+                <a href="/archives">
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/xzp314" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:seu_xuzhipeng@163.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HashMap-Set"><span class="nav-number">2.</span> <span class="nav-text">HashMap | Set</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">2.1.</span> <span class="nav-text">数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%B4%9F%E8%BD%BD%E5%9B%A0%E5%AD%90"><span class="nav-number">2.1.1.</span> <span class="nav-text">负载因子</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%B9%E9%87%8F"><span class="nav-number">2.1.2.</span> <span class="nav-text">容量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%AE%B9%E9%87%8F"><span class="nav-number">2.1.3.</span> <span class="nav-text">初始容量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%89%B0%E5%8A%A8%E5%87%BD%E6%95%B0"><span class="nav-number">2.1.4.</span> <span class="nav-text">扰动函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%BF%81%E7%A7%BB"><span class="nav-number">2.1.5.</span> <span class="nav-text">迁移</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text">常用方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#put"><span class="nav-number">2.2.1.</span> <span class="nav-text">put</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#get"><span class="nav-number">2.2.2.</span> <span class="nav-text">get</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#remove"><span class="nav-number">2.2.3.</span> <span class="nav-text">remove</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%81%8D%E5%8E%86"><span class="nav-number">2.3.</span> <span class="nav-text">遍历</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HashSet"><span class="nav-number">2.4.</span> <span class="nav-text">HashSet</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LinkedHashMap"><span class="nav-number">3.</span> <span class="nav-text">LinkedHashMap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#put-1"><span class="nav-number">3.1.</span> <span class="nav-text">put</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#FIFO%E7%BC%93%E5%AD%98"><span class="nav-number">3.2.</span> <span class="nav-text">FIFO缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LRU%E7%BC%93%E5%AD%98"><span class="nav-number">3.3.</span> <span class="nav-text">LRU缓存</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#LinkedHashSet"><span class="nav-number">3.4.</span> <span class="nav-text">LinkedHashSet</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#WeakHashMap"><span class="nav-number">4.</span> <span class="nav-text">WeakHashMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#TreeMap"><span class="nav-number">5.</span> <span class="nav-text">TreeMap</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91"><span class="nav-number">5.1.</span> <span class="nav-text">红黑树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#TreeSet"><span class="nav-number">5.2.</span> <span class="nav-text">TreeSet</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Xu Zhipeng</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">160.6k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
