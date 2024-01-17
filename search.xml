@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>git安装和配置</title>
+    <title>git本地安装、配置和使用</title>
     <url>/posts/52196.html</url>
-    <content><![CDATA[<h1 id="git安装和配置"><a href="#git安装和配置" class="headerlink" title="git安装和配置"></a>git安装和配置</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a href="https://git-scm.com/book/zh/v2/起步-安装-Git">Git - 安装 Git (git-scm.com)</a></p>
+    <content><![CDATA[<h1 id="git本地安装、配置和使用"><a href="#git本地安装、配置和使用" class="headerlink" title="git本地安装、配置和使用"></a>git本地安装、配置和使用</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><a href="https://git-scm.com/book/zh/v2/起步-安装-Git">Git - 安装 Git (git-scm.com)</a></p>
 <p>安装完成后，即可在终端输入<code>git -version</code>命令，如果能够显示版本信息，表示安装成功</p>
 <p><img src="/posts/52196/image-20240116191916905.png" alt="image-20240116191916905"></p>
-<h2 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h2><ol>
+<h2 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h2><ol>
 <li><p><strong>命令行</strong></p>
 </li>
 <li><p>图形化界面（Sourcetree、fork、Github Desktop）</p>
@@ -25,7 +25,100 @@
 <p>使用上述命令保存用户名和密码，避免每次都输入，这个命令设置了一个全局git配置，相当于告诉git在需要身份验证时使用store的凭证助手</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git config --global --list</span><br></pre></td></tr></table></figure>
 <p>使用上述命令可以查看我们配置的用户信息</p>
-<p><img src="/posts/52196/image-20240116193557354.png" alt="image-20240116193557354"></p>
+<p><img src="/posts/52196/image-20240117181722309.png" alt="image-20240117181722309"></p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><h3 id="新建版本库"><a href="#新建版本库" class="headerlink" title="新建版本库"></a>新建版本库</h3><p>repository（repo）可以理解为一个目录，目录内所有文件都可以被Gti管理起来，对文件的任意操作（修改、删除、添加）都能被Git跟踪到，以便追溯或者还原任意文件到某个历史版本</p>
+<p><strong>本地创建</strong></p>
+<p>直接在本地某个目录执行<code>git init</code></p>
+<p><img src="/posts/52196/image-20240117180746704-1705486721465-5.png" alt="image-20240117180746704"></p>
+<p><img src="/posts/52196/image-20240117180839120-1705486726406-7.png" alt="image-20240117180839120"></p>
+<p><code>.git</code>文件夹存储了Git仓库的所有数据，删除该文件，仓库也就被删除了</p>
+<p><code>git init my-repo</code>则会在当前目录中创建一个子目录<code>my-repo</code>作为仓库</p>
+<p><strong>远程创建</strong></p>
+<p>通过<code>git clone</code>从Git的远程服务器克隆一个已经存在的仓库</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/xzp314/xzp314.github.io.git</span><br></pre></td></tr></table></figure>
+<h3 id="工作区域和文件状态"><a href="#工作区域和文件状态" class="headerlink" title="工作区域和文件状态"></a>工作区域和文件状态</h3><p>Git的本地数据管理分为三个区域：</p>
+<ol>
+<li>工作区：电脑上资源管理器能看到的目录、文件（<code>.git</code>所在的目录，可以进行操作）</li>
+<li>暂存区：临时存储区域，用于保存即将提交到Git仓库的修改内容，用于进行版本控制（中间区域，临时存放内容）</li>
+<li>本地仓库：存储完整的项目历史和元数据，是Git存储代码和版本信息的主要位置</li>
+</ol>
+<p><img src="/posts/52196/image-20240117183518971.png" alt="image-20240117183518971"></p>
+<p>首先通过<code>git add</code>将被修改的文件添加到暂存区，然后通过<code>git commit</code>将文件内容统一提交到本地仓库，在这个过程中可以使用相关命令进行查看、比较或者撤销修改</p>
+<p>工作区的文件也分为四种状态：</p>
+<ol>
+<li>未跟踪：新创建的文件，还没有被Git管理起来的文件</li>
+<li>未修改：已被管理但文件的内容没有修改</li>
+<li>已修改：已被管理且文件内容有所修改</li>
+<li>已暂存：已经添加到暂存区中的文件</li>
+</ol>
+<p><img src="/posts/52196/image-20240117185309230.png" alt="image-20240117185309230"></p>
+<h3 id="添加和提交文件"><a href="#添加和提交文件" class="headerlink" title="添加和提交文件"></a>添加和提交文件</h3><h4 id="git-status"><a href="#git-status" class="headerlink" title="git status"></a>git status</h4><p>查看当前仓库的状态，包括处于哪个分支、存储了哪些文件、文件状态如何</p>
+<p><img src="/posts/52196/image-20240117185722222.png" alt="image-20240117185722222"></p>
+<p>创建一个新文件 <code>test.txt</code>，再次查看仓库状态</p>
+<p><img src="/posts/52196/image-20240117185829999.png" alt="image-20240117185829999"></p>
+<p>新的文件<code>test.txt</code>目前就是未跟踪的状态（红色）</p>
+<h4 id="git-add"><a href="#git-add" class="headerlink" title="git add"></a>git add</h4><p><strong>常规使用</strong></p>
+<p>通过<code>git add test.txt</code>将该文件添加到暂存区，如果是新文件，那么就是对其进行跟踪</p>
+<p><img src="/posts/52196/image-20240117190006994.png" alt="image-20240117190006994"></p>
+<p>新文件也就被跟踪了（绿色），仓库中存在已经被修改但是没有<code>commit</code>的文件，同时用<code>git rm --cached &lt;file&gt;</code>这个命令可以将暂存区的文件取消暂存，这样文件又变回未跟踪状态了</p>
+<p><img src="/posts/52196/image-20240117190318022.png" alt="image-20240117190318022"><img src="/posts/52196/image-20240117190329138.png" alt="image-20240117190329138"></p>
+<hr>
+<p><strong>通配符</strong></p>
+<p><code>git add</code>还可以使用通配符<code>*</code>，比如我们创建<code>test2.txt</code>，<code>test3.txt</code>及<code>test4.md</code></p>
+<p><img src="/posts/52196/image-20240117191630799.png" alt="image-20240117191630799"></p>
+<p><code>git add *.txt</code>就可以把所有以<code>.txt</code>结尾的文件都添加到暂存区</p>
+<p><img src="/posts/52196/image-20240117191735433.png" alt="image-20240117191735433"></p>
+<hr>
+<p><strong>目录</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git add . 添加当前目录下所有文件</span><br><span class="line">git add directory 添加指定目录下所有文件</span><br></pre></td></tr></table></figure>
+<p>使用<code>git add .</code>之后的仓库状态，就不存在未被跟踪的文件了</p>
+<p><img src="/posts/52196/image-20240117192025206.png" alt="image-20240117192025206"></p>
+<h4 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h4><p>通过<code>git commit</code>将所有暂存区中的文件进行提交，与工作区中的文件无关，比如再创建一个新文件<code>test1.txt</code></p>
+<p><img src="/posts/52196/image-20240117190536156.png" alt="image-20240117190536156"></p>
+<p>需要注意的是<code>git commit</code>需要<code>-m</code>来设置提交的信息，该信息也会被记录到仓库中，提交完后，未被提交的文件已经消失了，只剩下未被跟踪的<code>test2.txt</code></p>
+<p><img src="/posts/52196/image-20240117190644479.png" alt="image-20240117190644479"><img src="/posts/52196/image-20240117190817837.png" alt="image-20240117190817837"></p>
+<hr>
+<p>如果未使用<code>-m</code>指定提交信息，那么就会进入交互式界面，通过<code>vim</code>编辑提交信息（<code>i</code>进入插入模式，<code>esc</code>回到命令模式，输入<code>:wq</code>保存退出），此时所有文件就都提交了</p>
+<p><img src="/posts/52196/image-20240117192312654.png" alt="image-20240117192312654"><img src="/posts/52196/image-20240117192334569.png" alt="image-20240117192334569"></p>
+<h4 id="git-log"><a href="#git-log" class="headerlink" title="git log"></a>git log</h4><p>通过该命令可以查看提交历史记录，包括comit后面这个16进制的字符串就是唯一ID、提交作者、日期及提交信息</p>
+<p><img src="/posts/52196/image-20240117192438717.png" alt="image-20240117192438717"></p>
+<p><code>git log --oneline</code>显示简洁的提交记录</p>
+<p><img src="/posts/52196/image-20240117192602280.png" alt="image-20240117192602280"></p>
+<h3 id="回退版本"><a href="#回退版本" class="headerlink" title="回退版本"></a>回退版本</h3><h4 id="git-reset"><a href="#git-reset" class="headerlink" title="git reset"></a>git reset</h4><p>退回到之前某一个提交<code>commit</code>的状态，有三种用法</p>
+<ol>
+<li><code>git reset --soft</code>：回退到某一个版本，并且保留工作区和暂存区的所有修改内容</li>
+<li><code>git reset --hard</code>：回退到某一个版本，但是丢弃工作区和暂存区的所有修改内容</li>
+<li><code>git reset --mixed</code>（默认参数）：回退到某一个版本，并且只保留工作区的修改内容，丢弃暂存区的修改内容</li>
+</ol>
+<p><img src="/posts/52196/image-20240117192952889.png" alt="image-20240117192952889"></p>
+<p>示例</p>
+<p>首先创建<code>file1.txt</code>、<code>file2.txt</code>、<code>file3.txt</code>三个文件，每次添加一个文件，就<code>commit</code>一次，暂存区中也保存了这三个文件</p>
+<p><img src="/posts/52196/image-20240117193305434.png" alt="image-20240117193305434"><img src="/posts/52196/image-20240117193410956.png" alt="image-20240117193410956"><img src="/posts/52196/image-20240117194452195.png" alt="image-20240117194452195"></p>
+<p><strong><code>git reset --soft</code></strong></p>
+<p>附加提交记录的唯一标识即可回退到该版本，提交历史中的<code>file3</code>就消失了，因为回退到<code>file2</code>的版本</p>
+<p><img src="/posts/52196/image-20240117193746202.png" alt="image-20240117193746202"></p>
+<p>工作区<img src="/posts/52196/image-20240117194139385.png" alt="image-20240117194139385"><code>file3</code>存在</p>
+<p>暂存区<img src="/posts/52196/image-20240117194201323.png" alt="image-20240117194201323"><code>file3</code>也还在，依然是跟踪状态</p>
+<p>仓库状态<img src="/posts/52196/image-20240117194235489.png" alt="image-20240117194235489">新添加了一个文件<code>file3.txt</code>，但是已经被跟踪了，这就是<code>soft</code>的影响，回退的时候，工作区和暂存区的东西不会被清空（暂存区有3个文件)，但是回退到了之前的版本，<code>file3</code>对于<code>file2</code>这个版本就是一个新文件，所以仓库中就没有<code>file3</code>的提交信息了</p>
+<p><strong><code>git reset --hard</code></strong></p>
+<p><code>HEAD^</code>表示前一个版本</p>
+<p><img src="/posts/52196/image-20240117194924343.png" alt="image-20240117194924343"></p>
+<p>工作区<img src="/posts/52196/image-20240117195138612.png" alt="image-20240117195138612"><code>file3</code>不存在了</p>
+<p>暂存区<img src="/posts/52196/image-20240117195222477.png" alt="image-20240117195222477"><code>file3</code>也没了</p>
+<p>仓库状态<img src="/posts/52196/image-20240117195245425.png" alt="image-20240117195245425">啥都没了，就是因为<code>hard</code>清空了工作区和暂存区的文件</p>
+<p><strong><code>git reset --mixed</code></strong></p>
+<p>缺省就是<code>mixed</code>模式</p>
+<p><img src="/posts/52196/image-20240117195516384.png" alt="image-20240117195516384"></p>
+<p>工作区<img src="/posts/52196/image-20240117195608099.png" alt="image-20240117195608099"><code>file3</code>还在</p>
+<p>暂存区<img src="/posts/52196/image-20240117195633238.png" alt="image-20240117195633238"><code>file3</code>没了</p>
+<p>仓库状态<img src="/posts/52196/image-20240117195658719.png" alt="image-20240117195658719">相当于<code>file3</code>是一个新创建且未被跟踪的文件</p>
+<p><strong>适用场景</strong></p>
+<p>当我们提交了多个版本，但是这么多次没有意义，就可以合并为一个版本，那么就用<code>soft | mixed</code>：</p>
+<p>这两者的区别主要在于暂存区还有没有文件，如果所有提交的文件都有用，那么用<code>soft</code>就行，如果有部分是无效的，不需要提交，就用<code>mixed</code>，再手动选择文件进行<code>add</code>，最后提交</p>
+<p><strong>hard误删</strong></p>
+<p><code>git reflog</code>查看所有操作历史记录，再使用<code>reset</code>进行回溯即可</p>
+<p><img src="/posts/52196/image-20240117200331803.png" alt="image-20240117200331803"></p>
+<p><img src="/posts/52196/image-20240117200355822.png" alt="image-20240117200355822"></p>
 ]]></content>
       <categories>
         <category>编程语言</category>
