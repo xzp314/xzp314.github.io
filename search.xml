@@ -120,34 +120,452 @@
 <p><img src="/posts/52196/image-20240117200331803.png" alt="image-20240117200331803"></p>
 <p><img src="/posts/52196/image-20240117200355822.png" alt="image-20240117200355822"></p>
 ]]></content>
-      <categories>
-        <category>编程语言</category>
-      </categories>
-      <tags>
-        <tag>开发基础知识</tag>
-      </tags>
   </entry>
   <entry>
-    <title>git常用命令</title>
-    <url>/posts/953.html</url>
-    <content><![CDATA[<h1 id="git常用命令"><a href="#git常用命令" class="headerlink" title="git常用命令"></a>git常用命令</h1><p><img src="/posts/953/Git-Cheet-Sheet-ByGeekHour.png" alt="Git-Cheet-Sheet-ByGeekHour"></p>
-]]></content>
-      <categories>
-        <category>编程语言</category>
-      </categories>
-      <tags>
-        <tag>开发基础知识</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>git简介</title>
-    <url>/posts/6361.html</url>
-    <content><![CDATA[<h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><h2 id="git是什么"><a href="#git是什么" class="headerlink" title="git是什么"></a>git是什么</h2><p>git是一个免费开源的分布式版本控制系统，它使用一个特殊的叫做仓库的数据库来记录文件的变化，仓库中的每个文件都有一个完整的版本历史记录，可以看到谁在什么时间修改了哪些文件的哪些内容，在需要的时候也可以将文件恢复到之前的某一个版本</p>
-<h2 id="版本控制系统"><a href="#版本控制系统" class="headerlink" title="版本控制系统"></a>版本控制系统</h2><h3 id="集中式"><a href="#集中式" class="headerlink" title="集中式"></a>集中式</h3><p><img src="/posts/6361/image-20240116180426658.png" alt="image-20240116180426658" style="zoom:33%;"></p>
+    <title>Git</title>
+    <url>/posts/52196.html</url>
+    <content><![CDATA[<h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><p><img src="/posts/52196/Git-Cheet-Sheet-ByGeekHour.png" alt="Git-Cheet-Sheet-ByGeekHour"></p>
+<h2 id="git是什么"><a href="#git是什么" class="headerlink" title="git是什么"></a>git是什么</h2><p>git是一个免费开源的分布式版本控制系统，它使用一个特殊的叫做仓库的数据库来记录文件的变化，仓库中的每个文件都有一个完整的版本历史记录，可以看到谁在什么时间修改了哪些文件的哪些内容，在需要的时候也可以将文件恢复到之前的某一个版本</p>
+<h3 id="版本控制系统"><a href="#版本控制系统" class="headerlink" title="版本控制系统"></a>版本控制系统</h3><h3 id="集中式"><a href="#集中式" class="headerlink" title="集中式"></a>集中式</h3><p><img src="/posts/52196/image-20240116180426658.png" alt="image-20240116180426658" style="zoom:33%;"></p>
 <p>所有的文件都保存在中央服务器上，每个人的电脑上只保存了一个副本，当你需要修改文件的时候，首先要从中央服务器上下载最新的版本，然后添加你想要的修改内容，修改完成之后再上传回中央服务器</p>
 <p>优势在于使用很简单直接，缺陷是中央服务器的单点故障问题：如果中央服务器出现故障或者网络连接出现问题，那么所有人都无法工作了，只能等待中央服务器或者网络恢复正常</p>
-<h3 id="分布式"><a href="#分布式" class="headerlink" title="分布式"></a>分布式</h3><p><img src="/posts/6361/image-20240116180826680.png" alt="image-20240116180826680" style="zoom:33%;"></p>
+<h3 id="分布式"><a href="#分布式" class="headerlink" title="分布式"></a>分布式</h3><p><img src="/posts/52196/image-20240116180826680.png" alt="image-20240116180826680" style="zoom:33%;"></p>
 <p>每个人在电脑上都有一个完整的版本哭，所以我们可以在本地进行修改，不需要考虑网络问题，这样即使中央服务器出现故障，我们也可以继续工作，当需要将我们的修改内容分享给其他人的时候，只需要将仓库互相同步一下就可以了</p>
+<h2 id="安装和配置"><a href="#安装和配置" class="headerlink" title="安装和配置"></a>安装和配置</h2><p><a href="https://git-scm.com/book/zh/v2/起步-安装-Git">Git - 安装 Git (git-scm.com)</a></p>
+<p>安装完成后，即可在终端输入<code>git -version</code>命令，如果能够显示版本信息，表示安装成功</p>
+<p><img src="/posts/52196/image-20240116191916905.png" alt="image-20240116191916905"></p>
+<p>配置用户名和邮箱，识别是谁提交的内容（首次执行即可）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git config --global user.name xzp314</span><br><span class="line">git config --global user.email 1146433856@qq.com</span><br></pre></td></tr></table></figure>
+<p><code>--global</code> 表示全局配置，对所有仓库都生效</p>
+<p><code>--system</code> 表示系统配置，对所有用户都生效</p>
+<p>缺省（local）表示本地配置，只对本地仓库有效</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git config --global credential.helper store</span><br></pre></td></tr></table></figure>
+<p>使用上述命令保存用户名和密码，避免每次都输入，这个命令设置了一个全局git配置，相当于告诉git在需要身份验证时使用store的凭证助手</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git config --global --list</span><br></pre></td></tr></table></figure>
+<p>使用上述命令可以查看我们配置的用户信息</p>
+<p><img src="/posts/52196/image-20240117181722309.png" alt="image-20240117181722309"></p>
+<h2 id="本地仓库"><a href="#本地仓库" class="headerlink" title="本地仓库"></a>本地仓库</h2><h3 id="方式"><a href="#方式" class="headerlink" title="方式"></a>方式</h3><ol>
+<li><p><strong>命令行</strong></p>
+</li>
+<li><p>图形化界面（Sourcetree、fork、Github Desktop）</p>
+<p> <a href="https://git-scm.com/downloads/guis">Git - GUI Clients (git-scm.com)</a></p>
+</li>
+<li><p>IDE插件/扩展</p>
+<p> 在常用的IDEA或者VSCode这些IDE工具中，通过插件或者扩展的方式使用git</p>
+</li>
+</ol>
+<h3 id="新建版本库"><a href="#新建版本库" class="headerlink" title="新建版本库"></a>新建版本库</h3><p>repository（repo）可以理解为一个目录，目录内所有文件都可以被Gti管理起来，对文件的任意操作（修改、删除、添加）都能被Git跟踪到，以便追溯或者还原任意文件到某个历史版本</p>
+<p><strong>本地创建</strong></p>
+<p>直接在本地某个目录执行<code>git init</code></p>
+<p><img src="/posts/52196/image-20240117180746704-1705486721465-5.png" alt="image-20240117180746704"></p>
+<p><img src="/posts/52196/image-20240117180839120-1705486726406-7.png" alt="image-20240117180839120"></p>
+<p><code>.git</code>文件夹存储了Git仓库的所有数据，删除该文件，仓库也就被删除了</p>
+<p><code>git init my-repo</code>则会在当前目录中创建一个子目录<code>my-repo</code>作为仓库</p>
+<p><strong>远程创建</strong></p>
+<p>通过<code>git clone</code>从Git的远程服务器克隆一个已经存在的仓库</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/xzp314/xzp314.github.io.git</span><br></pre></td></tr></table></figure>
+<h3 id="工作区域和文件状态"><a href="#工作区域和文件状态" class="headerlink" title="工作区域和文件状态"></a>工作区域和文件状态</h3><p>Git的本地数据管理分为三个区域：</p>
+<ol>
+<li>工作区：电脑上资源管理器能看到的目录、文件（<code>.git</code>所在的目录，可以进行操作）</li>
+<li>暂存区：临时存储区域，用于保存即将提交到Git仓库的修改内容，用于进行版本控制（中间区域，临时存放内容）</li>
+<li>本地仓库：存储完整的项目历史和元数据，是Git存储代码和版本信息的主要位置</li>
+</ol>
+<p><img src="/posts/52196/image-20240117183518971.png" alt="image-20240117183518971"></p>
+<p>首先通过<code>git add</code>将被修改的文件添加到暂存区，然后通过<code>git commit</code>将文件内容统一提交到本地仓库，在这个过程中可以使用相关命令进行查看、比较或者撤销修改</p>
+<p>工作区的文件也分为四种状态：</p>
+<ol>
+<li>未跟踪：新创建的文件，还没有被Git管理起来的文件</li>
+<li>未修改：已被管理但文件的内容没有修改</li>
+<li>已修改：已被管理且文件内容有所修改</li>
+<li>已暂存：已经添加到暂存区中的文件</li>
+</ol>
+<p><img src="/posts/52196/image-20240117185309230.png" alt="image-20240117185309230"></p>
+<h3 id="添加和提交文件"><a href="#添加和提交文件" class="headerlink" title="添加和提交文件"></a>添加和提交文件</h3><p><img src="/posts/52196/image-20240118151017301.png" alt="image-20240118151017301"></p>
+<h4 id="git-status"><a href="#git-status" class="headerlink" title="git status"></a>git status</h4><p>查看当前仓库的状态，包括处于哪个分支、存储了哪些文件、文件状态如何</p>
+<p><img src="/posts/52196/image-20240117185722222.png" alt="image-20240117185722222"></p>
+<p>创建一个新文件 <code>test.txt</code>，再次查看仓库状态</p>
+<p><img src="/posts/52196/image-20240117185829999.png" alt="image-20240117185829999"></p>
+<p>新的文件<code>test.txt</code>目前就是未跟踪的状态（红色）</p>
+<h4 id="git-add"><a href="#git-add" class="headerlink" title="git add"></a>git add</h4><p><strong>常规使用</strong></p>
+<p>通过<code>git add test.txt</code>将该文件添加到暂存区，如果是新文件，那么就是对其进行跟踪</p>
+<p><img src="/posts/52196/image-20240117190006994.png" alt="image-20240117190006994"></p>
+<p>新文件也就被跟踪了（绿色），仓库中存在已经被修改但是没有<code>commit</code>的文件，同时用<code>git rm --cached &lt;file&gt;</code>这个命令可以将暂存区的文件取消暂存，这样文件又变回未跟踪状态了</p>
+<p><img src="/posts/52196/image-20240117190318022.png" alt="image-20240117190318022"><img src="/posts/52196/image-20240117190329138.png" alt="image-20240117190329138"></p>
+<hr>
+<p><strong>通配符</strong></p>
+<p><code>git add</code>还可以使用通配符<code>*</code>，比如我们创建<code>test2.txt</code>，<code>test3.txt</code>及<code>test4.md</code></p>
+<p><img src="/posts/52196/image-20240117191630799.png" alt="image-20240117191630799"></p>
+<p><code>git add *.txt</code>就可以把所有以<code>.txt</code>结尾的文件都添加到暂存区</p>
+<p><img src="/posts/52196/image-20240117191735433.png" alt="image-20240117191735433"></p>
+<hr>
+<p><strong>目录</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git add . 添加当前目录下所有文件</span><br><span class="line">git add directory 添加指定目录下所有文件</span><br></pre></td></tr></table></figure>
+<p>使用<code>git add .</code>之后的仓库状态，就不存在未被跟踪的文件了</p>
+<p><img src="/posts/52196/image-20240117192025206.png" alt="image-20240117192025206"></p>
+<h4 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h4><p>通过<code>git commit</code>将所有暂存区中的文件进行提交，与工作区中的文件无关，比如再创建一个新文件<code>test1.txt</code></p>
+<p><img src="/posts/52196/image-20240117190536156.png" alt="image-20240117190536156"></p>
+<p>需要注意的是<code>git commit</code>需要<code>-m</code>来设置提交的信息，该信息也会被记录到仓库中，提交完后，未被提交的文件已经消失了，只剩下未被跟踪的<code>test2.txt</code></p>
+<p><img src="/posts/52196/image-20240117190644479.png" alt="image-20240117190644479"><img src="/posts/52196/image-20240117190817837.png" alt="image-20240117190817837"></p>
+<hr>
+<p>如果未使用<code>-m</code>指定提交信息，那么就会进入交互式界面，通过<code>vim</code>编辑提交信息（<code>i</code>进入插入模式，<code>esc</code>回到命令模式，输入<code>:wq</code>保存退出），此时所有文件就都提交了</p>
+<p><img src="/posts/52196/image-20240117192312654.png" alt="image-20240117192312654"><img src="/posts/52196/image-20240117192334569.png" alt="image-20240117192334569"></p>
+<h4 id="git-log"><a href="#git-log" class="headerlink" title="git log"></a>git log</h4><p>通过该命令可以查看提交历史记录，包括comit后面这个16进制的字符串就是唯一ID、提交作者、日期及提交信息</p>
+<p><img src="/posts/52196/image-20240117192438717.png" alt="image-20240117192438717"></p>
+<p><code>git log --oneline</code>显示简洁的提交记录</p>
+<p><img src="/posts/52196/image-20240117192602280.png" alt="image-20240117192602280"></p>
+<h3 id="回退版本"><a href="#回退版本" class="headerlink" title="回退版本"></a>回退版本</h3><p><code>git reset</code></p>
+<p>退回到之前某一个提交<code>commit</code>的状态，有三种用法</p>
+<ol>
+<li><code>git reset --soft</code>：回退到某一个版本，并且保留工作区和暂存区的所有修改内容</li>
+<li><code>git reset --hard</code>：回退到某一个版本，但是丢弃工作区和暂存区的所有修改内容</li>
+<li><code>git reset --mixed</code>（默认参数）：回退到某一个版本，并且只保留工作区的修改内容，丢弃暂存区的修改内容</li>
+</ol>
+<p><img src="/posts/52196/image-20240117192952889.png" alt="image-20240117192952889"></p>
+<p>示例</p>
+<p>首先创建<code>file1.txt</code>、<code>file2.txt</code>、<code>file3.txt</code>三个文件，每次添加一个文件，就<code>commit</code>一次，暂存区中也保存了这三个文件</p>
+<p><img src="/posts/52196/image-20240117193305434.png" alt="image-20240117193305434"><img src="/posts/52196/image-20240117193410956.png" alt="image-20240117193410956"><img src="/posts/52196/image-20240117194452195.png" alt="image-20240117194452195"></p>
+<h4 id="git-reset-soft"><a href="#git-reset-soft" class="headerlink" title="git reset --soft"></a><code>git reset --soft</code></h4><p>附加提交记录的唯一标识即可回退到该版本，提交历史中的<code>file3</code>就消失了，因为回退到<code>file2</code>的版本</p>
+<p><img src="/posts/52196/image-20240117193746202.png" alt="image-20240117193746202"></p>
+<p>工作区<img src="/posts/52196/image-20240117194139385.png" alt="image-20240117194139385"><code>file3</code>存在</p>
+<p>暂存区<img src="/posts/52196/image-20240117194201323.png" alt="image-20240117194201323"><code>file3</code>也还在，依然是跟踪状态</p>
+<p>仓库状态<img src="/posts/52196/image-20240117194235489.png" alt="image-20240117194235489">新添加了一个文件<code>file3.txt</code>，但是已经被跟踪了，这就是<code>soft</code>的影响，回退的时候，工作区和暂存区的东西不会被清空（暂存区有3个文件)，但是回退到了之前的版本，<code>file3</code>对于<code>file2</code>这个版本就是一个新文件，所以仓库中就没有<code>file3</code>的提交信息了</p>
+<h4 id="git-reset-hard"><a href="#git-reset-hard" class="headerlink" title="git reset --hard"></a><code>git reset --hard</code></h4><p><code>HEAD^</code>表示前一个版本</p>
+<p><img src="/posts/52196/image-20240117194924343.png" alt="image-20240117194924343"></p>
+<p>工作区<img src="/posts/52196/image-20240117195138612.png" alt="image-20240117195138612"><code>file3</code>不存在了</p>
+<p>暂存区<img src="/posts/52196/image-20240117195222477.png" alt="image-20240117195222477"><code>file3</code>也没了</p>
+<p>仓库状态<img src="/posts/52196/image-20240117195245425.png" alt="image-20240117195245425">啥都没了，就是因为<code>hard</code>清空了工作区和暂存区的文件</p>
+<h4 id="git-reset-mixed"><a href="#git-reset-mixed" class="headerlink" title="git reset --mixed"></a><code>git reset --mixed</code></h4><p>缺省就是<code>mixed</code>模式</p>
+<p><img src="/posts/52196/image-20240117195516384.png" alt="image-20240117195516384"></p>
+<p>工作区<img src="/posts/52196/image-20240117195608099.png" alt="image-20240117195608099"><code>file3</code>还在</p>
+<p>暂存区<img src="/posts/52196/image-20240117195633238.png" alt="image-20240117195633238"><code>file3</code>没了</p>
+<p>仓库状态<img src="/posts/52196/image-20240117195658719.png" alt="image-20240117195658719">相当于<code>file3</code>是一个新创建且未被跟踪的文件</p>
+<p><strong>适用场景</strong></p>
+<p>当我们提交了多个版本，但是这么多次没有意义，就可以合并为一个版本，那么就用<code>soft | mixed</code>：</p>
+<p>这两者的区别主要在于暂存区还有没有文件，如果所有提交的文件都有用，那么用<code>soft</code>就行，如果有部分是无效的，不需要提交，就用<code>mixed</code>，再手动选择文件进行<code>add</code>，最后提交</p>
+<p><strong>hard误删</strong></p>
+<p><code>git reflog</code>查看所有操作历史记录，再使用<code>reset</code>进行回溯即可</p>
+<p><img src="/posts/52196/image-20240117200331803.png" alt="image-20240117200331803"></p>
+<p><img src="/posts/52196/image-20240117200355822.png" alt="image-20240117200355822"></p>
+<h3 id="对比文件差异"><a href="#对比文件差异" class="headerlink" title="对比文件差异"></a>对比文件差异</h3><p><code>git diff</code></p>
+<ol>
+<li>查看工作区、暂存区、本地仓库之间的差异</li>
+<li>查看两个特定版本之间的差异</li>
+<li>查看两个分支的差异</li>
+</ol>
+<p>主要使用方式偏向于图形化的工具，更为方便和简洁</p>
+<p>不加参数，默认查看工作区和暂存区之间的差异，显示发生更改的文件以及更改的内容</p>
+<p><img src="/posts/52196/image-20240118150942023.png" alt="image-20240118150942023"></p>
+<p><strong>初始状态</strong></p>
+<p><img src="/posts/52196/image-20240118144603728.png" alt="image-20240118144603728"></p>
+<p>修改文件3的内容：”333”→”333+333”</p>
+<h4 id="工作区-vs-暂存区"><a href="#工作区-vs-暂存区" class="headerlink" title="工作区 vs 暂存区"></a>工作区 vs 暂存区</h4><p>使用git diff查看工作区和暂存区之间的区别</p>
+<p><img src="/posts/52196/image-20240118145100236.png" alt="image-20240118145100236"></p>
+<p>有区别是因为工作区的文件暂时没有被添加到暂存区，添加之后，就没有区别了</p>
+<p><img src="/posts/52196/image-20240118145359072.png" alt="image-20240118145359072"></p>
+<h4 id="工作区-vs-版本库"><a href="#工作区-vs-版本库" class="headerlink" title="工作区 vs 版本库"></a>工作区 vs 版本库</h4><p><img src="/posts/52196/image-20240118145625153.png" alt="image-20240118145625153"></p>
+<p>因为刚刚添加的内容还没有<code>commit</code>，所以是会有区别的，提交后自然就不会有输出了</p>
+<h4 id="暂存区-vs-版本库"><a href="#暂存区-vs-版本库" class="headerlink" title="暂存区 vs 版本库"></a>暂存区 vs 版本库</h4><p><img src="/posts/52196/image-20240118145754931.png" alt="image-20240118145754931"></p>
+<p>也是有区别的，当然，提交后也不会有输出了</p>
+<h4 id="特定版本"><a href="#特定版本" class="headerlink" title="特定版本"></a>特定版本</h4><p><img src="/posts/52196/image-20240118150205518.png" alt="image-20240118150205518"></p>
+<p>经常用到的是比较当前版本和前一个版本之间的差异，可以用波浪线，而如果加上数字则可以表示前几个版本，比如<code>HEAD~2</code>表示前两个版本</p>
+<p><img src="/posts/52196/image-20240118150257309.png" alt="image-20240118150257309" style="zoom: 67%;"><img src="/posts/52196/image-20240118150631280.png" alt="image-20240118150631280" style="zoom: 67%;"></p>
+<p>之前用到的<code>HEAD^</code>也能用于表示上一个版本，但是不能通过加数字表示前几个版本</p>
+<p><img src="/posts/52196/image-20240118150324176.png" alt="image-20240118150324176"></p>
+<h4 id="特定文件"><a href="#特定文件" class="headerlink" title="特定文件"></a>特定文件</h4><p><img src="/posts/52196/image-20240118150813894.png" alt="image-20240118150813894"></p>
+<p>后面附加文件名，那么就只会查看该文件在两个版本的差异</p>
+<h4 id="分支"><a href="#分支" class="headerlink" title="分支"></a>分支</h4><p>附加分支名，后续补充</p>
+<h3 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h3><p><img src="/posts/52196/image-20240118151922588.png" alt="image-20240118151922588"></p>
+<h4 id="delete-add-commit"><a href="#delete-add-commit" class="headerlink" title="delete+add+commit"></a>delete+add+commit</h4><p>首先，资源管理器或者命令行 删除文件3，此时查看仓库状态，文件3被删除</p>
+<p><img src="/posts/52196/image-20240118151237921.png" alt="image-20240118151237921"></p>
+<p>再查看暂存区中的文件，发现暂存区中还是有文件3的</p>
+<p><img src="/posts/52196/image-20240118151324997.png" alt="image-20240118151324997"></p>
+<p>所以需要进行<code>add</code>，其实<code>add</code>也可以理解为添加的是操作，而不是文件本身，此时暂存区中也没有该文件了</p>
+<p><img src="/posts/52196/image-20240118151421313.png" alt="image-20240118151421313"></p>
+<p>最后再提交</p>
+<h4 id="git-rm-commit"><a href="#git-rm-commit" class="headerlink" title="git rm+commit"></a>git rm+commit</h4><p><img src="/posts/52196/image-20240118151735086.png" alt="image-20240118151735086"></p>
+<p>通过该目录删除文件，会直接把暂存区的文件也同步删除，当然工作区的自然也没了，最后只需要<code>commit</code>就行了</p>
+<p>如果只是需要删除暂存区文件而保留工作区文件，那么需要附加参数<code>--cached</code></p>
+<h3 id="忽略文件"><a href="#忽略文件" class="headerlink" title="忽略文件"></a>忽略文件</h3><p><code>.gitignore</code>:忽略掉一些不应该加入到版本库管理的文件，包括</p>
+<ul>
+<li><p>系统或者软件自动生成的文件</p>
+</li>
+<li><p>编译产生的中间文件和结果文件</p>
+<p>  一个文件是通过另外一个文件自动生成的，自动生成的文件没有必要放到版本库中，管理父文件即可，比如java编译生成的<code>.class</code>和<code>.o</code>文件</p>
+</li>
+<li><p>运行时生成的日志文件、缓存文件、临时文件</p>
+</li>
+<li><p>涉及身份、密码、口令、密钥等铭感信息文件</p>
+</li>
+</ul>
+<p><img src="/posts/52196/image-20240118152337637.png" alt="image-20240118152337637"></p>
+<h4 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h4><p>先创建一个<code>access1.log</code>模拟日志文件，默认是会被纳入版本库进行管理的，为了对比创建第二个日志文件<code>access2.log</code>。接着创建<code>.gitignore</code>文件，并添加<code>access1.log</code>的文件名，此时查看状态</p>
+<p><img src="/posts/52196/image-20240118152754656.png" alt="image-20240118152754656"></p>
+<p>此后进行<code>add</code>、<code>commit</code>都会忽略<code>access1.log</code>文件，但是<code>access2.log</code>会被添加，可以使用<code>*.log</code>的通配符忽略所有日志文件，再次查看状态。</p>
+<p><img src="/posts/52196/image-20240118153004853.png" alt="image-20240118153004853"></p>
+<p>但是，对于已经被添加到仓库中的日志文件，后续修改这个文件，git会提示我们发生了变化，用<code>git diff</code>也可以查看区别。</p>
+<p><img src="/posts/52196/image-20240118153620667.png" alt="image-20240118153620667"></p>
+<p>这是因为<code>.gitignore</code>只对未被添加到暂存区中的文件生效，此时可以先用<code>rm</code>删除暂存区中的文件，但是不能删除工作区中的文件，所以需要用<code>git rm --cached xxx.log</code>，这时就不会再对<code>access2.log</code>进行版本管理了</p>
+<p><img src="/posts/52196/image-20240118153752508.png" alt="image-20240118153752508"></p>
+<p>如果想要忽略目录（空目录默认不进行版本控制），可以添加”目录名+/“表示忽略该目录以下的所有内容</p>
+<h4 id="匹配规则"><a href="#匹配规则" class="headerlink" title="匹配规则"></a>匹配规则</h4><p>从上到下逐行匹配，每一行表示一个忽略规则</p>
+<p><img src="/posts/52196/image-20240118154620115.png" alt="image-20240118154620115"></p>
+<p>具体实例</p>
+<p><img src="/posts/52196/image-20240118154917166.png" alt="image-20240118154917166"></p>
+<p>github上提供了各种常用语言的忽略文件的模板</p>
+<h2 id="远程仓库"><a href="#远程仓库" class="headerlink" title="远程仓库"></a>远程仓库</h2><h3 id="SSH配置和远程仓库操作"><a href="#SSH配置和远程仓库操作" class="headerlink" title="SSH配置和远程仓库操作"></a>SSH配置和远程仓库操作</h3><p><img src="/posts/52196/image-20240119153955181.png" alt="image-20240119153955181"></p>
+<h4 id="本地仓库↔远程仓库"><a href="#本地仓库↔远程仓库" class="headerlink" title="本地仓库↔远程仓库"></a>本地仓库↔远程仓库</h4><p><img src="/posts/52196/image-20240119153226800.png" alt="image-20240119153226800"></p>
+<p>两个仓库互相独立，互不干扰</p>
+<p>本地仓库的修改不会直接影响远程仓库，远程仓库的修改也不会直接影响本地仓库，因此需要一套机制进行同步</p>
+<p>就是<code>git pull</code>（拉取）和<code>git push</code>（推送）</p>
+<h4 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h4><p><img src="/posts/52196/image-20240119145321918.png" alt="image-20240119145321918"></p>
+<h4 id="远程仓库链接到本地"><a href="#远程仓库链接到本地" class="headerlink" title="远程仓库链接到本地"></a>远程仓库链接到本地</h4><ol>
+<li><p>本地没有仓库，则先在本地创建仓库，然后<code>push</code>到远程仓库建立链接</p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &quot;# learn-git&quot; &gt;&gt; README.md</span><br><span class="line">git init # 初始化本地仓库</span><br><span class="line">git add README.md # 添加README.md文件</span><br><span class="line">git commit -m &quot;first commit&quot; # 提交</span><br><span class="line">git branch -M main</span><br><span class="line">git remote add origin https://github.com/xzp314/learn-git.git</span><br><span class="line">git push -u origin main</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>本地已有仓库，将本地仓库和远程仓库链接起来</p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git remote add origin https://github.com/xzp314/learn-git.git</span><br><span class="line">git branch -M main</span><br><span class="line">git push -u origin main</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>导入其他仓库</p>
+</li>
+</ol>
+<p>推送的两种方式</p>
+<ol>
+<li><p><code>HTTPS</code></p>
+<p> 需要验证用户名和密码（停止使用，改为使用<code>token</code>或者<code>web auth</code>）</p>
+</li>
+<li><p><code>SSH</code></p>
+<p> 不需要验证用户名和密码，但是需要在<code>Github</code>添加每台电脑上生成的SSH公钥，更加安全</p>
+</li>
+</ol>
+<h4 id="SSH密钥配置"><a href="#SSH密钥配置" class="headerlink" title="SSH密钥配置"></a>SSH密钥配置</h4><ol>
+<li><p>右键<code>git bash here</code>打开<code>git bash</code></p>
+</li>
+<li><p><code>cd ~/.ssh</code>查看是否已经有了<code>ssh</code>密钥</p>
+<p> 存在则备份然后删除 或者 修改文件名 避免覆盖</p>
+<p> <img src="/posts/52196/image-20240119151007599.png" alt="image-20240119151007599"></p>
+</li>
+<li><p>配置用户名和邮箱</p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.name <span class="string">&quot;name&quot;</span></span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git config --global user.email <span class="string">&quot;email&quot;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看用户名和邮箱是否配置正确</p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git config --global --list</span><br></pre></td></tr></table></figure>
+<p> <img src="/posts/52196/image-20240119151326757.png" alt="image-20240119151326757"></p>
+</li>
+<li><p>生成密钥</p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;email&quot;</span><br></pre></td></tr></table></figure>
+<p> <code>ssh-key generate</code></p>
+<p> <code>-t</code>指定协议为<code>rsa</code></p>
+</li>
+<li><p>第一次一般需要三次回车，最后会创建<code>id_rsa</code>和<code>id_rsa.pub</code>两个文件</p>
+<p> <img src="/posts/52196/image-20240119151139875.png" alt="image-20240119151139875"></p>
+</li>
+<li><p>添加密钥到<code>Github</code>远程仓库</p>
+<p> <img src="/posts/52196/image-20240119151514038.png" alt="image-20240119151514038"></p>
+<p> <img src="/posts/52196/image-20240119151537004.png" alt="image-20240119151537004"></p>
+<p> <img src="/posts/52196/image-20240119151602726.png" alt="image-20240119151602726"></p>
+</li>
+<li><p>如果是新增了一个密钥，则需要指定使用哪个ssh，创建一个config文件，并编辑</p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">github</span></span><br><span class="line">Host github.com</span><br><span class="line">HostName github.com</span><br><span class="line">PreferredAuthentications publickey</span><br><span class="line">IdentityFile ~/.ssh/id_rsa2</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>验证是否成功添加<code>ssh -T git@github.com</code></p>
+<p> <img src="/posts/52196/image-20240119152118993.png" alt="image-20240119152118993"></p>
+</li>
+</ol>
+<h4 id="远程仓库克隆"><a href="#远程仓库克隆" class="headerlink" title="远程仓库克隆"></a>远程仓库克隆</h4><ol>
+<li>把远程仓库<code>clone</code>到本地</li>
+</ol>
+<p><img src="/posts/52196/image-20240119152323535.png" alt="image-20240119152323535"></p>
+<ol>
+<li><p>本地创建<code>README.md</code>文件，添加并提交，但是只是存储在本地仓库</p>
+<p> <img src="/posts/52196/image-20240119152736045.png" alt="image-20240119152736045"></p>
+</li>
+<li><p>推送到远程仓库</p>
+<p> <img src="/posts/52196/image-20240119153353617.png" alt="image-20240119153353617"></p>
+<ul>
+<li><code>git push</code> 用于推送更改，但需要手动指定远程仓库和分支</li>
+<li><code>git push -u origin main</code> 在推送的同时，通过 <code>-u</code> 选项建立本地分支与远程分支的关联，使得后续的推送操作可以更方便地进行</li>
+</ul>
+</li>
+</ol>
+<h4 id="推送和拉取"><a href="#推送和拉取" class="headerlink" title="推送和拉取"></a>推送和拉取</h4><p><img src="/posts/52196/image-20240119154858372.png" alt="image-20240119154858372"></p>
+<ol>
+<li><p>创建一个远程仓库<code>first-repo</code></p>
+</li>
+<li><p>创建一个本地仓库<code>myrepo</code>，添加3个文件，并提交</p>
+</li>
+<li><p>添加远程仓库，查看当前仓库对应的远程仓库的别名和地址</p>
+<p> <img src="/posts/52196/image-20240119155045248.png" alt="image-20240119155045248"></p>
+</li>
+<li><p>指定分支名称，因为默认就是<code>main</code>，所以可以省略</p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git branch -M main</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>把本地的<code>master</code>分支和远程的<code>main</code>分支关联起来</p>
+<p> <img src="/posts/52196/image-20240119162634353.png" alt="image-20240119162634353"></p>
+<p> <code>-u</code>是<code>upstream</code> 向上传输数据流</p>
+<p> 把本地仓库和远程别名为<code>origin</code>的仓库关联起来</p>
+<p> 把本地<code>master</code>分支推送到远程的<code>main</code>分支，如果名称相同可以省略只写一个</p>
+</li>
+<li><p><code>Github</code>页面直接修改一些内容（一般是别的用户本地修改后推送到远程仓库）</p>
+</li>
+<li><p>本地拉取远程仓库的内容，再进行合并，合并是pull命令自动执行的，所以可能会发生冲突</p>
+<p> <img src="/posts/52196/image-20240119163550047.png" alt="image-20240119163550047"></p>
+</li>
+</ol>
+<p>远程获取仓库内容，还有一个<code>fetch</code>命令，该命令只是获取仓库的修改，但是并不会自动进行合并</p>
+<h2 id="分支-1"><a href="#分支-1" class="headerlink" title="分支"></a>分支</h2><p><img src="/posts/52196/image-20240122180254468.png" alt="image-20240122180254468"></p>
+<h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p>分支（Branch），可以视作代码库中的不同版本，可以独立存在，有自己的提交记录</p>
+<p>分支适用于团队协作和开发管理，比如说team1负责开发功能1，team2负责开发功能2，team3负责修复遗留bug，如果都在一个分支上搞，即便修改的是不同的文件，不会冲突，提交记录也会比较混乱，不利于开发。并且，主分支处于不稳定的状态，存在部分功能未开发完成、部分bug未修复等问题。引入分治，主分支随时处于稳定的版本，开发团队可以基于该版本进行功能开发，完善后再合并回来。</p>
+<p><img src="/posts/52196/image-20240122151431736.png" alt="image-20240122151431736"></p>
+<p><strong>示例</strong></p>
+<p><img src="/posts/52196/image-20240122152909913.png" alt="image-20240122152909913"></p>
+<ol>
+<li>创建 添加 提交三次文件，<code>git branch</code>查看所有分支和当前分支</li>
+</ol>
+<p><img src="/posts/52196/image-20240122153014756.png" alt="image-20240122153014756"></p>
+<ol>
+<li>创建新的分支<code>git branch branch_name</code>，但是没有切换到该分支</li>
+</ol>
+<p><img src="/posts/52196/image-20240122153354916.png" alt="image-20240122153354916"><img src="/posts/52196/image-20240122153445929.png" alt="image-20240122153445929"></p>
+<ol>
+<li>切换到该分支<code>git checkout branch_name</code>，该分支会继承<code>main/master</code>分支的以往提交记录</li>
+</ol>
+<p><img src="/posts/52196/image-20240122153539992.png" alt="image-20240122153539992"></p>
+<blockquote>
+<p><code>git checkout</code>还有一个功能是恢复文件到之前的状态，语法是一样的，所以如果文件名称和分支名称相同，就会出现歧义，默认是切换分支</p>
+<p><code>git switch</code>是专门用来切换分支的</p>
+<p><img src="/posts/52196/image-20240122154112113.png" alt="image-20240122154112113"></p>
+</blockquote>
+<ol>
+<li>创建 添加 提交新的文件，但是切换回<code>master</code>分支，其实是没有这几个文件的</li>
+</ol>
+<p><img src="/posts/52196/image-20240122154607960.png" alt="image-20240122154607960"></p>
+<p><code>master</code>：<img src="/posts/52196/image-20240122155257559.png" alt="image-20240122155257559"></p>
+<p><code>dev</code>：<img src="/posts/52196/image-20240122155317600.png" alt="image-20240122155317600"></p>
+<ol>
+<li><p>切换回<code>master</code>分支进行修改和提交</p>
+<p> <img src="/posts/52196/image-20240122155800813.png" alt="image-20240122155800813"></p>
+</li>
+<li><p><code>dev</code>分支的任务完成，需要合并回主分支：<code>current_branch:git merge branch_name</code>就是将<code>branch_name</code>分支合并到<code>current_branch</code>（通常要求是主分支）</p>
+</li>
+</ol>
+<p><img src="/posts/52196/image-20240122160041709.png" alt="image-20240122160041709"></p>
+<ol>
+<li><code>git log --graph --oneline --decorate --all</code>查看分支图</li>
+</ol>
+<p><img src="/posts/52196/image-20240122160156780.png" alt="image-20240122160156780"></p>
+<ol>
+<li><p>分支被合并不会被删除，要删除则使用<code>git branch -d branch_name</code>命令</p>
+<p> <code>-d</code>表示删除已经完成合并的分支，如果没有完成合并则删除不了，如需要强制删除则使用<code>-D</code></p>
+</li>
+</ol>
+<p><img src="/posts/52196/image-20240122160419486.png" alt="image-20240122160419486"></p>
+<h3 id="解决合并冲突"><a href="#解决合并冲突" class="headerlink" title="解决合并冲突"></a>解决合并冲突</h3><p><img src="/posts/52196/image-20240122182355843.png" alt="image-20240122182355843"></p>
+<p><strong>何为冲突？</strong></p>
+<p>两个分支在合并时，如果出现修改的内容重合，则会引发冲突，比如两个分支修改了同一个文件的同一行代码。需要我们手动解决冲突。</p>
+<p><strong>示例</strong></p>
+<ol>
+<li>新建分支<code>feat</code>，并切换到该分支，修改<code>master1.txt</code>的内容，并提交</li>
+</ol>
+<p><img src="/posts/52196/image-20240122180936107.png" alt="image-20240122180936107"><img src="/posts/52196/image-20240122181237321.png" alt="image-20240122181237321"></p>
+<ol>
+<li>切换回<code>master</code>分支，同样修改<code>master1.txt</code>的内容，并提交，此时<code>master1.txt</code>的原始内容是不包括<code>feat</code>分支所修改的内容的</li>
+</ol>
+<p><img src="/posts/52196/image-20240122181102442.png" alt="image-20240122181102442"><img src="/posts/52196/image-20240122181304941.png" alt="image-20240122181304941"></p>
+<ol>
+<li>现在在<code>master</code>分支上合并<code>feat</code>分支，提示自动合并失败，冲突文件是<code>master1.txt</code></li>
+</ol>
+<p><img src="/posts/52196/image-20240122181356192.png" alt="image-20240122181356192"></p>
+<ol>
+<li>使用git status命令查看冲突列表，git diff查看冲突具体内容，这里不显示具体内容是因为windows系统上的txt文件的编码是UTF-8</li>
+</ol>
+<p><img src="/posts/52196/image-20240122181519991.png" alt="image-20240122181519991"><img src="/posts/52196/image-20240122181652318.png" alt="image-20240122181652318"></p>
+<ol>
+<li><p>手工编辑该文件，留下需要的内容，再添加暂存，最后提交</p>
+<p> <img src="/posts/52196/image-20240122182247393.png" alt="image-20240122182247393"><img src="/posts/52196/image-20240122182301460.png" alt="image-20240122182301460"></p>
+</li>
+<li><p>如果想要终止此次合并，也可以使用<code>get merge --abort</code></p>
+</li>
+</ol>
+<h3 id="rebase"><a href="#rebase" class="headerlink" title="rebase"></a>rebase</h3><p>中文释义是变基，命令通常是<code>git rebase branch_name</code>，意思是将当前分支变基到<code>branch_name</code>分支上</p>
+<p><img src="/posts/52196/image-20240122160041709.png" alt="image-20240122160041709"></p>
+<p><code>merge</code>通常是要求在主分支（<code>master</code>或者<code>main</code>）上执行的，其实就是将别的分支合并到主分支，而<code>rebase</code>没有这种限制</p>
+<p><img src="/posts/52196/image-20240122183252961.png" alt="image-20240122183252961"></p>
+<p>执行<code>rebase</code>之后的结果是一条直线，这和<code>merge</code>也是不一样的</p>
+<p><img src="/posts/52196/image-20240122183008764.png" alt="image-20240122183008764"></p>
+<p>实际上，Git中的每个分支都存在一个指针[<code>HEAD</code>]，上述两种不同操作其实就是指针的指向变更不一样</p>
+<p><img src="/posts/52196/image-20240122183146636.png" alt="image-20240122183146636"></p>
+<p><code>Git</code>会找到这两个分支的最近公共祖先，也就是<code>main3</code>，然后将<code>main3</code>之后当前分支的所有提交移动到目标分支</p>
+<p><strong>示例</strong></p>
+<p><img src="/posts/52196/image-20240122183453523.png" alt="image-20240122183453523"></p>
+<ol>
+<li><p>将<code>feat</code>分支删除<code>git branch -d feat</code></p>
+</li>
+<li><p>将<code>dev</code>分支恢复出来，后面是<code>dev-2</code>那次提交的提交ID</p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git checkout -b dev 7c7de8c45434181d212fee657800ba98549dfaac</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p><img src="/posts/52196/image-20240122183741202.png" alt="image-20240122183741202"></p>
+<p><img src="/posts/52196/image-20240122184133903.png" alt="image-20240122184133903"></p>
+<ol>
+<li><p>再切换到<code>master</code>分支，并回退到<code>main-5</code>这次提交</p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">git reset --hard 91514ce76e2a19439e40b612aa4c6054fb606056</span><br></pre></td></tr></table></figure>
+<p> <img src="/posts/52196/image-20240122184216731.png" alt="image-20240122184216731"></p>
+</li>
+<li><p>复制一份仓库<code>branch_demo2</code>，原仓库执行<code>rebase</code>到<code>master</code>，新仓库执行<code>rebase</code>到d<code>e</code>v</p>
+</li>
+</ol>
+<p>原仓库：<img src="/posts/52196/image-20240122184420920.png" alt="image-20240122184420920">把<code>main-4</code>之后的<code>dev-1</code>和<code>dev-2</code>嫁接到<code>main-5</code>之后</p>
+<p>新仓库：<img src="/posts/52196/image-20240122184546262.png" alt="image-20240122184546262">把<code>main-4</code>之后的<code>main-5</code>嫁接到<code>dev-2</code>之后</p>
+<p><strong><code>Rebase</code> vs <code>Merge</code></strong></p>
+<p><code>Merge</code>的优点在于不会破坏原分支的提交历史，方便回溯和查看，但是会产生额外的提交节点，分支图比较复杂。</p>
+<p><code>Rebase</code>的优点在于不会新增额外的提交记录，形成线性历史，比较直观和干净，但是会改变提交历史（时间顺序会被破坏），避免在共享分支使用，容易造成困扰。</p>
+<h2 id="工作流模型"><a href="#工作流模型" class="headerlink" title="工作流模型"></a>工作流模型</h2><h3 id="GitFlow"><a href="#GitFlow" class="headerlink" title="GitFlow"></a>GitFlow</h3><p><img src="/posts/52196/image-20240122190720116.png" alt="image-20240122190720116"></p>
+<p>分支被划分为5种类型：</p>
+<ol>
+<li><p><strong>main[主要分支]</strong></p>
+<p> 主线分支[长期存在]，项目核心分支，包含项目最新的稳定版本的代码，需要保证该分支的代码随时都是可发布的，能够部署的</p>
+<p> 该分支的代码不允许直接修改，只能通过合并别的分支实现版本迭代，每次合并分支都建议生成一个新的版本号，便于追踪和回溯，用<code>git tag</code>命令进行标记，版本号规则：</p>
+<ol>
+<li>主版本（Major Version）：主要的功能变化或重大更新</li>
+<li>次版本（Minor Version）：一些新的功能、改进和更新，通常不会影响现有功能</li>
+<li>修订版本（Patch Version）：一些小的bug修复，安全漏洞补丁等。通常不会更改现有功能和接口。</li>
+</ol>
+</li>
+<li><p><strong>hotfix[辅助分支]</strong></p>
+<p> 问题修复分支[短期存在]，包含项目某个问题修复的源码，用于解决线上问题，所以通常是由<code>main</code>分支分离出来的，修复完成后合并回<code>main</code>分支或者<code>develop</code>分支，并删除该分支，一般命名规则为<code>hotfix-#issueid-desc</code>，通常也会更新小版本号，即修订版本</p>
+</li>
+<li><p><strong>release[辅助分支]</strong></p>
+<p> 预发布分支[短期存在]，包含项目最新预发布版本的代码，用于发布前的测试和验证，通常是从<code>develop</code>分支中分离出来的，当预发布分支的代码稳定后会合并到<code>main</code>分支和<code>develop</code>分支中，并将该预发布分支删除</p>
+</li>
+<li><p><strong>develop[主要分支]</strong></p>
+<p> 开发分支[长期存在]，从<code>main</code>分支分离出来的，包含了项目最新开发版本的代码，用于开发和测试</p>
+</li>
+<li><p><strong>feature[辅助分支]</strong></p>
+<p> 功能分支[短期存在]，包含项目某个新功能的代码，通常是从<code>develop</code>分支中分离出来的。功能开发完成后，合并回<code>develop</code>分支</p>
+</li>
+</ol>
+<h3 id="GithubFlow"><a href="#GithubFlow" class="headerlink" title="GithubFlow"></a>GithubFlow</h3><p><code>GitFlow</code>模型很完善，各个方面都兼备，但是也带来了一定的复杂性，所以就引入<code>GithubFlow</code>，通常包括一个长期存在的主分支[禁止直接提交]和其他功能开发的分支</p>
+<p><img src="/posts/52196/image-20240122190840601.png" alt="image-20240122190840601"></p>
+<h3 id="规范"><a href="#规范" class="headerlink" title="规范"></a>规范</h3><p><strong>分支命令</strong></p>
+<p>使用带有意义的描述性名称来命名分支</p>
+<ol>
+<li>版本发布应该根据版本号命名：v1.0.0</li>
+<li>功能性分支应该根据其功能和任务命名：feature-login-page</li>
+<li>修补补丁和错误应该根据其问题编号命名：hotfix-#issueid-desc</li>
+</ol>
+<p><strong>分支管理</strong></p>
+<ol>
+<li>定期合并已经成功验证的分支，并及时删除已经合并的分支</li>
+<li>保持合适的分支数量</li>
+<li>确保及时将功能性分支合并回主分支</li>
+<li>为分支设置合适的管理权限</li>
+</ol>
+<h2 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h2><h4 id="Gitee和GitLab"><a href="#Gitee和GitLab" class="headerlink" title="Gitee和GitLab"></a>Gitee和GitLab</h4><p><a href="https://www.bilibili.com/video/BV1HM411377j?p=13">13.Gitee的使用和GitLab本地化部署_哔哩哔哩_bilibili</a></p>
+<h4 id="在VSCode中使用Git"><a href="#在VSCode中使用Git" class="headerlink" title="在VSCode中使用Git"></a>在VSCode中使用Git</h4><p><a href="https://www.bilibili.com/video/BV1HM411377j?p=15">15.在VSCode中使用Git_哔哩哔哩_bilibili</a></p>
+<h4 id="小窍门"><a href="#小窍门" class="headerlink" title="小窍门"></a>小窍门</h4><p><code>alias graph=git log --oneline --graph --decorate --all</code>将这么长的命令命名为<code>graph</code>（windows不支持）</p>
+<p>建议使用git配置文件来设置git命令的别名，便于迁移</p>
+<h2 id="unable-to-access问题解决"><a href="#unable-to-access问题解决" class="headerlink" title="unable to access问题解决"></a>unable to access问题解决</h2><p><a href="https://www.douban.com/note/821097747/?_i=5652571QMCZcLA">https://www.douban.com/note/821097747/?_i=5652571QMCZcLA</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/620877553">【Github】fatal: unable to access ‘https://github.com/<strong>/</strong>.git’: Proxy CONNECT aborted—解决办法 - 知乎 (zhihu.com)</a></p>
 ]]></content>
       <categories>
         <category>编程语言</category>
