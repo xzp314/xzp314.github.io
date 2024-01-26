@@ -100,7 +100,8 @@
 <li>war包部署：将编译好的项目打成<code>war</code>包放在<code>webapps</code>目录下，<code>Tomcat</code>启动后会自动解压<code>war</code>包（和第一种一样）</li>
 <li>映射部署：可以将项目放在非<code>webapps</code>的其他目录下，在<code>tomcat</code>中通过配置文件指向<code>app</code>的实际磁盘路径</li>
 </ol>
-<h3 id="映射部署"><a href="#映射部署" class="headerlink" title="映射部署"></a>映射部署</h3><p>只需要在<code>conf/Catalina/localhost</code>目录下创建一个<code>examples.xml</code>文件[和项目同名，三个名称保持一致]</p>
+<p><strong>映射部署</strong></p>
+<p>只需要在<code>conf/Catalina/localhost</code>目录下创建一个<code>examples.xml</code>文件[和项目同名，三个名称保持一致]</p>
 <p><img src="/posts/17791/image-20240124171430036.png" alt="image-20240124171430036"></p>
 <p>日志证明使用了映射部署方式</p>
 <p><img src="/posts/17791/image-20240124171730103.png" alt="image-20240124171730103"></p>
@@ -163,7 +164,7 @@
 </li>
 </ol>
 <blockquote>
-<p>实际上不需要构建输出到<code>out</code>也可以直接运行</p>
+<p>实际上不需要构建输出到<code>out</code>也可以直接运行，<code>IDEA</code>的部署原理实际上就是对<code>Tomcat</code>进行一次拷贝，然后在副本中进行部署</p>
 </blockquote>
 ]]></content>
       <categories>
