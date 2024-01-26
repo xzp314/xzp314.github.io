@@ -19,7 +19,7 @@
 <p><strong>配置环境变量</strong></p>
 <ol>
 <li><p>需要保证电脑已经配置好<code>JAVA_HOME</code>[系统变量以及<code>Path</code>]，注意用户变量有可能覆盖系统变量，<code>java -version</code>验证是否配置成果</p>
-<p><img src="/posts/17791/image-20240124153500312.png" alt="image-20240124153500312" style="zoom:67%;"><img src="/posts/17791/image-20240124153649884.png" alt="image-20240124153649884"><img src="/posts/17791/image-20240124153857562.png" alt="image-20240124153857562"></p>
+<p><img src="/posts/17791/image-20240124153500312.png" alt="image-20240124153500312" style="zoom: 25%;"><img src="/posts/17791/image-20240124153649884.png" alt="image-20240124153649884" style="zoom:25%;"><img src="/posts/17791/image-20240124153857562.png" alt="image-20240124153857562" style="zoom:25%;"></p>
 </li>
 <li><p>解压压缩包到合适的目录</p>
 </li>
@@ -28,11 +28,11 @@
 <li><p>双击<code>bin/startup.bat</code>启动<code>Tomcat</code>[点击<code>shutdown.bat</code>或者直接关闭<code>cmd</code>就关闭了]，检查输出指令没有异常，打开本地<code>8080</code>端口</p>
 </li>
 </ol>
-<p><img src="/posts/17791/image-20240124155257572.png" alt="image-20240124155257572" style="zoom:50%;"><img src="/posts/17791/image-20240124154954905.png" alt="image-20240124154954905" style="zoom:50%;"></p>
+<p><img src="/posts/17791/image-20240124155257572.png" alt="image-20240124155257572" style="zoom: 25%;"><img src="/posts/17791/image-20240124154954905.png" alt="image-20240124154954905" style="zoom: 25%;"></p>
 <ol>
 <li>配置系统变量[没有必要配置，因为一台机器可能会部署多个<code>Tomcat</code>版本，后续可以关联到<code>IDEA</code>，如果配置了该环境变量，那么即便打开的是其他版本的<code>startup.bat</code>，启动的也是环境变量的版本，但是如果部署到<code>Linux</code>服务器上时就需要配置环境变量了]</li>
 </ol>
-<p><img src="/posts/17791/image-20240124155911292.png" alt="image-20240124155855309" style="zoom: 50%;"><img src="/posts/17791/image-20240124155921261.png" alt="image-20240124155921261" style="zoom:50%;"></p>
+<p><img src="/posts/17791/image-20240124155911292.png" alt="image-20240124155855309" style="zoom: 25%;"><img src="/posts/17791/image-20240124155921261.png" alt="image-20240124155921261" style="zoom: 25%;"></p>
 <ol>
 <li>验证是否配置成功，直接<code>cmd</code>输入<code>startup.bat</code>能够运行成果</li>
 </ol>
@@ -64,7 +64,7 @@
 <li><p><strong><code>webapps</code></strong>：存放<code>web</code>项目的文件夹，其中每个文件夹都是一个项目；如果这个目录下已经存在了目录，那么都是<code>Tomcat</code>自带的项目。其中<code>ROOT</code>是一个特殊的项目，在地址栏中访问<a href="http://127.0.0.1:8080，没有给出项目目录时，对应的就是`ROOT`项目。如果访问http://localhost:8080/examples，就会进入示例项目。其中`examples`就是项目名，即文件夹的名字">http://127.0.0.1:8080，没有给出项目目录时，对应的就是`ROOT`项目。如果访问http://localhost:8080/examples，就会进入示例项目。其中`examples`就是项目名，即文件夹的名字</a></p>
 </li>
 </ul>
-<p><img src="/posts/17791/image-20240124163451368.png" alt="image-20240124163451368"></p>
+<p><img src="/posts/17791/image-20240124163451368.png" alt="image-20240124163451368" style="zoom:25%;"></p>
 <ul>
 <li><code>work</code>：运行时生成的文件，与<code>JSP</code>密切相关，现在基本用不到了，最终运行的文件都在这里。通过<code>webapps</code>中的项目生成的！可以把这个目录下的内容删除，再次运行时会生再次生成<code>work</code>目录。当客户端用户访问一个<code>JSP</code>文件时，<code>Tomcat</code>会通过<code>JSP</code>生成<code>Java</code>文件，然后再编译<code>Java</code>文件生成<code>class</code>文件，生成的<code>java</code>和<code>class</code>文件都会存放到这个目录下。</li>
 <li><code>LICENSE</code>：许可证</li>
@@ -104,9 +104,9 @@
 <p>只需要在<code>conf/Catalina/localhost</code>目录下创建一个<code>examples.xml</code>文件[和项目同名，三个名称保持一致]</p>
 <p><img src="/posts/17791/image-20240124171430036.png" alt="image-20240124171430036"></p>
 <p>日志证明使用了映射部署方式</p>
-<p><img src="/posts/17791/image-20240124171730103.png" alt="image-20240124171730103"></p>
+<p><img src="/posts/17791/image-20240124171730103.png" alt="image-20240124171730103" style="zoom:25%;"></p>
 <p><code>url</code>的组成部分和项目种资源的对应关系图</p>
-<p><img src="/posts/17791/image-20240124172115353.png" alt="image-20240124172115353"></p>
+<p><img src="/posts/17791/image-20240124172115353.png" alt="image-20240124172115353" style="zoom:25%;"></p>
 <ol>
 <li><p>资源路径不一定完全等同于项目中的资源</p>
 </li>
@@ -121,50 +121,50 @@
 <p>上述过程均可以使用<code>IDEA</code>进行实现</p>
 <ol>
 <li><p>建立<code>IDEA</code>和<code>Tomcat</code>的关联（可以关联多个，开发时可选）</p>
-<p> <img src="/posts/17791/image-20240125165751241.png" alt="image-20240125165751241"></p>
+<p> <img src="/posts/17791/image-20240125165751241.png" alt="image-20240125165751241" style="zoom:25%;"></p>
 </li>
 <li><p>创建一个<code>javaweb</code>工程</p>
 <ol>
 <li><p>创建<code>web-all</code>文件夹用于管理所有<code>web</code>项目</p>
 </li>
 <li><p>用<code>IDEA</code>打开该文件夹，将其转化为工作目录，并进行初始设置，包括SDK、语言级别、输出文件夹等</p>
-<p> <img src="/posts/17791/image-20240125170341590.png" alt="image-20240125170341590"></p>
+<p> <img src="/posts/17791/image-20240125170341590.png" alt="image-20240125170341590" style="zoom:25%;"></p>
 </li>
 </ol>
 </li>
 <li><p>创建项目</p>
 <ol>
 <li><p>创建项目</p>
-<p><img src="/posts/17791/image-20240125170435272.png" alt="image-20240125170435272"></p>
+<p><img src="/posts/17791/image-20240125170435272.png" alt="image-20240125170435272" style="zoom:25%;"></p>
 <p>用模块创建项目，能够避免多个项目频繁切换</p>
 </li>
 <li><p>转化为<code>web</code>项目</p>
-<p><img src="/posts/17791/image-20240125170917030.png" alt="image-20240125170917030"><img src="/posts/17791/image-20240125171041454.png" alt="image-20240125171041454" style="zoom:50%;"></p>
+<p><img src="/posts/17791/image-20240125170917030.png" alt="image-20240125170917030" style="zoom:25%;"><img src="/posts/17791/image-20240125171041454.png" alt="image-20240125171041454" style="zoom: 25%;"></p>
 <p>添加<code>Tomcat</code>依赖</p>
-<p><img src="/posts/17791/image-20240125170731759.png" alt="image-20240125170731759"><img src="/posts/17791/image-20240125171236130.png" alt="image-20240125171236130"></p>
+<p><img src="/posts/17791/image-20240125170731759.png" alt="image-20240125170731759" style="zoom:25%;"><img src="/posts/17791/image-20240125171236130.png" alt="image-20240125171236130" style="zoom:25%;"></p>
 <p>初始化工程目录（右键“将目录标记为” “添加为库” 或者 ）</p>
-<p><img src="/posts/17791/image-20240125173409458.png" alt="image-20240125173409458"></p>
+<p><img src="/posts/17791/image-20240125173409458.png" alt="image-20240125173409458" style="zoom:25%;"></p>
 </li>
 </ol>
 </li>
 <li><p>将工程构建成一个可以发布的<code>App</code></p>
-<p> <img src="/posts/17791/image-20240125173553791.png" alt="image-20240125173553791"><img src="/posts/17791/image-20240125173602332.png" alt="image-20240125173602332"><img src="/posts/17791/image-20240125174050855.png" alt="image-20240125174050855"></p>
+<p> <img src="/posts/17791/image-20240125173553791.png" alt="image-20240125173553791" style="zoom:25%;"><img src="/posts/17791/image-20240125173602332.png" alt="image-20240125173602332" style="zoom:25%;"><img src="/posts/17791/image-20240125174050855.png" alt="image-20240125174050855" style="zoom:25%;"></p>
 <p> 因为<code>static</code>文件夹中没有有效的文件，所以构建后抛弃了该文件夹</p>
 <p> <code>classes</code>就是前面的<code>src</code>和<code>resources</code>编译后合并得到的字节码</p>
 </li>
 <li><p>将<code>App</code>部署到<code>Tomcat</code>中，启动运行</p>
 <p> 添加<code>Tomcat</code>运行配置</p>
-<p> <img src="/posts/17791/image-20240125174330418.png" alt="image-20240125174330418"><img src="/posts/17791/image-20240125174444197.png" alt="image-20240125174444197"><img src="/posts/17791/image-20240125174514355.png" alt="image-20240125174514355"><img src="/posts/17791/image-20240125174541285.png" alt="image-20240125174541285"></p>
+<p> <img src="/posts/17791/image-20240125174330418.png" alt="image-20240125174330418"><img src="/posts/17791/image-20240125174444197.png" alt="image-20240125174444197" style="zoom:25%;"><img src="/posts/17791/image-20240125174514355.png" alt="image-20240125174514355" style="zoom:25%;"><img src="/posts/17791/image-20240125174541285.png" alt="image-20240125174541285" style="zoom:25%;"></p>
 <p> 实际运行</p>
 <p> <img src="/posts/17791/image-20240125174723476.png" alt="image-20240125174723476"></p>
 <p> 两种输出日志，服务器日志正常，但是Tomcat Catalina日志乱码</p>
-<p> <img src="/posts/17791/image-20240125175016739.png" alt="image-20240125175016739"></p>
+<p> <img src="/posts/17791/image-20240125175016739.png" alt="image-20240125175016739" style="zoom:25%;"></p>
 <p> 在<a href="Tomcat/conf">Tomcat/conf</a>中的<code>logging.properties</code>将<code>1catalina.org.apache.juli.AsyncFileHandler.encoding</code>修改为<code>GBK</code>，原本是<code>UTF-8</code></p>
-<p> <img src="/posts/17791/image-20240125175226246.png" alt="image-20240125175226246"></p>
+<p> <img src="/posts/17791/image-20240125175226246.png" alt="image-20240125175226246" style="zoom:25%;"></p>
 </li>
 </ol>
 <blockquote>
-<p>实际上不需要构建输出到<code>out</code>也可以直接运行，<code>IDEA</code>的部署原理实际上就是对<code>Tomcat</code>进行一次拷贝，然后在副本中进行部署</p>
+<p>实际上不需要构建输出到<code>out</code>也可以直接运行，<code>IDEA</code>的部署原理实际上就是对<code>Tomcat</code>进行一次拷贝，然后在副本中进行部署，而副本中存放仅仅和需要部署的项目相关的配置文件，实际的运行是用原本的<code>Tomcat</code>软件使用副本的配置文件来运行<code>javaweb</code>项目</p>
 </blockquote>
 ]]></content>
       <categories>
