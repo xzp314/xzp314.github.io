@@ -121,7 +121,7 @@
 <meta property="og:image" content="http://example.com/posts/17791/image-20240125175016739.png">
 <meta property="og:image" content="http://example.com/posts/17791/image-20240125175226246.png">
 <meta property="article:published_time" content="2024-01-24T06:08:36.000Z">
-<meta property="article:modified_time" content="2024-01-25T09:52:52.625Z">
+<meta property="article:modified_time" content="2024-01-26T02:02:58.936Z">
 <meta property="article:author" content="Xu Zhipeng">
 <meta property="article:tag" content="开发基础知识">
 <meta name="twitter:card" content="summary">
@@ -472,10 +472,9 @@
 <p><img src="/posts/17791/image-20240124152834182.png" alt="image-20240124152834182"></p>
 <p><strong>配置环境变量</strong></p>
 <ol>
-<li>需要保证电脑已经配置好<code>JAVA_HOME</code>[系统变量以及<code>Path</code>]，注意用户变量有可能覆盖系统变量，<code>java -version</code>验证是否配置成果</li>
-</ol>
+<li><p>需要保证电脑已经配置好<code>JAVA_HOME</code>[系统变量以及<code>Path</code>]，注意用户变量有可能覆盖系统变量，<code>java -version</code>验证是否配置成果</p>
 <p><img src="/posts/17791/image-20240124153500312.png" alt="image-20240124153500312" style="zoom:67%;"><img src="/posts/17791/image-20240124153649884.png" alt="image-20240124153649884"><img src="/posts/17791/image-20240124153857562.png" alt="image-20240124153857562"></p>
-<ol>
+</li>
 <li><p>解压压缩包到合适的目录</p>
 </li>
 <li><p>打印日志中文原本是乱码，这是因为默认使用<code>UTF-8</code>打印日志，应该在<code>conf/logging.properties</code>中将<code>java.util.logging.ConsoleHandler.encoding</code>修改为<code>GBK</code></p>
