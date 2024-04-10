@@ -133,6 +133,1192 @@
       </tags>
   </entry>
   <entry>
+    <title>设计模式-结构型模式</title>
+    <url>/posts/18127.html</url>
+    <content><![CDATA[<h1 id="结构型模式"><a href="#结构型模式" class="headerlink" title="结构型模式"></a>结构型模式</h1><p>结构型模式包括以下几种具体模式：</p>
+<ol>
+<li>适配器（<code>Adapter</code>）：让接口不兼容的对象能够相互合作</li>
+<li>桥接（<code>Bridge</code>）：可将一个大类或一系列紧密相关的类拆分为抽象和实现两个独立的层次结构，从而能在开发时分别使用</li>
+<li>组合（<code>Composite</code>）：使用它将对象组合成树状结构，并且能像使用独立对象一样使用它们（比如遍历）</li>
+<li>装饰（<code>Decorator</code>）：允许你通过将对象放入包含行为的特殊封装对象中来为原对象绑定新的行为</li>
+<li>外观（<code>Facade</code>）：能为程序库、框架或其他复杂类提供一个简单的接口</li>
+<li>享元（<code>Flyweight</code>）：摒弃了在每个对象中保存所有数据的方式，通过共享多个对象所共有的相同状态，让你能在有限的内存容量中载入更多对象</li>
+<li>代理（<code>Proxy</code>）：让你能够提供对象的替代品或其占位符。代理控制着对于原对象的访问，并允许在将请求提交给对象前后进行一些处理</li>
+</ol>
+<h2 id="适配器"><a href="#适配器" class="headerlink" title="适配器"></a>适配器</h2><blockquote>
+<p>封装器模式、Wrapper、Adapter</p>
+</blockquote>
+<p>适配器是一种结构型设计模式，它能使接口不兼容的对象能够相互合作</p>
+<h3 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h3><p>假如你正在开发一款股票市场监测程序，它会从不同来源下载XML格式的股票数据，然后向用户呈现出美观的图表。</p>
+<p>在开发过程中， 你决定在程序中整合一个第三方智能分析函数库。 但是遇到了一个问题， 那就是分析函数库只兼容JSON格式的数据。</p>
+<p><img src="/posts/18127/image-20240313182958332.png" alt="image-20240313182958332"></p>
+<p>你可以修改程序库来支持 XML。但是，这可能需要修改部分依赖该程序库的现有代码。甚至还有更糟糕的情况，你可能根本没有程序库的源代码，从而无法对其进行修改。  </p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>创建一个适配器，适配器是一个特殊的对象，能够转换对象接口，使其能与其他对象进行交互。</p>
+<p>适配器模式通过封装对象将复杂的转换过程隐藏于幕后。被封装的对象甚至察觉不到适配器的存在。例如，你可以使用一个将所有数据转换为英制单位（如英尺和英里）的适配器封装运行于米和千米单位制中的对象  </p>
+<p>适配器不仅可以转换不同格式的数据，还有助于采用不同接口的对象之间的合作。它的运作方式如下：</p>
+<ol>
+<li>适配器实现与其中一个现有对象兼容的接口</li>
+<li>现有对象可以使用该接口安全地调用适配器方法</li>
+<li>适配器方法被调用后将以另一个对象兼容的格式和顺序将请求传递给该对象</li>
+</ol>
+<p>有时你甚至可以创建一个双向适配器来实现双向转换调用  </p>
+<p><img src="/posts/18127/image-20240313183849810.png" alt="image-20240313183849810"></p>
+<p>为了解决数据格式不兼容的问题，你可以为分析函数库中的每个类创建将 XML 转换为 JSON 格式的适配器，然后让客户端仅通过这些适配器来与函数库进行交流。当某个适配器被调用时，它会将传入的 XML 数据转换为 JSON 结构，并将其传递给被封装分析对象的相应方法。</p>
+<h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><p><strong>对象适配器</strong></p>
+<p>实现时使用了构成原则：适配器实现了其中一个对象的接口，并对另一个对象进行封装。</p>
+<p><img src="/posts/18127/image-20240313184112960.png" alt="image-20240313184112960"></p>
+<ol>
+<li>客户端（<code>Client</code>）是包含当前程序业务逻辑的类。</li>
+<li>客户端接口（<code>Client Interface</code>）描述了其他类与客户端代码合作时必须遵循的协议。</li>
+<li>服务（<code>Service</code>）中有一些功能类（通常来自第三方或遗留系统)。客户端与其接口不兼容，因此无法直接调用其功能</li>
+<li><strong>适配器</strong>（<code>Adapter</code>）是一个可以同时与客户端和服务交互的类：它在实现客户端接口的同时封装了服务对象。适配器接受客户端通过适配器接口发起的调用，并将其转换为适用于被封装服务对象的调用</li>
+<li>客户端代码只需通过接口与适配器交互即可，无需与具体的适配器类耦合。因此，你可以向程序中添加新类型的适配器而无需修改已有代码。这在服务类的接口被更改或替换时很有用：你无需修改客户端代码就可以创建新的适配器类  </li>
+</ol>
+<p><strong>类适配器</strong></p>
+<p>这一实现使用了继承机制：适配器同时继承两个对象的接口。请注意， 这种方式仅能在支持多重继承的编程语言中实现，例如 C++  </p>
+<p><img src="/posts/18127/image-20240313184304644.png" alt="image-20240313184304644"></p>
+<ol>
+<li>类适配器不需要封装任何对象，因为它同时继承了客户端和<br> 服务的行为。适配功能在重写的方法中完成。最后生成的适<br> 配器可替代已有的客户端类进行使用</li>
+</ol>
+<h3 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h3><p>方钉与圆孔</p>
+<p><img src="/posts/18127/image-20240313184632609.png" alt="image-20240313184632609"></p>
+<p>适配器假扮成一个圆钉（RoundPeg），其半径等于方钉（SquarePeg）横截面对角线的一半（即能够容纳方钉的最小外接圆的半径）</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 假设你有两个接口相互兼容的类：圆孔（RoundHole）和圆钉（RoundPeg）。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RoundHole</span> is</span><br><span class="line">	constructor <span class="title function_">RoundHole</span><span class="params">(radius)</span> &#123; ... &#125;</span><br><span class="line"></span><br><span class="line"> 	method <span class="title function_">getRadius</span><span class="params">()</span> is</span><br><span class="line"> 	<span class="comment">// 返回孔的半径。</span></span><br><span class="line"></span><br><span class="line"> 	method <span class="title function_">fits</span><span class="params">(peg: RoundPeg)</span> is</span><br><span class="line"> 		<span class="keyword">return</span> <span class="built_in">this</span>.getRadius() &gt;= peg.getRadius()</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RoundPeg</span> is</span><br><span class="line">  constructor <span class="title function_">RoundPeg</span><span class="params">(radius)</span> &#123; ... &#125;</span><br><span class="line"></span><br><span class="line"> method <span class="title function_">getRadius</span><span class="params">()</span> is</span><br><span class="line"> <span class="comment">// 返回钉子的半径。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> <span class="comment">// 但还有一个不兼容的类：方钉（SquarePeg）。</span></span><br><span class="line"> <span class="keyword">class</span> <span class="title class_">SquarePeg</span> is</span><br><span class="line"> 	constructor <span class="title function_">SquarePeg</span><span class="params">(width)</span> &#123; ... &#125;</span><br><span class="line"></span><br><span class="line"> 	method <span class="title function_">getWidth</span><span class="params">()</span> is</span><br><span class="line"> 	<span class="comment">// 返回方钉的宽度。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> <span class="comment">// 适配器类让你能够将方钉放入圆孔中。它会对 RoundPeg 类进行扩展，以接收适配器对象作为圆钉。</span></span><br><span class="line"> <span class="keyword">class</span> <span class="title class_">SquarePegAdapter</span> <span class="keyword">extends</span> <span class="title class_">RoundPeg</span> is</span><br><span class="line">   <span class="comment">// 在实际情况中，适配器中会包含一个 SquarePeg 类的实例。</span></span><br><span class="line">   <span class="keyword">private</span> field peg: SquarePeg</span><br><span class="line">   constructor <span class="title function_">SquarePegAdapter</span><span class="params">(peg: SquarePeg)</span> is</span><br><span class="line">   	<span class="built_in">this</span>.peg = peg</span><br><span class="line"></span><br><span class="line"> method <span class="title function_">getRadius</span><span class="params">()</span> is</span><br><span class="line">   <span class="comment">// 适配器会假扮为一个圆钉，</span></span><br><span class="line">   <span class="comment">// 其半径刚好能与适配器实际封装的方钉搭配起来。</span></span><br><span class="line">   <span class="keyword">return</span> peg.getWidth() * Math.sqrt(<span class="number">2</span>) / <span class="number">2</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> <span class="comment">// 客户端代码中的某个位置。</span></span><br><span class="line">  hole = <span class="keyword">new</span> <span class="title class_">RoundHole</span>(<span class="number">5</span>)</span><br><span class="line">  rpeg = <span class="keyword">new</span> <span class="title class_">RoundPeg</span>(<span class="number">5</span>)</span><br><span class="line">  hole.fits(rpeg) <span class="comment">// true</span></span><br><span class="line"></span><br><span class="line">	small_sqpeg = <span class="keyword">new</span> <span class="title class_">SquarePeg</span>(<span class="number">5</span>)</span><br><span class="line">  large_sqpeg = <span class="keyword">new</span> <span class="title class_">SquarePeg</span>(<span class="number">10</span>)</span><br><span class="line">  hole.fits(small_sqpeg) <span class="comment">// 此处无法编译（类型不一致）。</span></span><br><span class="line"></span><br><span class="line">  small_sqpeg_adapter = <span class="keyword">new</span> <span class="title class_">SquarePegAdapter</span>(small_sqpeg)</span><br><span class="line">  large_sqpeg_adapter = <span class="keyword">new</span> <span class="title class_">SquarePegAdapter</span>(large_sqpeg)</span><br><span class="line">  hole.fits(small_sqpeg_adapter) <span class="comment">// true</span></span><br><span class="line">  hole.fits(large_sqpeg_adapter) <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
+<li><p>当你希望使用某个类，但是其接口与其他代码不兼容时，可以使用适配器类</p>
+<p>  适配器模式允许你创建一个中间层类，其可作为代码与遗留类、第三方类或提供怪异接口的类之间的转换器  </p>
+</li>
+<li><p>如果您需要复用这样一些类，他们处于同一个继承体系，并且他们又有了额外的一些共同的方法，但是这些共同的方法不是所有在这一继承体系中的子类所具有的共性</p>
+<p>  你可以扩展每个子类，将缺少的功能添加到新的子类中。但是，你必须在所有新子类中重复添加这些代码，这样会使得代码有坏味道</p>
+<p>  将缺失功能添加到一个适配器类中是一种优雅得多的解决方案。然后你可以将缺少功能的对象封装在适配器中，从而动态地获取所需功能。如要这一点正常运作，目标类必须要有通用接口，适配器的成员变量应当遵循该通用接口。这种方式同装饰模式非常相似  </p>
+</li>
+</ul>
+<h3 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h3><ol>
+<li>确保至少有两个类的接口不兼容：<ol>
+<li>一个无法修改（通常是第三方、遗留系统或者存在众多已<br> 有依赖的类）的功能性服务类</li>
+<li>一个或多个将受益于使用服务类的客户端类</li>
+</ol>
+</li>
+<li>声明客户端接口，描述客户端如何与服务交互</li>
+<li>创建遵循客户端接口的适配器类。所有方法暂时都为空</li>
+<li>在适配器类中添加一个成员变量用于保存对于服务对象的引用。 通常情况下会通过构造函数对该成员变量进行初始化，但有时在调用其方法时将该变量传递给适配器会更方便</li>
+<li>依次实现适配器类客户端接口的所有方法。适配器会将实际工作委派给服务对象，自身只负责接口或数据格式的转换。</li>
+<li>客户端必须通过客户端接口使用适配器。这样一来，你就可以在不影响客户端代码的情况下修改或扩展适配器。</li>
+</ol>
+<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><ul>
+<li>单一职责原则 你可以将接口或数据转换代码从程序主要业务逻辑中分离</li>
+<li>开闭原则 只要客户端代码通过客户端接口与适配器进行交互，你就能在不修改现有客户端代码的情况下在程序中添加新类型的适配器</li>
+</ul>
+<hr>
+<ul>
+<li>代码整体复杂度增加，因为你需要新增一系列接口和类。有时直接更改服务类使其与其他代码兼容会更简单</li>
+</ul>
+<h3 id="与其他模式的关系"><a href="#与其他模式的关系" class="headerlink" title="与其他模式的关系"></a>与其他模式的关系</h3><ul>
+<li><a href="# 桥接">桥接</a>通常会于开发前期进行设计，使你能够将程序的各个部分独立开来以便开发。另一方面，<a href="# 适配器">适配器</a>通常在已有程序中使用，让相互不兼容的类能很好地合作</li>
+<li>适配器可以对已有对象的接口进行修改，<a href="# 装饰">装饰</a>则能在不改变对象接口的前提下强化对象功能。此外，装饰还支持递归组合，适配器则无法实现</li>
+<li>适配器能为被封装对象提供不同的接口，<a href="# 代理">代理</a>能为对象提供相同的接口，装饰则能为对象提供加强的接口</li>
+<li><a href="# 外观">外观</a>为现有对象定义了一个新接口，适配器则会试图运用已有的接口。适配器通常只封装一个对象，外观通常会作用于整个对象子系统上</li>
+<li>桥接、<a href="# 状态">状态</a>和<a href="# 策略">策略</a>（在某种程度上包括适配器）模式的接口非常相似。实际上，它们都基于组合模式——即将工作委派给其他对象，不过也各自解决了不同的问题。模式并不只是以特定方式组织代码的配方，你还可以使用它们来和其他开发者讨论模式所解决的问题</li>
+</ul>
+<h2 id="桥接"><a href="#桥接" class="headerlink" title="桥接"></a>桥接</h2><blockquote>
+<p>Bridge</p>
+</blockquote>
+<p>桥接是一种结构型设计模式，可将一个大类或一系列紧密相关的类拆分为抽象和实现两个独立的层次结构，从而能在开发时分别使用。</p>
+<h3 id="问题背景-1"><a href="#问题背景-1" class="headerlink" title="问题背景"></a>问题背景</h3><p>假如有一个几何形状<code>Shape</code>类，从它能扩展出两个子类：圆形<code>Circle</code>和方形<code>Square</code>。你希望对这样的类层次结构进行扩展以使其包含颜色，所以你打算创建名为红色<code>Red</code>和蓝色<code>Blue</code>的形状子类。但是，由于你已有两个子类，所以总共需要创建四个类才能覆盖所有组合，例如蓝色圆形<code>BlueCircle</code>和红色方形<code>RedSquare</code>。</p>
+<p><img src="/posts/18127/image-20240325180839879.png" alt="image-20240325180839879"></p>
+<p>在层次结构中新增形状和颜色将导致代码复杂程度指数增长。例如添加三角形状，你需要新增两个子类，也就是每种颜色一个；此后新增一种新颜色需要新增三个子类，即每种形状一个。如此以往，情况会越来越糟糕。  </p>
+<h3 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h3><p>问题的根本原因是我们试图在两个独立的维度（形状与颜色）上扩展形状类。这在处理类继承时是很常见的问题。</p>
+<p>桥接模式通过将继承改为组合的方式来解决这个问题。具体来说，就是抽取其中一个维度并使之成为独立的类层次，这样就可以在初始类中引用这个新层次的对象，从而使得一个类不必拥有所有的状态和行为。</p>
+<p><img src="/posts/18127/image-20240325181312494.png" alt="image-20240325181312494"></p>
+<p>根据该方法，我们可以将颜色相关的代码抽取到拥有红色和蓝色两个子类的颜色类中，然后在形状类中添加一个指向某一颜色对象的引用成员变量。现在，形状类可以将所有与颜色相关的工作委派给连入的颜色对象。这样的引用就成为了形状和颜色之间的桥梁。此后，新增颜色将不再需要修改形状的类层次，反之亦然。</p>
+<h3 id="结构-1"><a href="#结构-1" class="headerlink" title="结构"></a>结构</h3><p><img src="/posts/18127/image-20240325182144916.png" alt="image-20240325182144916"></p>
+<ol>
+<li><p><strong>抽象部分</strong>（Abstraction）提供高层控制逻辑，依赖于完成底层实际工作的实现对象</p>
+</li>
+<li><p><strong>实现部分</strong>（Implementation）为所有具体实现声明通用接口。抽象部分仅能通过在这里声明的方法与实现对象交互</p>
+<p> 抽象部分可以列出和实现部分一样的方法，但是抽象部分通常声明一些复杂行为，这些行为依赖于多种由实现部分声明的原语操作  </p>
+</li>
+<li><p><strong>具体实现</strong>（Concrete Implementations）中包括特定于平台的<br> 代码</p>
+</li>
+<li><p><strong>精确抽象</strong>（Refined Abstraction）提供控制逻辑的变体。与其<br> 父类一样，它们通过通用实现接口与不同的实现进行交互</p>
+</li>
+<li><p><strong>客户端</strong>（Client）一般仅关心如何与抽象部分合作。但是，客户端需要将抽象对象与一个实现对象连接起来</p>
+</li>
+</ol>
+<h3 id="伪代码-1"><a href="#伪代码-1" class="headerlink" title="伪代码"></a>伪代码</h3><p>示例演示了桥接模式如何拆分程序中同时管理设备及其遥控器的庞杂代码。 设备<code>Device</code>类作为实现部分， 而遥控器<code>Remote</code>类则作为抽象部分</p>
+<p><img src="/posts/18127/image-20240325182421310.png" alt="image-20240325182421310"></p>
+<p>最初类层次结构被拆分为两个部分：设备和遥控器  </p>
+<p>遥控器基类声明了一个指向设备对象的引用成员变量。所有遥控器通过通用设备接口与设备进行交互，使得同一个遥控器可以支持不同类型的设备  </p>
+<p>你可以开发独立于设备类的遥控器类，只需新建一个遥控器子类即可。例如，基础遥控器可能只有两个按钮，但你可在其基础上扩展新功能，比如额外的一节电池或一块触摸屏</p>
+<p>客户端代码通过遥控器构造函数将特定种类的遥控器与设备对象连接起来  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// “抽象部分”定义了两个类层次结构中“控制”部分的接口。它管理着一个指向“实现部分”层次结构中对象的引用，并会将所有真实工作委派给该对象。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">RemoteControl</span> is</span><br><span class="line">	<span class="keyword">protected</span> field device: Device</span><br><span class="line">	constructor <span class="title function_">RemoteControl</span><span class="params">(device: Device)</span> is</span><br><span class="line">		<span class="built_in">this</span>.device = device</span><br><span class="line">	method <span class="title function_">togglePower</span><span class="params">()</span> is</span><br><span class="line">		<span class="title function_">if</span> <span class="params">(device.isEnabled()</span>) then</span><br><span class="line">			device.disable()</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">			device.enable()</span><br><span class="line">			</span><br><span class="line">	method <span class="title function_">volumeDown</span><span class="params">()</span> is</span><br><span class="line">		device.setVolume(device.getVolume() - <span class="number">10</span>)</span><br><span class="line">		</span><br><span class="line">	method <span class="title function_">volumeUp</span><span class="params">()</span> is</span><br><span class="line">		device.setVolume(device.getVolume() + <span class="number">10</span>)</span><br><span class="line">		</span><br><span class="line">	method <span class="title function_">channelDown</span><span class="params">()</span> is</span><br><span class="line">		device.setChannel(device.getChannel() - <span class="number">1</span>)</span><br><span class="line">		</span><br><span class="line">	method <span class="title function_">channelUp</span><span class="params">()</span> is</span><br><span class="line">		device.setChannel(device.getChannel() + <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"> <span class="comment">// 你可以独立于设备类的方式从抽象层中扩展类。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AdvancedRemoteControl</span> <span class="keyword">extends</span> <span class="title class_">RemoteControl</span> is</span><br><span class="line">  method <span class="title function_">mute</span><span class="params">()</span> is</span><br><span class="line">    device.setVolume(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// “实现部分”接口声明了在所有具体实现类中通用的方法。它不需要与抽象接口相匹配。实际上，这两个接口可以完全不一样。通常实现接口只提供原语操作，而抽象接口则会基于这些操作定义较高层次的操作。</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Device</span> is</span><br><span class="line">	method <span class="title function_">isEnabled</span><span class="params">()</span></span><br><span class="line">	method <span class="title function_">enable</span><span class="params">()</span></span><br><span class="line">	method <span class="title function_">disable</span><span class="params">()</span></span><br><span class="line">	method <span class="title function_">getVolume</span><span class="params">()</span></span><br><span class="line">	method <span class="title function_">setVolume</span><span class="params">(percent)</span></span><br><span class="line">	method <span class="title function_">getchannel</span><span class="params">()</span></span><br><span class="line">	method <span class="title function_">setchannel</span><span class="params">(channel)</span><span class="comment">//所有设备都遵循相同的接口。</span></span><br><span class="line">	</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Tv</span> <span class="keyword">implements</span> <span class="title class_">Device</span> is</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Radio</span> <span class="keyword">implements</span> <span class="title class_">Device</span> is</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//客户端代码中的某个位置。</span></span><br><span class="line"></span><br><span class="line">tv = <span class="keyword">new</span> <span class="title class_">Tv</span>()</span><br><span class="line">remote = <span class="keyword">new</span> <span class="title class_">RemoteControl</span>(tv)</span><br><span class="line">remote.togglePower()</span><br><span class="line"></span><br><span class="line">radio = <span class="keyword">new</span> <span class="title class_">Radio</span>()</span><br><span class="line">remote = <span class="keyword">new</span> <span class="title class_">AdvancedRemoteControl</span>(radio)</span><br></pre></td></tr></table></figure>
+<h3 id="应用场景-1"><a href="#应用场景-1" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
+<li><p>如果你想要拆分或重组一个具有多重功能的庞杂类（例如能与多个数据库服务器进行交互的类），可以使用桥接模式</p>
+<p>  类的代码行数越多，弄清其运作方式就越困难，对其进行修改所花费的时间就越长。一个功能上的变化可能需要在整个类范围内进行修改，而且常常会产生错误，甚至还会有一些严重的副作用、</p>
+<p>  桥接模式可以将庞杂类拆分为几个类层次结构。此后，你可以修改任意一个类层次结构而不会影响到其他类层次结构。这种方法可以简化代码的维护工作，并将修改已有代码的风险降到最低</p>
+</li>
+<li><p>如果你希望在几个独立维度上扩展一个类，可使用该模式</p>
+<p>  桥接建议将每个维度抽取为独立的类层次。初始类将相关工作委派给属于对应类层次的对象，无需自己完成所有工作</p>
+</li>
+<li><p>如果你需要在运行时切换不同实现方法，可使用桥接模式</p>
+<p>  当然并不是说一定要实现这一点，桥接模式可替换抽象部分中的实现对象，具体操作就和给成员变量赋新值一样简单</p>
+<p>  顺便提一句，最后一点是很多人混淆桥接模式和策略模式的主要原因。记住，设计模式并不仅是一种对类进行组织的方式，它还能用于沟通意图和解决问题  </p>
+</li>
+</ul>
+<h3 id="实现方式-1"><a href="#实现方式-1" class="headerlink" title="实现方式"></a>实现方式</h3><ol>
+<li>明确类中独立的维度。独立的概念可能是：抽象/平台，域/基础设施，前端/后端或接口/实现。</li>
+<li>了解客户端的业务需求，并在抽象基类中定义它们。</li>
+<li>确定在所有平台上都可执行的业务，并在通用实现接口中声明抽象部分所需的业务。</li>
+<li>为你域内的所有平台创建实现类，但需确保它们遵循实现部分的接口。</li>
+<li>在抽象类中添加指向实现类型的引I用成员变量。抽象部分会将大部分工作委派给该成员变量所指向的实现对象。</li>
+<li>如果你的高层逻辑有多个变体，则可通过扩展抽象基类为每个变体创建一个精确抽象。</li>
+<li>客户端代码必须将实现对象传递给抽象部分的构造函数才能使其能够相互关联。此后，客户端只需与抽象对象进行交互，无需和实现对象打交道。</li>
+</ol>
+<h3 id="优缺点-1"><a href="#优缺点-1" class="headerlink" title="优缺点"></a>优缺点</h3><ul>
+<li>你可以创建与平台无关的类和程序。</li>
+<li>客户端代码仅与高层抽象部分进行互动，不会接触到平台的详细信息。</li>
+<li>开闭原则。你可以新增抽象部分和实现部分，且它们之间不会相互影响。</li>
+<li>单一职责原则。抽象部分专注于处理高层逻辑，实现部分处理平台细节。</li>
+</ul>
+<hr>
+<ul>
+<li>对高内聚的类使用该模式可能会让代码更加复杂。</li>
+</ul>
+<h3 id="与其他模式的关系-1"><a href="#与其他模式的关系-1" class="headerlink" title="与其他模式的关系"></a>与其他模式的关系</h3><ul>
+<li><a href="# 桥接">桥接</a>通常会于开发前期进行设计，使你能够将程序的各个部分独立开来以便开发。另一方面，<a href="# 适配器">适配器</a>通常在已有程序中使用，让相互不兼容的类能很好地合作。</li>
+<li>桥接、<a href="# 状态">状态</a>和<a href="# 策略">策略</a>（在某种程度上包括适配器）模式的接口非常相似。实际上，它们都基于<a href="# 组合">组合</a>模式—即将工作委派给其他对象，不过也各自解决了不同的问题。模式并不只是以特定方式组织代码的配方，你还可以使用它们来和其他开发者讨论模式所解决的问题。</li>
+<li>你可以将<a href="# 抽象工厂">抽象工厂</a>和桥接搭配使用。如果由桥接定义的抽象只能与特定实现合作，这一模式搭配就非常有用。在这种情况下，抽象工厂可以对这些关系进行封装，并且对客户端代码隐藏其复杂性。</li>
+<li>你可以结合使用<a href="# 生成器">生成器</a>和桥接模式：主管类负责抽象工作，各种不同的生成器负责实现工作。</li>
+</ul>
+<h2 id="组合"><a href="#组合" class="headerlink" title="组合"></a>组合</h2><blockquote>
+<p>对象树、Object Tree、Composite</p>
+</blockquote>
+<p>组合是一种结构型设计模式，你可以使用它将对象组合成树状结构，并且能像使用独立对象一样使用它们</p>
+<h3 id="问题背景-2"><a href="#问题背景-2" class="headerlink" title="问题背景"></a>问题背景</h3><p>例如，你有两类对象：产品和盒子。一个盒子中可以包含多个产品或者几个较小的盒子。这些小盒子中同样可以包含一些产品或更小的盒子，以此类推。<br>假设你希望在这些类的基础上开发一个定购系统。订单中可以包含无包装的简单产品，也可以包含装满产品的盒子以及其他盒子。此时你会如何计算每张订单的总价格呢？</p>
+<p><img src="/posts/18127/image-20240326184154308.png" alt="image-20240326184154308"></p>
+<p>现实世界可以打开所有盒子，找到每件产品，然后计算总价，但在程序中并不能简单地使用循环语句来完成该工作。因为必须事先知道所有产品和盒子的类别，所有盒子的嵌套层数以及其他繁杂的细节信息。因此，直接计算极不方便，甚至完全不可行。</p>
+<h3 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h3><p>组合模式建议使用一个通用接口来与产品和盒子进行交互，并且在该接口中声明一个计算总价的方法：</p>
+<ul>
+<li>对于一个产品，该方法直接返回其价格</li>
+<li>对于一个盒子，该方法遍历盒子中的所有项目，询问每个项目的价格，然后返回该盒子的总价格。</li>
+</ul>
+<p>如果其中某个项目是小一号的盒子，那么当前盒子也会遍历其中的所有项目，以此类推，直到计算出所有内部组成部分的价格。</p>
+<p><img src="/posts/18127/image-20240326184505398.png" alt="image-20240326184505398"></p>
+<h3 id="结构-2"><a href="#结构-2" class="headerlink" title="结构"></a>结构</h3><p><img src="/posts/18127/image-20240326184516104.png" alt="image-20240326184516104"></p>
+<ol>
+<li><strong>组件</strong>（Component）接口描述了树中简单项目和复杂项目所共有的操作</li>
+<li><strong>叶节点</strong>（Leaf）是树的基本结构，它不包含子项目</li>
+<li><strong>容器</strong>（Container）—又名”组合（Composite）”—是包含叶节点或其他容器等子项目的单位。容器不知道其子项目所属的具体类，它只通过通用的组件接口与其子项目交互。</li>
+<li><strong>客户端</strong>（Client）通过组件接口与所有项目交互。因此，客<br>户端能以相同方式与树状结构中的简单或复杂项目交互</li>
+</ol>
+<h3 id="伪代码-2"><a href="#伪代码-2" class="headerlink" title="伪代码"></a>伪代码</h3><p>借助组合模式帮助你在图形编辑器中实现一系列的几何图形。组合图形 <code>CompoundGraphic</code> 是一个容器，它可以由多个包括容器在内的子图形构成。组合图形与简单图形拥有相同的方法。但是，组合图形自身并不完成具体工作，而是将请求递归地传递给自己的子项目，然后“汇总”结果。<br>通过所有图形类所共有的接口，客户端代码可以与所有图形互动。因此，客户端不知道与其交互的是简单图形还是组合图形。客户端可以与非常复杂的对象结构进行交互，而无需与组成该结构的实体类紧密耦合。</p>
+<p><img src="/posts/18127/image-20240326184753654.png" alt="image-20240326184753654" style="zoom:50%;"></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 组件接口会声明组合中简单和复杂对象的通用操作。</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Graphic</span> is</span><br><span class="line">  </span><br><span class="line">	method <span class="title function_">move</span><span class="params">(x， y)</span></span><br><span class="line">  </span><br><span class="line">	method <span class="title function_">draw</span><span class="params">()</span></span><br><span class="line">	</span><br><span class="line"><span class="comment">//叶节点类代表组合的终端对象。叶节点对象中不能包含任何子对象。叶节点对象E通常会完成实际的工作，组合对象则仅会将工作委派给自己的子部件。class Dot implements Graphic is</span></span><br><span class="line">	field x, y</span><br><span class="line">	</span><br><span class="line">	constructor <span class="title function_">Dot</span><span class="params">(x, y）&#123;...&#125;</span></span><br><span class="line"><span class="params">	</span></span><br><span class="line"><span class="params">	method move(x, y)</span> is</span><br><span class="line">		<span class="built_in">this</span>.x += x</span><br><span class="line">		<span class="built_in">this</span>.y += y</span><br><span class="line">	method <span class="title function_">draw</span><span class="params">()</span> is</span><br><span class="line">		<span class="comment">//在坐标位置(X,Y)处绘制一个点。</span></span><br><span class="line">		</span><br><span class="line"><span class="comment">//所有组件类都可以扩展其他组件。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Circle</span> <span class="keyword">extends</span> <span class="title class_">Dot</span> is</span><br><span class="line">  field radius</span><br><span class="line"></span><br><span class="line">  constructor <span class="title function_">Circle</span><span class="params">(x, y, radius)</span> &#123;...&#125;</span><br><span class="line"></span><br><span class="line">  method <span class="title function_">draw</span><span class="params">()</span> is</span><br><span class="line">    <span class="comment">//在坐标位置（X，Y）处绘制一个半径为R的圆。</span></span><br><span class="line">                  </span><br><span class="line"><span class="comment">//组合类表示可能包含子项目的复杂组件。组合对象通常会将实际工作委派给子项目，然后”汇总”结果。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CompoundGraphic</span> <span class="keyword">implements</span> <span class="title class_">Graphic</span> is</span><br><span class="line">	field children: array of Graphic</span><br><span class="line">  <span class="comment">//组合对象可在其项目列表中添加或移除其他组件（简单的或复杂的皆可）。</span></span><br><span class="line">  method <span class="title function_">add</span><span class="params">(child: Graphic)</span> is</span><br><span class="line">  	<span class="comment">//在子项目数组中添加一个子项目。</span></span><br><span class="line">  method <span class="title function_">remove</span><span class="params">(child: Graphic)</span> is</span><br><span class="line">    <span class="comment">//从子项目数组中移除一个子项目。</span></span><br><span class="line">  method <span class="title function_">move</span><span class="params">(x, y)</span> is</span><br><span class="line">    <span class="title function_">foreach</span> <span class="params">(child in children)</span> <span class="keyword">do</span> </span><br><span class="line">  		child.move(x, y)</span><br><span class="line"><span class="comment">//组合会以特定的方式执行其主要逻辑。它会递归遍历所有子项目，并收集和汇总其结果。由于组合的子项目也会将调用传递给自己的子项目，以此类推，最后组合将会完成整个对象树的遍历工作。</span></span><br><span class="line">  method <span class="title function_">draw</span><span class="params">()</span> is</span><br><span class="line">    <span class="comment">//1. 对于每个子部件：</span></span><br><span class="line">    <span class="comment">//  1.1 绘制该部件。</span></span><br><span class="line">    <span class="comment">//  2.2 更新边框坐标。</span></span><br><span class="line">    <span class="comment">//2. 根据边框坐标绘制一个虚线长方形</span></span><br><span class="line">                  </span><br><span class="line"><span class="comment">//客户端代码会通过基础接口与所有组件进行交互。这样一来，客户端代码便可同时支持简单叶节点组件和复杂组件。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ImageEditor</span> is</span><br><span class="line">  field all: CompoundGraphic</span><br><span class="line">  method <span class="title function_">load</span><span class="params">()</span> <span class="type">is</span></span><br><span class="line">    <span class="variable">all</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CompoundGraphic</span>()</span><br><span class="line">    all.add（<span class="keyword">new</span> <span class="title class_">Dot</span>（<span class="number">1</span>,<span class="number">2</span>))</span><br><span class="line">		all.add（<span class="keyword">new</span> <span class="title class_">Circle</span>(<span class="number">5</span>,<span class="number">3</span>, <span class="number">10</span>）)</span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">  <span class="comment">//将所需组件组合为复杂的组合组件。</span></span><br><span class="line">	method <span class="title function_">groupSelected</span><span class="params">(components: array of Graphic)</span> <span class="type">is</span></span><br><span class="line">		<span class="variable">group</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CompoundGraphic</span>()</span><br><span class="line">  	foreach (component in components) <span class="keyword">do</span></span><br><span class="line">				group.add(component)</span><br><span class="line">  			all.remove(component)</span><br><span class="line">    all.add(group)</span><br><span class="line">  	<span class="comment">//所有组件都将被绘制</span></span><br><span class="line">		all.draw()</span><br></pre></td></tr></table></figure>
+<h3 id="应用场景-2"><a href="#应用场景-2" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
+<li><p>如果你需要实现树状对象结构，可以使用组合模式\</p>
+<p>组合模式为你提供了两种共享公共接口的基本元素类型：简单叶节点和复杂容器。 容器中可以包含叶节点和其他容器。这使得你可以构建树状嵌套递归对象结构</p>
+</li>
+<li><p>如果你希望客户端代码以相同方式处理简单和复杂元素，可以使用该模式</p>
+<p>组合模式中定义的所有元素共用同一个接口。在这一接口的帮助下，客户端不必在意其所使用的对象的具体类</p>
+</li>
+</ul>
+<h3 id="实现方式-2"><a href="#实现方式-2" class="headerlink" title="实现方式"></a>实现方式</h3><ol>
+<li><p>确保应用的核心模型能够以树状结构表示。尝试将其分解为简单元素和容器。记住，容器必须能够同时包含简单元素和其他容器。</p>
+</li>
+<li><p>声明组件接口及其一系列方法，这些方法对简单和复杂元素都有意义。</p>
+</li>
+<li><p>创建一个叶节点类表示简单元素。程序中可以有多个不同的叶节点类。</p>
+</li>
+<li><p>创建一个容器类表示复杂元素。在该类中，创建一个数组成员变量来存储对于其子元素的引用。该数组必须能够同时保存叶节点和容器，因此请确保将其声明为组合接口类型。</p>
+<p>实现组件接口方法时，记住容器应该将大部分工作交给其子元素来完成。</p>
+</li>
+<li><p>最后，在容器中定义添加和删除子元素的方法。</p>
+<p>记住，这些操作可在组件接口中声明。这将会违反_接口隔离原则_，因为叶节点类中的这些方法为空。但是，这可以让客户端无差别地访问所有元素，即使是组成树状结构的元素。  </p>
+</li>
+</ol>
+<h3 id="优缺点-2"><a href="#优缺点-2" class="headerlink" title="优缺点"></a>优缺点</h3><ul>
+<li>你可以利用多态和递归机制更方便地使用复杂树结构</li>
+<li>开闭原则。无需更改现有代码，你就可以在应用中添加新元素，使其成为对象树的一部分</li>
+</ul>
+<hr>
+<ul>
+<li>对于功能差异较大的类，提供公共接口或许会有困难。在特定情况下，你需要过度一般化组件接口，使其变得令人难以理解</li>
+</ul>
+<h3 id="与其他模式的关系-2"><a href="#与其他模式的关系-2" class="headerlink" title="与其他模式的关系"></a>与其他模式的关系</h3><ul>
+<li><p><a href="# 桥接">桥接</a>、<a href="# 状态">状态</a>和<a href="# 策略">策略</a>（在某种程度上包括<a href="# 适配器">适配器</a>）模式的接口非常相似。实际上，它们都基于<a href="# 组合">组合</a>模式一即将工作委派给其他对象，不过也各自解决了不同的问题。模式并不只是以特定方式组织代码的配方，你还可以使用它们来和其他开发者讨论模式所解决的问题。</p>
+</li>
+<li><p>你可以在创建复杂组合树时使用<a href="# 生成器">生成器</a>，因为这可使其构造步骤以递归的方式运行。</p>
+</li>
+<li><p><a href="# 责任链">责任链</a>通常和组合模式结合使用。在这种情况下，叶组件接收到请求后，可以将请求沿包含全体父组件的链一直传递至对象树的底部。</p>
+</li>
+<li><p>你可以使用<a href="# 迭代器">选代器</a>来遍历组合树。</p>
+</li>
+<li><p>你可以使用<a href="# 访问者">访问者</a>对整个组合树执行操作。</p>
+</li>
+<li><p>你可以使用<a href="# 享元">享元</a>实现组合树的共享叶节点以节省内存。</p>
+</li>
+<li><p>组合和<a href="# 装饰">装饰</a>的结构图很相似，因为两者都依赖递归组合来组织无限数量的对象。</p>
+<p>装饰类似于组合，但其只有一个子组件。此外还有一个明显不同：装饰为被封装对象添加了额外的职责，组合仅对其子节点的结果进行了“求和”。</p>
+<p>但是，模式也可以相互合作：你可以使用装饰来扩展组合树中特定对象的行为。</p>
+</li>
+<li><p>大量使用组合和装饰的设计通常可从对于原型的使用中获益。你可以通过该模式来复制复杂结构，而非从零开始重新构造。</p>
+</li>
+</ul>
+<h2 id="装饰"><a href="#装饰" class="headerlink" title="装饰"></a>装饰</h2><blockquote>
+<p>装饰器模式、Wrapper、Decorator</p>
+</blockquote>
+<p>装饰是一种结构型设计模式，允许你通过将对象放入包含行为的特殊封装对象中来为原对象绑定新的行为。</p>
+<h3 id="问题背景-3"><a href="#问题背景-3" class="headerlink" title="问题背景"></a>问题背景</h3><p>假设你正在开发一个提供通知功能的库，其他程序可使用它向用户发送关于重要事件的通知。</p>
+<p>库的最初版本基于通知器<code>Notifier</code>类，其中只有很少的几个成员变量，一个构造函数和一个<code>send</code>发送方法。该方法可以接收来自客户端的消息参数，并将该消息发送给一系列的邮箱，邮箱列表则是通过构造函数传递给通知器的。作为客户端的第三方程序仅会创建和配置通知器对象一次，然后在有重要事件发生时对其进行调用。</p>
+<p><img src="/posts/18127/image-20240327185356259.png" alt="image-20240327185356259"></p>
+<p>此后某个时刻，你会发现库的用户希望使用除邮件通知之外的功能。许多用户会希望接收关于紧急事件的手机短信，还有些用户希望在微信上接收消息，而公司用户则希望在QQ上接收消息。</p>
+<p><img src="/posts/18127/image-20240327185429537.png" alt="image-20240327185429537"></p>
+<p>首先扩展通知器类，然后在新的子类中加入额外的通知方法。现在客户端要对所需通知形式的对应类进行初始化，然后使用该类发送后续所有的通知消息</p>
+<p>但是很快有人会问：“为什么不同时使用多种通知形式呢？如果房子着火了，你大概会想在所有渠道中都收到相同的消息吧。</p>
+<p>你可以尝试创建一个特殊子类来将多种通知方法组合在一起以解决该问题。但这种方式会使得代码量迅速膨胀，不仅仅是程序库代码，客户端代码也会如此</p>
+<p><img src="/posts/18127/image-20240327185717738.png" alt="image-20240327185717738"></p>
+<h3 id="解决方案-3"><a href="#解决方案-3" class="headerlink" title="解决方案"></a>解决方案</h3><p>当你需要更改一个对象的行为时，第一个跳入脑海的想法就是扩展它所属的类。但是，你不能忽视继承可能引发的几个严重问题。</p>
+<ol>
+<li>继承是静态的。你无法在运行时更改已有对象的行为，只能使用由不同子类创建的对象来替代当前的整个对象。</li>
+<li>子类只能有一个父类。大部分编程语言不允许一个类同时继承多个类的行为</li>
+</ol>
+<p>另一种方法是组合或者聚合。两者的工作方式几乎一模一样：一个对象包含指向另一个对象的引用，并将部分工作委派给引用对象；继承中的对象则继承了父类的行为，它们自己能够完成这些工作。 </p>
+<p>可以使用这个新方法来轻松替换各种连接的“小帮手”对象，从而能在运行时改变容器的行为。一个对象可以使用多个类的行为，包含多个指向其他对象的引用，并将各种工作委派给引用对象。  </p>
+<p>聚合（或组合）是许多设计模式背后的关键原则（包括装饰在内）。</p>
+<p><img src="/posts/18127/image-20240327190304920.png" alt="image-20240327190304920"></p>
+<p>封装器是装饰模式的别称，这个称谓明确地表达了该模式的主要思想。“封装器”是一个能与其他“目标”对象连接的对象。封装器包含与目标对象相同的一系列方法，它会将所有接收到的请求委派给目标对象。但是，封装器可以在将请求委派给目标前后对其进行处理，所以可能会改变最终结果。</p>
+<p>封装器实现了与其封装对象相同的接口。因此从客户端的角度来看，这些对象是完全一样的。封装器中的引用成员变量可以是遵循相同接口的任意对象。这使得你可以将一个对象放入多个封装器中，并在对象中添加所有这些封装器的组合行为。</p>
+<p>比如在消息通知示例中，我们可以将简单邮件通知行为放在基类 通知器 中，但将所有其他通知方法放入装饰中。  </p>
+<p><img src="/posts/18127/image-20240327190814916.png" alt="image-20240327190814916"></p>
+<h3 id="结构-3"><a href="#结构-3" class="headerlink" title="结构"></a>结构</h3><p><img src="/posts/18127/image-20240327190938690.png" alt="image-20240327190938690"></p>
+<ol>
+<li>部件（Component）声明封装器和被封装对象的公用接口。  </li>
+<li>具体部件（Concrete Component）类是被封装对象所属的类。它定义了基础行为，但装饰类可以改变这些行为。</li>
+<li>基础装饰（Base Decorator）类拥有一个指向被封装对象的引用成员变量。该变量的类型应当被声明为通用部件接口，这样它就可以引用具体的部件和装饰。装饰基类会将所有操作委派给被封装的对象。</li>
+<li>具体装饰类（Concrete Decorators）定义了可动态添加到部件的额外行为。具体装饰类会重写装饰基类的方法，并在调用父类方法之前或之后进行额外的行为</li>
+<li>客户端（Client）可以使用多层装饰来封装部件，只要它能使用通用接口与所有对象互动即可。</li>
+</ol>
+<h3 id="伪代码-3"><a href="#伪代码-3" class="headerlink" title="伪代码"></a>伪代码</h3><p>装饰模式能够对敏感数据进行压缩和加密，从而将数据从使用数据的代码中独立出来  </p>
+<p><img src="/posts/18127/image-20240327191428466.png" alt="image-20240327191428466"></p>
+<p>程序使用一对装饰来封装数据源对象。这两个封装器都改变了从磁盘读写数据的方式：</p>
+<ul>
+<li>当数据即将被写入磁盘前，装饰对数据进行加密和压缩。在原始类对改变毫无察觉的情况下，将加密后的受保护数据写入文件。</li>
+<li>当数据刚从磁盘读出后，同样通过装饰对数据进行解压和解密。装饰和数据源类实现同一接口，从而能在客户端代码中相互替换  </li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 装饰可以改变组件接口所定义的操作</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">DataSource</span> is</span><br><span class="line">	method <span class="title function_">writeData</span><span class="params">(data)</span></span><br><span class="line">  method <span class="title function_">readData</span><span class="params">()</span>:data</span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体组件提供操作的默认实现。这些类在程序中可能会有几个变体。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">FileDataSource</span> <span class="keyword">implements</span> <span class="title class_">DataSource</span> is</span><br><span class="line">  constructor <span class="title function_">FileDataSource</span><span class="params">(filename)</span> &#123; ... &#125;</span><br><span class="line">	</span><br><span class="line">	method <span class="title function_">writeData</span><span class="params">(data)</span> is</span><br><span class="line">    <span class="comment">// 将数据写入文件。</span></span><br><span class="line">  </span><br><span class="line">  method <span class="title function_">readData</span><span class="params">()</span>:data is</span><br><span class="line">    <span class="comment">// 从文件读取数据。</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 装饰基类和其他组件遵循相同的接口。该类的主要任务是定义所有具体装饰的封装接口。封装的默认实现代码中可能会包含一个保存被封装组件的成员变量，并且负责对其进行初始化。</span></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">DataSourceDecorator</span> <span class="keyword">implements</span> <span class="title class_">DataSource</span> is</span><br><span class="line">	<span class="keyword">protected</span> field wrappee: DataSource</span><br><span class="line">	</span><br><span class="line">	constructor <span class="title function_">DataSourceDecorator</span><span class="params">(source: DataSource)</span> <span class="type">is</span></span><br><span class="line">		<span class="variable">wrappee</span> <span class="operator">=</span> source</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 装饰基类会直接将所有工作分派给被封装组件。具体装饰中则可以新增一些额外的行为。</span></span><br><span class="line">	method <span class="title function_">writeData</span><span class="params">(data)</span> is</span><br><span class="line">		wrappee.writeData(data)</span><br><span class="line">  </span><br><span class="line">    </span><br><span class="line">  <span class="comment">// 具体装饰可可简化装饰类的扩展工作。调用其父类的操作实现，而不是直接调用被封装对象。这种方式可简化装饰类的扩展工作。</span></span><br><span class="line">	method <span class="title function_">readData</span><span class="params">()</span>:data is</span><br><span class="line">    <span class="keyword">return</span> wrappee.readData()</span><br><span class="line">    </span><br><span class="line"><span class="comment">// 具体装饰必须在被封装对象上调用方法，不过也可以自行在结果中添加一些内容。装饰必须在调用封装对象之前或之后执行额外的行为。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">EncryptionDecorator</span> <span class="keyword">extends</span> <span class="title class_">DataSourceDecorator</span> is</span><br><span class="line">  method <span class="title function_">writeData</span><span class="params">(data)</span> is</span><br><span class="line">    <span class="comment">// 1. 对传递数据进行加密。</span></span><br><span class="line">    <span class="comment">// 2. 将加密后数据传递给被封装对象 writeData（写入数据）方法</span></span><br><span class="line">  method <span class="title function_">readData</span><span class="params">()</span>:data is</span><br><span class="line">  	<span class="comment">// 1. 通过被封装对象的 readData（读取数据）方法获取数据</span></span><br><span class="line">  	<span class="comment">// 2. 如果数据被加密就尝试解密</span></span><br><span class="line">  	<span class="comment">// 3. 返回结果。</span></span><br><span class="line">  </span><br><span class="line"><span class="comment">// 你可以将对象封装在多层装饰中</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CompressionDecorator</span> <span class="keyword">extends</span> <span class="title class_">DataSourceDecorator</span> is</span><br><span class="line">  method <span class="title function_">writeData</span><span class="params">(data)</span> is</span><br><span class="line">  	<span class="comment">// 1. 压缩传递数据。</span></span><br><span class="line">  	<span class="comment">// 2. 将压缩后数据传递给被封装对象 writeData（写入数据）方法。</span></span><br><span class="line">  method <span class="title function_">readData</span><span class="params">()</span>:data is</span><br><span class="line">  	<span class="comment">// 1. 通过被封装对象的 readData（读取数据）方法获取数据</span></span><br><span class="line">  	<span class="comment">// 2. 如果数据被压缩就尝试解压</span></span><br><span class="line">  	<span class="comment">// 3. 返回结果。</span></span><br><span class="line">  </span><br><span class="line"><span class="comment">// 选项 1：装饰组件的简单示例</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Application</span> is</span><br><span class="line">  method <span class="title function_">dumbUsageExample</span><span class="params">()</span> <span class="type">is</span></span><br><span class="line">  	<span class="variable">source</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileDataSource</span>(<span class="string">&quot;somefile.dat&quot;</span>)</span><br><span class="line">  	source.writeData(salaryRecords)</span><br><span class="line">  	<span class="comment">// 将明码数据写入目标文件</span></span><br><span class="line">  </span><br><span class="line">  	source = <span class="keyword">new</span> <span class="title class_">CompressionDecorator</span>(source)</span><br><span class="line">  	source.writeData(salaryRecords)</span><br><span class="line">  	<span class="comment">// 将压缩数据写入目标文件</span></span><br><span class="line">  </span><br><span class="line">  	source = <span class="keyword">new</span> <span class="title class_">EncryptionDecorator</span>(source)</span><br><span class="line">  	<span class="comment">// 源变量中现在包含：</span></span><br><span class="line">  	<span class="comment">// Encryption &gt; Compression &gt; FileDataSource</span></span><br><span class="line">  	<span class="comment">// 已将压缩且加密的数据写入目标文件</span></span><br><span class="line">  </span><br><span class="line"><span class="comment">// 选项 2：客户端使用外部数据源。SalaryManager（工资管理器）对象并不关心数据如何存储。它们会与提前配置好的数据源进行交互，数据源则是通过程序配置器获取的。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SalaryManager</span> is</span><br><span class="line">  field source: DataSource</span><br><span class="line">  constructor <span class="title function_">SalaryManager</span><span class="params">(source: DataSource)</span> &#123; ... &#125;</span><br><span class="line">	method <span class="title function_">load</span><span class="params">()</span> is</span><br><span class="line">    <span class="keyword">return</span> source.readData()</span><br><span class="line">	method <span class="title function_">save</span><span class="params">()</span> is</span><br><span class="line">    source.writeData(salaryRecords)</span><br><span class="line">  <span class="comment">// ...其他有用的方法..</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">// 程序可在运行时根据配置或环境组装不同的装饰堆桟。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ApplicationConfigurator</span> is</span><br><span class="line">  method <span class="title function_">configurationExample</span><span class="params">()</span> <span class="type">is</span></span><br><span class="line">  	<span class="variable">source</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileDataSource</span>(<span class="string">&quot;salary.dat&quot;</span>)</span><br><span class="line">  	<span class="keyword">if</span> (enabledEncryption)</span><br><span class="line">      source = <span class="keyword">new</span> <span class="title class_">EncryptionDecorator</span>(source)</span><br><span class="line">    <span class="keyword">if</span> (enabledCompression)</span><br><span class="line">      source = <span class="keyword">new</span> <span class="title class_">CompressionDecorator</span>(source)</span><br><span class="line">    logger = <span class="keyword">new</span> <span class="title class_">SalaryManager</span>(source)</span><br><span class="line">    salary = logger.load()</span><br></pre></td></tr></table></figure>
+<h3 id="应用场景-3"><a href="#应用场景-3" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
+<li><p>如果你希望在无需修改代码的情况下即可使用对象，且希望在运行时为对象新增额外的行为，可以使用装饰模式</p>
+<p>装饰能将业务逻辑组织为层次结构，你可为各层创建一个装饰，在运行时将各种不同逻辑组合成对象。由于这些对象都遵循通用接口，客户端代码能以相同的方式使用这些对象  </p>
+</li>
+<li><p>如果用继承来扩展对象行为的方案难以实现或者根本不可行，你可以使用该模式  </p>
+<p>许多编程语言使用 final 最终 关键字来限制对某个类的进一步扩展。复用最终类已有行为的唯一方法是使用装饰模式：用封装器对其进行封装  </p>
+</li>
+</ul>
+<h3 id="实现方式-3"><a href="#实现方式-3" class="headerlink" title="实现方式"></a>实现方式</h3><ol>
+<li>确保业务逻辑可用一个基本组件及多个额外可选层次表示。</li>
+<li>找出基本组件和可选层次的通用方法。创建一个组件接口并在其中声明这些方法。</li>
+<li>创建一个具体组件类，并定义其基础行为。</li>
+<li>创建装饰基类，使用一个成员变量存储指向被封装对象的引用。该成员变量必须被声明为组件接口类型，从而能在运行时连接具体组件和装饰。装饰基类必须将所有工作委派给被封装的对象。</li>
+<li>确保所有类实现组件接口。</li>
+<li>将装饰基类扩展为具体装饰。具体装饰必须在调用父类方法（总是委派给被封装对象）之前或之后执行自身的行为。  </li>
+<li>客户端代码负责创建装饰并将其组合成客户端所需的形式  </li>
+</ol>
+<h3 id="优缺点-3"><a href="#优缺点-3" class="headerlink" title="优缺点"></a>优缺点</h3><ul>
+<li>你无需创建新子类即可扩展对象的行为。</li>
+<li>你可以在运行时添加或删除对象的功能。</li>
+<li>你可以用多个装饰封装对象来组合几种行为。</li>
+<li>单一职责原则。你可以将实现了许多不同行为的一个大类拆分为多个较小的类。</li>
+</ul>
+<hr>
+<ul>
+<li>在封装器栈中删除特定封装器比较困难。</li>
+<li>实现行为不受装饰栈顺序影响的装饰比较困难。</li>
+<li>各层的初始化配置代码看上去可能会很糟糕。</li>
+</ul>
+<h3 id="与其他模式的关系-3"><a href="#与其他模式的关系-3" class="headerlink" title="与其他模式的关系"></a>与其他模式的关系</h3><ul>
+<li><p><a href="# 适配器">适配器</a>可以对已有对象的接口进行修改，<a href="# 装饰">装饰</a>则能在不改变对象接口的前提下强化对象功能。此外，装饰还支持递归组合，适配器则无法实现</p>
+</li>
+<li><p>适配器能为被封装对象提供不同的接口，<a href="# 代理">代理</a>能为对象提供相同的接口，装饰则能为对象提供加强的接口。  </p>
+</li>
+<li><p><a href="# 责任链">责任链</a>和装饰模式的类结构非常相似。两者都依赖递归组合将需要执行的操作传递给一系列对象。但是，两者有几点重要的不同之处。</p>
+<p>责任链的管理者可以相互独立地执行一切操作，还可以随时停止传递请求。另一方面，各种装饰可以在遵循基本接口的情况下扩展对象的行为。此外，装饰无法中断请求的传递。</p>
+</li>
+<li><p>组合和装饰的结构图很相似，因为两者都依赖递归组合来组织无限数量的对象。装饰类似于组合，但其只有一个子组件。此外还有一个明显不同：装饰为被封装对象添加了额外的职责，组合仅对其子节点的结果进行了“求和”。</p>
+<p>但是，模式也可以相互合作：你可以使用装饰来扩展组合树中特定对象的行为。</p>
+</li>
+<li><p>大量使用组合和装饰的设计通常可从对于<a href="# 原型">原型</a>的使用中获益。你可以通过该模式来复制复杂结构，而非从零开始重新构造。</p>
+</li>
+<li>装饰可让你更改对象的外表，策略则让你能够改变其本质。</li>
+<li>装饰和代理有着相似的结构，但是其意图却非常不同。这两个模式的构建都基于组合原则，也就是说一个对象应该将部分工作委派给另一个对象。两者之间的不同之处在于代理通常自行管理其服务对象的生命周期，而装饰的生成则总是由客户端进行控制。</li>
+</ul>
+<h2 id="外观"><a href="#外观" class="headerlink" title="外观"></a>外观</h2><blockquote>
+<p>门面模式、Facade</p>
+</blockquote>
+<p>外观是一种结构型设计模式，能为程序库、框架或其他复杂类提供一个简单的接口。</p>
+<h3 id="问题背景-4"><a href="#问题背景-4" class="headerlink" title="问题背景"></a>问题背景</h3><p>假设你必须在代码中使用某个复杂的库或框架中的众多对象。正常情况下，你需要负责所有对象的初始化工作、管理其依赖关系并按正确的顺序执行方法等。</p>
+<p>最终，程序中类的业务逻辑将与第三方类的实现细节紧密耦合，使得理解和维护代码的工作很难进行。</p>
+<h3 id="解决方案-4"><a href="#解决方案-4" class="headerlink" title="解决方案"></a>解决方案</h3><p>外观类为包含许多活动部件的复杂子系统提供一个简单的接口。与直接调用子系统相比，外观提供的功能可能比较有限，但它却包含了客户端真正关心的功能。</p>
+<p>如果你的程序需要与包含几十种功能的复杂库整合，但只需使用其中非常少的功能，那么使用外观模式会非常方便，例如，上传猫咪搞笑短视频到社交媒体网站的应用可能会用到专业的视频转换库，但它只需使用一个包含encode(filename,format)方法（以文件名与文件格式为参数进行编码的方法）的类即可。在创建这个类并将其连接到视频转换库后，你就拥有了自己的第一个外观。</p>
+<h3 id="结构-4"><a href="#结构-4" class="headerlink" title="结构"></a>结构</h3><p><img src="/posts/18127/image-20240401183018070.png" alt="image-20240401183018070"></p>
+<ol>
+<li>外观（<code>Facade</code>）提供了一种访问特定子系统功能的便捷方式，其了解如何重定向客户端请求，知晓如何操作一切活动部件。</li>
+<li>创建附加外观（<code>Additional Facade</code>）类可以避免多种不相关的功能污染单一外观，使其变成又一个复杂结构。客户端和其他外观都可使用附加外观。</li>
+<li>复杂子系统（<code>Complex Subsystem</code>）由数十个不同对象构成。如果要用这些对象完成有意义的工作，你必须深入了解子系统的实现细节，比如按照正确顺序初始化对象和为其提供正确格式的数据。</li>
+<li>客户端（<code>Client</code>）使用外观代替对子系统对象的直接调用。  </li>
+</ol>
+<h3 id="伪代码-4"><a href="#伪代码-4" class="headerlink" title="伪代码"></a>伪代码</h3><p>外观模式简化了客户端与复杂视频转换框架之间的交互</p>
+<p><img src="/posts/18127/image-20240401183412101.png" alt="image-20240401183412101"></p>
+<p>创建一个封装所需功能并隐藏其他代码的外观类，从而无需使全部代码直接与数十个框架类进行交互。该结构还能将未来框架升级或更换所造成的影响最小化，因为你只需修改程序中外观方法的实现即可</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 这里有复杂第三方视频转换框架中的一些类。我们不知晓其中的代码，因此无法对其进行简化。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">VideoFile</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">OggCompressionCodec</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MPEG4CompressionCodec</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CodecFactory</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">BitrateReader</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">AudioMixer</span></span><br><span class="line"><span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 为了将框架的复杂性隐藏在一个简单接口背后，我们创建了一个外观类。它是在功能性和简洁性之间做出的权衡。</span></span><br><span class="line">  </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">VideoConverter</span> is</span><br><span class="line">  method <span class="title function_">convert</span><span class="params">(filename, format)</span>:File <span class="type">is</span></span><br><span class="line">  	<span class="variable">file</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">VideoFile</span>(filename)</span><br><span class="line">  	sourceCodec = <span class="keyword">new</span> <span class="title class_">CodecFactory</span>.extract(file)</span><br><span class="line">  	<span class="keyword">if</span> (format == <span class="string">&quot;mp4&quot;</span>)</span><br><span class="line">    	destinationCodec = <span class="keyword">new</span> <span class="title class_">MPEG4CompressionCodec</span>()</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      destinationCodec = <span class="keyword">new</span> <span class="title class_">OggCompressionCodec</span>()</span><br><span class="line">    buffer = BitrateReader.read(filename, sourceCodec)</span><br><span class="line">    result = BitrateReader.convert(buffer, destinationCodec)</span><br><span class="line">    result = (<span class="keyword">new</span> <span class="title class_">AudioMixer</span>()).fix(result)</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">File</span>(result)</span><br><span class="line">      </span><br><span class="line"><span class="comment">// 应用程序的类并不依赖于复杂框架中成千上万的类。同样，如果你决定更换框架，那只需重写外观类即可。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Application</span> is</span><br><span class="line">  method <span class="title function_">main</span><span class="params">()</span> <span class="type">is</span></span><br><span class="line">  	<span class="variable">convertor</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">VideoConverter</span>()</span><br><span class="line">  	mp4 = convertor.convert(<span class="string">&quot;funny-cats-video.ogg&quot;</span>, <span class="string">&quot;mp4&quot;</span>)</span><br><span class="line">  	mp4.save()</span><br></pre></td></tr></table></figure>
+<h3 id="应用场景-4"><a href="#应用场景-4" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
+<li><p><strong>如果你需要一个指向复杂子系统的直接接口，且该接口的功能有限，则可以使用外观模式</strong></p>
+<p>子系统通常会随着时间的推进变得越来越复杂。即便是应用了设计模式，通常你也会创建更多的类。尽管在多种情形中子系统可能是更灵活或易于复用的，但其所需的配置和样板代码数量将会增长得更快。为了解决这个问题，外观将会提供指向子系统中最常用功能的快捷方式，能够满足客户端的大部分需求。</p>
+</li>
+<li><p><strong>如果需要将子系统组织为多层结构，可以使用外观</strong></p>
+<p>创建外观来定义子系统中各层次的入口。你可以要求子系统仅使用外观来进行交互，以减少子系统之间的耦合</p>
+<p>视频转换框架可以拆分为两个层次：音频相关和视频相关。可以为每个层次创建一个外观，然后要求各层的类必须通过这些外观进行交互。这种方式看上去与中介者模式非常相似</p>
+</li>
+</ul>
+<h3 id="实现方式-4"><a href="#实现方式-4" class="headerlink" title="实现方式"></a>实现方式</h3><ol>
+<li>考虑能否在现有子系统的基础上提供一个更简单的接口。如果该接口能让客户端代码独立于众多子系统类，那么你的方向就是正确的  </li>
+<li>在一个新的外观类中声明并实现该接口。外观应将客户端代码的调用重定向到子系统中的相应对象处。如果客户端代码没有对子系统进行初始化，也没有对其后续生命周期进行管理，那么外观必须完成此类工作</li>
+<li>如果要充分发挥这一模式的优势，你必须确保所有客户端代码仅通过外观来与子系统进行交互。此后客户端代码将不会受到任何由子系统代码修改而造成的影响，比如子系统升级后，你只需修改外观中的代码即可</li>
+<li>如果外观变得过于臃肿，你可以考虑将其部分行为抽取为一个新的专用外观类</li>
+</ol>
+<h3 id="优缺点-4"><a href="#优缺点-4" class="headerlink" title="优缺点"></a>优缺点</h3><ul>
+<li>你可以让自己的代码独立于复杂子系统</li>
+</ul>
+<hr>
+<ul>
+<li>外观可能成为与程序中所有类都耦合的上帝对象  </li>
+</ul>
+<h3 id="与其他模式的关系-4"><a href="#与其他模式的关系-4" class="headerlink" title="与其他模式的关系"></a>与其他模式的关系</h3><ul>
+<li><a href="# 外观">外观</a>为现有对象定义了一个新接口，<a href="# 适配器">适配器</a>则会试图运用已有的接口。适配器通常只封装一个对象，外观通常会作用于整个对象子系统上</li>
+<li>当只需对客户端代码隐藏子系统创建对象的方式时，你可以使用抽<a href="# 抽象工厂">象工厂</a>来代替外观</li>
+<li><a href="# 享元">享元</a>展示了如何生成大量的小型对象，<a href="# 外观">外观</a>则展示了如何用一个对象来代表整个子系统</li>
+<li>外观和<a href="# 中介者">中介者</a>的职责类似：它们都尝试在大量紧密耦合的类中组织起合作<ul>
+<li>外观为子系统中的所有对象定义了一个简单接口，但是它不提供任何新功能。子系统本身不会意识到外观的存在。子系统中的对象可以直接进行交流</li>
+<li>中介者将系统中组件的沟通行为中心化。各组件只知道中介者对象，无法直接相互交流</li>
+</ul>
+</li>
+<li>外观类通常可以转换为单例类，因为在大部分情况下一个外观对象就足够了</li>
+<li>外观与代理的相似之处在于它们都缓存了一个复杂实体并自行对其进行初始化。代理与其服务对象遵循同一接口，使得自己和服务对象可以互换，在这一点上它与外观不同</li>
+</ul>
+<h2 id="享元"><a href="#享元" class="headerlink" title="享元"></a>享元</h2><blockquote>
+<p>缓存、Cache、Flyweight</p>
+</blockquote>
+<p>享元是一种结构型设计模式，它摒弃了在每个对象中保存所有数据的方式，通过共享多个对象所共有的相同状态，让你能在有限的内存容量中　　载入更多对象。</p>
+<h3 id="问题背景-5"><a href="#问题背景-5" class="headerlink" title="问题背景"></a>问题背景</h3><p>需要开发一款简单的游戏：玩家们在地图上移动并相互射击。你决定实现一个真实的粒子系统，并将其作为游戏的特色。大量的子弹、导弹和爆炸弹片会在整个地图上穿行，为玩家提供紧张刺激的游戏体验。</p>
+<p>开发完成后，你推送提交了最新版本的程序，并在编译游戏后将其发送给了一个朋友进行测试。尽管该游戏在你的电脑上完美运行，但是你的朋友却无法长时间进行游戏：游戏总是会在他的电脑上运行几分钟后崩溃。在研究了几个小时的调试消息记录后，你发现导致游戏崩溃的原因是内存容量不足。朋友的设备性能远比不上你的电脑，因此游戏运行在他的电脑上时很快就会出现问题。</p>
+<p>真正的问题与粒子系统有关。每个粒子（一颗子弹、一枚导弹或一块弹片）都由包含完整数据的独立对象来表示。当玩家在游戏中鏖战进入高潮后的某一时刻，游戏将无法在剩余内存中载入新建粒子，于是程序就崩溃了。</p>
+<p><img src="/posts/18127/image-20240408185701020.png" alt="image-20240408185701020"></p>
+<h3 id="解决方案-5"><a href="#解决方案-5" class="headerlink" title="解决方案"></a>解决方案</h3><p>仔细观察粒子<code>Particle</code>类，你可能会注意到颜色（<code>color</code>）和贴图（<code>sprite</code>）这两个成员变量所消耗的内存要比其他变量多得多。更糟糕的是，对于所有的粒子来说，这两个成员变量所存储的数据几乎完全一样（比如所有子弹的颜色和贴图都一样）。</p>
+<p><img src="/posts/18127/image-20240408185844014.png" alt="image-20240408185844014"></p>
+<p>每个粒子的另一些状态（坐标、移动矢量和速度）则是不同的。因为这些成员变量的数值会不断变化。这些数据代表粒子在存续期间不断变化的情景，但每个粒子的颜色和贴图则会保持不变。  </p>
+<p>每个粒子的另一些状态（坐标、移动矢量和速度）则是不同的。因为这些成员变量的数值会不断变化。这些数据代表粒子在存续期间不断变化的情景，但每个粒子的颜色和贴图则会保持不变。  </p>
+<p>对象的常量数据通常被称为内在状态，其位于对象中，其他对象只能读取但不能修改其数值。而对象的其他状态常常能被其他对象“从外部”改变，因此被称为外在状态。  </p>
+<p>享元模式建议不在对象中存储外在状态，而是将其传递给依赖于它的一个特殊方法。程序只在对象中保存内在状态，以方便在不同情景下重用。这些对象的区别仅在于其内在状态（与外在状态相比，内在状态的变体要少很多），因此你所需的对象数量会大大削减。  </p>
+<p><img src="/posts/18127/image-20240408190141222.png" alt="image-20240408190141222"></p>
+<p>假如能从粒子类中抽出外在状态，那么我们只需三个不同的对象（子弹、导弹和弹片）就能表示游戏中的所有粒子。你现在很可能已经猜到了，我们将这样一个仅存储内在状态的对象称为享元</p>
+<h3 id="结构-5"><a href="#结构-5" class="headerlink" title="结构"></a>结构</h3><p><img src="/posts/18127/image-20240408190633588.png" alt="image-20240408190633588"></p>
+<ol>
+<li>享元模式只是一种优化。在应用该模式之前，你要确定程序中存在与大量类似对象同时占用内存相关的内存消耗问题，并且确保该问题无法使用其他更好的方式来解决</li>
+<li>享元（Flyweight）类包含原始对象中部分能在多个对象中共享的状态。同一享元对象可在许多不同情景中使用。享元中存储的状态被称为“内在状态”。传递给享元方法的状态被称为“外在状态” </li>
+<li>情景（Context）类包含原始对象中各不相同的外在状态。情景与享元对象组合在一起就能表示原始对象的全部状态</li>
+<li>通常情况下，原始对象的行为会保留在享元类中。因此调用享元方法必须提供部分外在状态作为参数。但你也可将行为移动到情景类中，然后将连入的享元作为单纯的数据对象</li>
+<li>客户端（Client）负责计算或存储享元的外在状态。在客户端看来，享元是一种可在运行时进行配置的模板对象，具体的配置方式为向其方法中传入一些情景数据参数</li>
+<li>享元工厂（Flyweight Factory）会对已有享元的缓存池进行管理。有了工厂后，客户端就无需直接创建享元，它们只需调用工厂并向其传递目标享元的一些内在状态即可。工厂会根据参数在之前已创建的享元中进行查找，如果找到满足条件的享元就将其返回；如果没有找到就根据参数新建享元</li>
+</ol>
+<h3 id="伪代码-5"><a href="#伪代码-5" class="headerlink" title="伪代码"></a>伪代码</h3><p>享元模式能有效减少在画布上渲染数百万个树状对象时所需的内存</p>
+<p><img src="/posts/18127/image-20240408190958009.png" alt="image-20240408190958009"></p>
+<p>该模式从主要的 树 <code>Tree</code> 类中抽取内在状态，并将其移动到享元类 树种类 <code>TreeType</code> 之中</p>
+<p>最初程序需要在多个对象中存储相同数据，而现在仅需在几个享元对象中保存数据，然后在作为情景的 树 对象中连入享元即可。客户端代码使用享元工厂创建树对象并封装搜索指定对象的复杂行为，并能在需要时复用对象  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 享元类包含一个树的部分状态。这些成员变量保存的数值对于特定树而言是唯一的。例如，你在这里找不到树的坐标。但这里有很多树木之间所共有的纹理和颜色。由于这些数据的体积通常非常大，所以如果让每棵树都其进行保存的话将耗费大量内存。因此，我们可将纹理、颜色和其他重复数据导出到一个单独的对象中，然后让众多的单个树对象去引用它</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TreeType</span> is</span><br><span class="line">	field name</span><br><span class="line">	field color</span><br><span class="line">	field texture</span><br><span class="line">	</span><br><span class="line">	constructor <span class="title function_">TreeType</span><span class="params">(name, color, texture） 							&#123;...&#125;</span></span><br><span class="line"><span class="params">	method draw(canvas, x, y)</span> is</span><br><span class="line">		<span class="comment">//1.创建特定类型、颜色和纹理的位图。</span></span><br><span class="line">		<span class="comment">//2．在画布坐标（X,Y）处绘制位图。</span></span><br><span class="line">		</span><br><span class="line"><span class="comment">// 享元工厂决定是否复用已有享元或者创建一个新的对象。class TreeFactory is</span></span><br><span class="line">	<span class="keyword">static</span> field treeTypes: collection of tree types</span><br><span class="line">	<span class="keyword">static</span> method <span class="title function_">getTreeType</span><span class="params">(name, color, texture)</span> <span class="type">is</span></span><br><span class="line">		<span class="variable">type</span> <span class="operator">=</span> treeTypes.find(name, color, texture)</span><br><span class="line">		<span class="keyword">if</span> (type == <span class="literal">null</span>)</span><br><span class="line">			type = <span class="keyword">new</span> <span class="title class_">TreeType</span>(name, color, texture)</span><br><span class="line">			treeTypes.add(type)</span><br><span class="line">		<span class="keyword">return</span> type</span><br><span class="line">		</span><br><span class="line"><span class="comment">// 情景对象包含树状态的外在部分。程序中可以创建数十亿个此类对象，因为它们体积很小：仅有两个整型坐标和一个引用成员变量。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Tree</span> is </span><br><span class="line">	field x,y</span><br><span class="line">	field type: TreeType</span><br><span class="line">	</span><br><span class="line">	constructor <span class="title function_">Tree</span><span class="params">(x, y， type)</span>&#123;...&#125;</span><br><span class="line">	</span><br><span class="line">	method <span class="title function_">draw</span><span class="params">(canvas)</span> is</span><br><span class="line">		type.draw(canvas, <span class="built_in">this</span>.x, <span class="built_in">this</span>.y)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 树（Tree）和森林（Forest）类是享元的客户端。如果不打算继续对树类进行开发，你可以将它们合并。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Forest</span> is</span><br><span class="line">	field trees: collection of Trees</span><br><span class="line">	</span><br><span class="line">	method <span class="title function_">plantTree</span><span class="params">(x,y,name,color,texture)</span><span class="type">is</span></span><br><span class="line">		<span class="variable">type</span> <span class="operator">=</span> TreeFactory.getTreeType(name, color, texture)</span><br><span class="line">		tree = <span class="keyword">new</span> <span class="title class_">Tree</span>(x, y, type)</span><br><span class="line">		trees.add(tree)</span><br><span class="line">		</span><br><span class="line">  method <span class="title function_">draw</span><span class="params">(canvas)</span> is</span><br><span class="line">  	<span class="title function_">foreach</span> <span class="params">(tree in trees)</span> </span><br><span class="line">  		dotree.draw(canvas)</span><br></pre></td></tr></table></figure>
+<h3 id="应用场景-5"><a href="#应用场景-5" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
+<li>仅在程序必须支持大量对象且没有足够的内存容量时使用享元模式</li>
+<li>应用该模式所获的收益大小取决于使用它的方式和情景。它在下列情况中最有效 :<ul>
+<li>程序需要生成数量巨大的相似对象</li>
+<li>这将耗尽目标设备的所有内存</li>
+<li>对象中包含可抽取且能在多个对象间共享的重复状态。</li>
+</ul>
+</li>
+</ul>
+<h3 id="实现方式-5"><a href="#实现方式-5" class="headerlink" title="实现方式"></a>实现方式</h3><ol>
+<li>将需要改写为享元的类成员变量拆分为两个部分:<ul>
+<li>内在状态：包含不变的、可在许多对象中重复使用的数据的成员变量。</li>
+<li>外在状态：包含每个对象各自不同的情景数据的成员变量</li>
+</ul>
+</li>
+<li>保留类中表示内在状态的成员变量，并将其属性设置为不可修改。这些变量仅可在构造函数中获得初始数值。</li>
+<li>找到所有使用外在状态成员变量的方法，为在方法中所用的每个成员变量新建一个参数，并使用该参数代替成员变量。</li>
+<li>你可以有选择地创建工厂类来管理享元缓存池，它负责在新建享元时检查已有的享元。如果选择使用工厂，客户端就只能通过工厂来请求享元，它们需要将享元的内在状态作为参数传递给工厂。</li>
+<li>客户端必须存储和计算外在状态（情景）的数值，因为只有这样才能调用享元对象的方法。为了使用方便，外在状态和引用享元的成员变量可以移动到单独的情景类中</li>
+</ol>
+<h3 id="优缺点-5"><a href="#优缺点-5" class="headerlink" title="优缺点"></a>优缺点</h3><ul>
+<li>如果程序中有很多相似对象，那么你将可以节省大量内存</li>
+</ul>
+<hr>
+<ul>
+<li>你可能需要牺牲执行速度来换取内存，因为他人每次调用享元方法时都需要重新计算部分情景数据</li>
+<li>代码会变得更加复杂。团队中的新成员总是会问：“为什么要像这样拆分一个实体的状态？”  </li>
+</ul>
+<h3 id="与其他模式的关系-5"><a href="#与其他模式的关系-5" class="headerlink" title="与其他模式的关系"></a>与其他模式的关系</h3><ul>
+<li>你可以使用享元实现组合树的共享叶节点以节省内存  </li>
+<li>享元展示了如何生成大量的小型对象，外观则展示了如何用一个对象来代表整个子系统</li>
+<li>如果你能将对象的所有共享状态简化为一个享元对象，那么享元就和单例类似了。但这两个模式有两个根本性的不同<ul>
+<li>只会有一个单例实体，但是享元类可以有多个实体，各实体的内在状态也可以不同</li>
+<li>单例对象可以是可变的。享元对象是不可变的  </li>
+</ul>
+</li>
+</ul>
+<h2 id="代理"><a href="#代理" class="headerlink" title="代理"></a>代理</h2><blockquote>
+<p>Proxy</p>
+</blockquote>
+<p>代理是一种结构型设计模式，让你能够提供对象的替代品或其占位符。代理控制着对于原对象的访问，并允许在将请求提交给对象前后进行一些处理。</p>
+<h3 id="问题背景-6"><a href="#问题背景-6" class="headerlink" title="问题背景"></a>问题背景</h3><p>有这样一个消耗大量系统资源的巨型对象， 你只是偶尔需要使用它，并非总是需要</p>
+<p><img src="/posts/18127/image-20240409184246134.png" alt="image-20240409184246134"></p>
+<p>你可以实现延迟初始化：在实际有需要时再创建该对象。对象的所有客户端都要执行延迟初始代码。不幸的是，这很可能会带来很多重复代码。</p>
+<p>在理想情况下，我们希望将代码直接放入对象的类中，但这并非总是能实现：比如类可能是第三方封闭库的一部分  </p>
+<h3 id="解决方案-6"><a href="#解决方案-6" class="headerlink" title="解决方案"></a>解决方案</h3><p>代理模式建议新建一个与原服务对象接口相同的代理类，然后更新应用以将代理对象传递给所有原始对象客户端。代理类接收到客户端请求后会创建实际的服务对象，并将所有工作委派给它</p>
+<p><img src="/posts/18127/image-20240409184550672.png" alt="image-20240409184550672"></p>
+<p>代理将自己伪装成数据库对象，可在客户端或实际数据库对象不知情的情况下处理延迟初始化和缓存查询结果的工作</p>
+<p>如果需要在类的主要业务逻辑前后执行一些工作，你无需修改类就能完成这项工作。由于代理实现的接口与原类相同，因此你可将其传递给任何一个使用实际服务对象的客户端</p>
+<h3 id="结构-6"><a href="#结构-6" class="headerlink" title="结构"></a>结构</h3><p><img src="/posts/18127/image-20240409184932147.png" alt="image-20240409184932147"></p>
+<ol>
+<li>服务接口（<code>Service Interface</code>）声明了服务接口。代理必须遵循该接口才能伪装成服务对象</li>
+<li>服务（<code>Service</code>）类提供了一些实用的业务逻辑</li>
+<li>代理（<code>Proxy</code>）类包含一个指向服务对象的引用成员变量。代理完成其任务（例如延迟初始化、记录日志、访问控制和缓存等）后会将请求传递给服务对象。通常情况下，代理会对其服务对象的整个生命周期进行管理</li>
+<li>客户端（<code>Client</code>） 能通过同一接口与服务或代理进行交互，所以你可在一切需要服务对象的代码中使用代理</li>
+</ol>
+<h3 id="伪代码-6"><a href="#伪代码-6" class="headerlink" title="伪代码"></a>伪代码</h3><p>使用代理模式在第三方腾讯视频（<code>TencentVideo</code>，代码示例中记为TV）程序库中添加延迟初始化和缓存。<br><img src="/posts/18127/image-20240409185609538.png" alt="image-20240409185609538" style="zoom:80%;"></p>
+<p>程序库提供了视频下载类。但是该类的效率非常低。如果客户端程序多次请求同一视频，程序库会反复下载该视频，而不会将首次下载的文件缓存下来复用。</p>
+<p>代理类实现和原下载器相同的接口，并将所有工作委派给原下载器。不过，代理类会保存所有的文件下载记录，如果程序多次请求同一文件，它会返回缓存的文件。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">field needReset</span><br><span class="line"><span class="comment">// 远程服务接口。</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">ThirdPartyTVLib</span> is</span><br><span class="line">	method <span class="title function_">listVideos</span><span class="params">()</span></span><br><span class="line">	method <span class="title function_">getVideoInfo</span><span class="params">(id)</span></span><br><span class="line">	method <span class="title function_">downloadvideo</span><span class="params">(id)</span></span><br><span class="line">	</span><br><span class="line"><span class="comment">// 服务连接器的具体实现。该类的方法可以向腾讯视频请求信息。请求速度取决于用户和腾讯视频的互联网连接情况。如果同时发送大量请求，即使所请求的信息一模一样，程序的速度依然会减慢。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ThirdPartyTvclass</span> <span class="keyword">implements</span> <span class="title class_">ThirdPartyTVLib</span> is</span><br><span class="line">	method <span class="title function_">listVideos</span><span class="params">()</span> is</span><br><span class="line">		<span class="comment">//向腾讯视频发送一个API请求。</span></span><br><span class="line">  method <span class="title function_">getVideoInfo</span><span class="params">(id)</span> is</span><br><span class="line">  	<span class="comment">//获取某个视频的元数据。</span></span><br><span class="line">  method <span class="title function_">downloadVideo</span><span class="params">(id)</span> is</span><br><span class="line">  	<span class="comment">//从腾讯视频下载一个视频文件。</span></span><br><span class="line">  	</span><br><span class="line"><span class="comment">//为了节省网络带宽，我们可以将请求结果缓存下来并保存一段时间。但你可能无法直接将这些代码放入服务类中。比如该类可能是第三方程序库的一部分或其签名是final（最终）。因此我们会在一个实现了服务类接口的新代理类中放入缓存代码。当代理类接收到真实请求后，才会将其委派给服务对象。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CachedTVClass</span> <span class="keyword">implements</span> <span class="title class_">ThirdPartyTVLib</span> is</span><br><span class="line">	<span class="keyword">private</span> field service: ThirdPartyTVLib</span><br><span class="line">	<span class="keyword">private</span> field listcache, videoCache</span><br><span class="line">	field needReset</span><br><span class="line">	</span><br><span class="line">	constructor <span class="title function_">CachedTVClass</span><span class="params">(service: ThirdPartyTVLib)</span> is</span><br><span class="line">		<span class="built_in">this</span>.service = service</span><br><span class="line">  </span><br><span class="line">  method <span class="title function_">listVideos</span><span class="params">()</span> is</span><br><span class="line">  	<span class="title function_">if</span> <span class="params">(listCache == <span class="literal">null</span> || needReset)</span></span><br><span class="line">  		listCache = service.listVideos()</span><br><span class="line">  	<span class="keyword">return</span> listCache</span><br><span class="line">  	</span><br><span class="line">  method <span class="title function_">getVideoInfo</span><span class="params">(id)</span> is</span><br><span class="line">  	<span class="title function_">if</span> <span class="params">(videoCache == <span class="literal">null</span> || needReset)</span></span><br><span class="line">  		videoCache = service.getVideoInfo(id)</span><br><span class="line">    <span class="keyword">return</span> videoCache</span><br><span class="line">    </span><br><span class="line">  method <span class="title function_">downloadVideo</span><span class="params">(id)</span> is</span><br><span class="line">  	<span class="title function_">if</span> <span class="params">(!downloadExists(id)</span> || needReset)</span><br><span class="line">  		service.downloadVideo(id)</span><br><span class="line">  		</span><br><span class="line"><span class="comment">// 之前直接与服务对象交互的GUI类不需要改变，前提是它仅通过接口与服务对象交互。我们可以安全地传递一个代理对象来代替真实服务对象，因为它们都实现了相同的接口。</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">TVManager</span> is</span><br><span class="line">  	<span class="keyword">protected</span> field service: ThirdPartyTVLib</span><br><span class="line">     </span><br><span class="line">    constructor <span class="title function_">TVManager</span><span class="params">(service: ThirdPartyTVLib)</span> is</span><br><span class="line">    	<span class="built_in">this</span>.service = service</span><br><span class="line">      </span><br><span class="line">    method <span class="title function_">renderVideoPage</span><span class="params">(id)</span> <span class="type">is</span></span><br><span class="line">      <span class="variable">info</span> <span class="operator">=</span> service.getVideoInfo(id)</span><br><span class="line">      <span class="comment">// 渲染视频页面</span></span><br><span class="line">    </span><br><span class="line">    method <span class="title function_">renderListPanel</span><span class="params">()</span> <span class="type">is</span></span><br><span class="line">      <span class="variable">list</span> <span class="operator">=</span> service.listVideos()</span><br><span class="line">      <span class="comment">//渲染视频缩略图列表。</span></span><br><span class="line">      </span><br><span class="line">    method <span class="title function_">reactOnUserInput</span><span class="params">()</span> is</span><br><span class="line">      <span class="title function_">renderVideoPage</span><span class="params">()</span></span><br><span class="line">      renderListPanel()</span><br><span class="line">      </span><br><span class="line"><span class="comment">//程序可在运行时对代理进行配置。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Application</span> is</span><br><span class="line">  method <span class="title function_">init</span><span class="params">()</span> <span class="type">is</span></span><br><span class="line">  	<span class="variable">aTVService</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ThirdPartyTVClass</span>()</span><br><span class="line">  	aTVProxy = <span class="keyword">new</span> <span class="title class_">CachedTVClass</span>(aTVService)</span><br><span class="line">  	manager = <span class="keyword">new</span> <span class="title class_">TVManager</span>(aTVProxy)</span><br><span class="line">    manager.reactOnUserInput()</span><br></pre></td></tr></table></figure>
+<h3 id="应用场景-6"><a href="#应用场景-6" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
+<li><p>延迟初始化（虚拟代理）。如果你有一个偶尔使用的重量级服务对象，一直保持该对象运行会消耗系统资源时，可使用代理模式。</p>
+<p>你无需在程序启动时就创建该对象，可将对象的初始化延迟到真正有需要的时候</p>
+</li>
+<li><p>访问控制（保护代理）。如果你只希望特定客户端使用服务对象，这里的对象可以是操作系统中非常重要的部分，而客户端则是各种已启动的程序（包括恶意程序），此时可使用代理模式</p>
+<p>代理可仅在客户端凭据满足要求时将请求传递给服务对象</p>
+</li>
+<li><p>本地执行远程服务（远程代理）。适用于服务对象位于远程服务器上的情形</p>
+<p>在这种情形中，代理通过网络传递客户端请求，负责处理所有与网络相关的复杂细节</p>
+</li>
+<li><p>记录日志请求（日志记录代理）。适用于当你需要保存对于服务对象的请求历史记录时。代理可以在向服务传递请求前进行记录</p>
+<p>缓存请求结果（缓存代理）。适用于需要缓存客户请求结果并对缓存生命周期进行管理时，特别是当返回结果的体积非常大时</p>
+<p>代理可对重复请求所需的相同结果进行缓存，还可使用请求参数作为索引缓存的键值</p>
+</li>
+<li><p>智能引用。可在没有客户端使用某个重量级对象时立即销毁该对象</p>
+<p>代理会将所有获取了指向服务对象或其结果的客户端记录在案。代理会时不时地遍历各个客户端，检查它们是否仍在运行。如果相应的客户端列表为空，代理就会销毁该服务对象，释放底层系统资源</p>
+<p>代理还可以记录客户端是否修改了服务对象。其他客户端还可以复用未修改的对象</p>
+</li>
+</ul>
+<h3 id="实现方式-6"><a href="#实现方式-6" class="headerlink" title="实现方式"></a>实现方式</h3><ol>
+<li>如果没有现成的服务接口，你就需要创建一个接口来实现代理和服务对象的可交换性。从服务类中抽取接口并非总是可行的，因为你需要对服务的所有客户端进行修改，让它们使用接口。备选计划是将代理作为服务类的子类，这样代理就能继承服务的所有接口了。</li>
+<li>创建代理类，其中必须包含一个存储指向服务的引用的成员变量。通常情况下，代理负责创建服务并对其整个生命周期进行管理。在一些特殊情况下，客户端会通过构造函数将服务传递给代理。</li>
+<li>根据需求实现代理方法。在大部分情况下，代理在完成一些任务后应将工作委派给服务对象。</li>
+<li>可以考虑新建一个构建方法来判断客户端可获取的是代理还是实际服务。 你可以在代理类中创建一个简单的静态方法，也可以创建一个完整的工厂方法。 </li>
+<li>可以考虑为服务对象实现延迟初始化。</li>
+</ol>
+<h3 id="优缺点-6"><a href="#优缺点-6" class="headerlink" title="优缺点"></a>优缺点</h3><ul>
+<li>你可以在客户端毫无察觉的情况下控制服务对象</li>
+<li>如果客户端对服务对象的生命周期没有特殊要求，你可以对生命周期进行管理</li>
+<li>即使服务对象还未准备好或不存在，代理也可以正常工作</li>
+<li>开闭原则。你可以在不对服务或客户端做出修改的情况下创建新代理  </li>
+</ul>
+<hr>
+<ul>
+<li>代码可能会变得复杂，因为需要新建许多类</li>
+<li>服务响应可能会延迟</li>
+</ul>
+<h3 id="与其他模式的关系-6"><a href="#与其他模式的关系-6" class="headerlink" title="与其他模式的关系"></a>与其他模式的关系</h3><ul>
+<li>适配器能为被封装对象提供不同的接口，代理能为对象提供相同的接口，装饰则能为对象提供加强的接口。</li>
+<li>外观与代理的相似之处在于它们都缓存了一个复杂实体并自行对其进行初始化。代理与其服务对象遵循同一接口，使得自己和服务对象可以互换，在这一点上它与外观不同。</li>
+<li>装饰和代理有着相似的结构，但是其意图却非常不同。这两个模式的构建都基于组合原则，也就是说一个对象应该将部分工作委派给另一个对象。两者之间的不同之处在于代理通常自行管理其服务对象的生命周期，而装饰的生成则总是由客户端进行控制。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
+      <tags>
+        <tag>开发进阶知识</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>设计模式-创建型模式</title>
+    <url>/posts/16062.html</url>
+    <content><![CDATA[<h1 id="创建型模式"><a href="#创建型模式" class="headerlink" title="创建型模式"></a>创建型模式</h1><p>创建型模式包括以下几种具体模式：</p>
+<ol>
+<li>工厂方法（<code>Factory Method</code>）：在父类中提供一个创建对象的接口以允许子类决定实例化对象的类型</li>
+<li>抽象工厂（<code>Abstract Factory</code>）：让你能创建一系列相关的对象，而无需指定其具体类</li>
+<li>生成器（<code>Builder</code>）：使你能够分步骤创建复杂对象。该模式允许你使用相同的创建代码生成不同类型和形式的对象</li>
+<li>原型（<code>Prototype</code>）：让你能够复制已有对象，而又无需使代码依赖它们所属的类  </li>
+<li>单例（<code>Singleton</code>）：让你能够保证一个类只有一个实例，并提供一个访问该实例的全局节点</li>
+</ol>
+<h2 id="工厂方法"><a href="#工厂方法" class="headerlink" title="工厂方法"></a>工厂方法</h2><p>虚拟构造函数、Virtual Constructor、Factory Method</p>
+<p>工厂方法是一种创建型设计模式，其在父类中提供一个创建对象的方法，允许子类决定实例化对象的类型</p>
+<h3 id="问题背景"><a href="#问题背景" class="headerlink" title="问题背景"></a>问题背景</h3><p>假设你正在开发一款物流管理应用。最初版本只能处理卡车运输，因此大部分代码都在位于名为卡车的类中。一段时间后，这款应用变得极受欢迎。你每天都能收到十几次来自海运公司的请求，希望应用能够支持海上物流功能。</p>
+<p>目前，大部分代码都与卡车类相关。因此，在程序中添加轮船类需要修改全部代码。更糟糕的是，如果你以后需要在程序中支持另外一种运输方式，很可能需要再次对这些代码进行大幅修改  </p>
+<h3 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h3><p>工厂方法模式建议使用特殊的工厂方法代替对对象构造函数的直接调用（使用<code>new</code>运算符）。不用担心，对象仍将通过<code>new</code>运算符创建，只是该运算符改在工厂方法中调用罢了。工厂方法返回的对象通常被称作“产品”。</p>
+<p><img src="/posts/16062/image-20240227191801052.png" alt="image-20240227191801052"></p>
+<p>虽然只是改变了程序中调用构造函数的位置而已。但是，现在可以在子类中重写工厂方法，从而改变其创建产品的类型。需要注意的是，仅当这些产品具有共同的基类或者接口时，子类才能返回不同类型的产品，同时基类中的工厂方法还应将其返回类型声明为这一共有接口  </p>
+<p><img src="/posts/16062/image-20240227192127884.png" alt="image-20240227192127884"></p>
+<p>卡车<code>Truck</code>和 轮船<code>Ship</code>类都必须实现运输<code>Transport</code>接口， 该接口声明了一个名为<code>deliver</code>交 付 的 方 法。 每 个 类 都 将 以 不 同 的 方 式 实 现 该 方法： 卡 车 走 陆 路 交 付 货 物， 轮 船 走 海 路 交 付 货 物。陆路运输 <code>RoadLogistics</code> 类中的工厂方法返回卡车对象，而海路运输<code>SeaLogistics</code>类则返回轮船对象。</p>
+<p><img src="/posts/16062/image-20240227192215616.png" alt="image-20240227192215616"></p>
+<p>调用工厂方法的代码（通常被称为客户端代码）无需了解不同子类返回实际对象之间的差别。客户端将所有产品视为抽象的 运输 。 客户端知道所有运输对象都提供 交付 方法，但是并不关心其具体实现方式  </p>
+<h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><p><img src="/posts/16062/image-20240227192253764.png" alt="image-20240227192253764"></p>
+<ol>
+<li><p><strong>产品</strong>（<code>Product</code>）将会对接口进行声明。对于所有由创建者及其子类构建的对象，这些接口都是通用的</p>
+</li>
+<li><p><strong>具体产品</strong>（<code>Concrete Products</code>）是产品接口的不同实现</p>
+</li>
+<li><p><strong>创建者</strong>（<code>Creator</code>）类声明返回产品对象的工厂方法。该方法的返回对象类型必须与产品接口相匹配</p>
+<p> 你可以将工厂方法声明为抽象方法，强制要求每个子类以不同方式实现该方法。或者，你也可以在基础工厂方法中返回默认产品类型。</p>
+<p> 特别需要注意的是：尽管名字是创建者，但它最主要的职责并不是创建产品。一般来说，创建者类会包含一些与产品相关的核心业务逻辑。工厂方法将这些逻辑处理从具体产品类中分离出来。</p>
+</li>
+<li><p><strong>具体创建者</strong>（<code>Concrete Creators</code>） 将会重写基础工厂方法，使其返回不同类型的产品</p>
+<p> 并不一定每次调用工厂方法都会创建新的实例，也可以返回缓存、对象池或其他来源的已有对象。</p>
+</li>
+</ol>
+<h3 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h3><p>跨平台对话框示例  </p>
+<p><img src="/posts/16062/image-20240306185940396.png" alt="image-20240306185940396"></p>
+<p>基础对话框类使用不同的UI组件渲染窗口，上述只是其中一种组件，即按钮。在不同的操作系统下，这些组件外观或许略有不同，但其功能保持一致。</p>
+<p>如果使用工厂方法，就不需要为每种操作系统重写对话框逻辑。如果我们声明了一个在基本对话框类中生成按钮的工厂方法，那么我们就可以创建一个对话框子类，并使其通过工厂方法返回Windows样式按钮。子类将继承对话框基础类的大部分代码，同时在屏幕上根据Windows样式渲染按钮。每向对话框中添加一个新的工厂方法，你就离抽象工厂模式更近一步。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建者类声明的工厂方法必须返回一个产品类的对象。创建者的子类通常会提供该方法的实现。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Dialog</span> is</span><br><span class="line">	<span class="comment">// 创建者还可提供一些工厂方法的默认实现。</span></span><br><span class="line">	<span class="keyword">abstract</span> method <span class="title function_">createButton</span><span class="params">()</span>:Button</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 创建者的主要职责并非是创建产品，而是会包含一些核心业务</span></span><br><span class="line">  <span class="comment">// 这些逻辑依赖于由工厂方法返回的产品对象。子类可通过重写工厂方</span></span><br><span class="line">  <span class="comment">// 法并使其返回不同类型的产品来间接修改业务逻辑。</span></span><br><span class="line">  method <span class="title function_">render</span><span class="params">()</span> is</span><br><span class="line">    <span class="comment">// 调用工厂方法创建一个产品对象。</span></span><br><span class="line">    <span class="type">Button</span> <span class="variable">okButton</span> <span class="operator">=</span> createButton()</span><br><span class="line">    <span class="comment">// 现在使用产品。</span></span><br><span class="line">    okButton.onClick(closeDialog)</span><br><span class="line">    okButton.render()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体创建者将重写工厂方法以改变其所返回的产品类型。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">WindowsDialog</span> <span class="keyword">extends</span> <span class="title class_">Dialog</span> is</span><br><span class="line">  method <span class="title function_">createButton</span><span class="params">()</span>:Button is</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">WindowsButton</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">WebDialog</span> <span class="keyword">extends</span> <span class="title class_">Dialog</span> is</span><br><span class="line">  method <span class="title function_">createButton</span><span class="params">()</span>:Button is</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">HTMLButton</span>()</span><br><span class="line">  </span><br><span class="line"><span class="comment">// 产品接口中将声明所有具体产品都必须实现的操作。</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Button</span> is</span><br><span class="line">	method <span class="title function_">render</span><span class="params">()</span> <span class="comment">// 渲染</span></span><br><span class="line">	method <span class="title function_">onClick</span><span class="params">(f)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 具体产品需提供产品接口的各种实现。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">WindowsButton</span> <span class="keyword">implements</span> <span class="title class_">Button</span> is</span><br><span class="line"> method <span class="title function_">render</span><span class="params">(a, b)</span> is</span><br><span class="line">	<span class="comment">// 根据 Windows 样式渲染按钮。</span></span><br><span class="line"> method <span class="title function_">onClick</span><span class="params">(f)</span> is</span><br><span class="line">	<span class="comment">// 绑定本地操作系统点击事件。</span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">class</span> <span class="title class_">HTMLButton</span> <span class="keyword">implements</span> <span class="title class_">Button</span> is</span><br><span class="line">  method <span class="title function_">render</span><span class="params">(a, b)</span> is</span><br><span class="line">  <span class="comment">// 返回一个按钮的 HTML 表述。</span></span><br><span class="line">  method <span class="title function_">onClick</span><span class="params">(f)</span> is</span><br><span class="line">  <span class="comment">// 绑定网络浏览器的点击事件。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Application</span> is</span><br><span class="line"> field dialog: Dialog</span><br><span class="line"></span><br><span class="line"> <span class="comment">// 程序根据当前配置或环境设定选择创建者的类型。</span></span><br><span class="line"> method <span class="title function_">initialize</span><span class="params">()</span> <span class="type">is</span></span><br><span class="line"> 	<span class="variable">config</span> <span class="operator">=</span> readApplicationConfigFile()</span><br><span class="line"></span><br><span class="line"> 	<span class="keyword">if</span> (config.OS == <span class="string">&quot;Windows&quot;</span>) <span class="type">then</span></span><br><span class="line"> 		<span class="variable">dialog</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">WindowsDialog</span>() <span class="comment">// 就是创建了一个dialog</span></span><br><span class="line"> 	<span class="keyword">else</span> <span class="keyword">if</span> (config.OS == <span class="string">&quot;Web&quot;</span>) <span class="type">then</span></span><br><span class="line">		<span class="variable">dialog</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">WebDialog</span>()</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line"> 		<span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Exception</span>(<span class="string">&quot;错误！未知的操作系统。&quot;</span>)</span><br><span class="line">    <span class="comment">//当前客户端代码会与具体创建者的实例进行交互，但是必须通过其基本接口进行。只要客户端通过基本接口与创建者进行交互，你就可将任何创建者子类传递给客户端。</span></span><br><span class="line">    </span><br><span class="line">	method <span class="title function_">main</span><span class="params">()</span> is</span><br><span class="line">		<span class="built_in">this</span>.initialize()</span><br><span class="line">		dialog.render()</span><br></pre></td></tr></table></figure>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><ol>
+<li><p><strong>无法预知对象确切类别及其依赖关系时</strong></p>
+<p> 工厂方法将创建产品的代码与实际使用产品的代码分离，从而能在不影响其他代码的情况下扩展产品创建部分代码</p>
+<blockquote>
+<p>如果需要向应用中添加一种新产品，你只需要开发新的创建者子类，然后重写其工厂方法即可  </p>
+</blockquote>
+</li>
+<li><p><strong>需要用户能扩展你软件库或框架的内部组件</strong></p>
+<p> 继承可能是扩展软件库或框架默认行为的最简单方法。但是当你使用子类替代标准组件时，框架如何辨识出该子类 </p>
+<p> 解决方案是将各框架中构造组件的代码集中到单个工厂方法中，并在继承该组件之外允许任何人对该方法进行重写</p>
+<blockquote>
+<p>假设你使用开源 UI 框架编写自己的应用。你希望在应用中使用圆形按钮，但是原框架仅支持矩形按钮。你可以使用圆形按钮<code>RoundButton</code>子类来继承标准的按钮<code>Button</code> 类。但是，你需要告诉UI框架<code>UIFramework</code>类使用新的子类按钮代替默认按钮</p>
+<p>为了实现这个功能， 你可以根据基础框架类开发子类圆形按钮UI <code>UIWithRoundButtons</code>，并且重写其<code>createButton</code>创建按钮方法。基类中的该方法返回按钮对象，而你开发的子类返回圆形按钮 对象。现在，你就可以使用圆形按钮UI类代替UI框架类。</p>
+</blockquote>
+</li>
+<li><p><strong>需要复用现有对象来节省系统资源，而不是每次都重新创建对象</strong></p>
+<p> 复用现有对象需要（1）创建存储空间来存放所有已经创建的对象（2）当他人请求一个对象时，程序将在对象池中搜索可用对象，然后将其返回给客户端代码（3）如果没有可用对象，程序则创建一个新对象（并将其添加到对象池中）</p>
+<p> 上述代码应该位于构造函数中，但是构造函数本身的定义应该始终返回新对象，因此就需要再抽象出一层既能够创建新对象，又可以重用现有对象的普通方法，其实就是工厂方法</p>
+</li>
+</ol>
+<h3 id="实现方式"><a href="#实现方式" class="headerlink" title="实现方式"></a>实现方式</h3><ol>
+<li><p>让所有产品都遵循同一接口。该接口必须声明对所有产品都有意义的方法。</p>
+</li>
+<li><p>在创建类中添加一个空的工厂方法。该方法的返回类型必须遵循通用的产品接口。</p>
+</li>
+<li><p>在创建者代码中找到对于产品构造函数的所有引用。将它们依次替换为对于工厂方法的调用，同时将创建产品的代码移入工厂方法。你可能需要在工厂方法中添加临时参数来控制返回的产品类型。</p>
+</li>
+<li><p>为工厂方法中的每种产品编写一个创建者子类，然后在子类中重写工厂方法，并将基本方法中的相关创建代码移动到工厂方法中。</p>
+</li>
+<li><p>如果应用中的产品类型太多，那么为每个产品创建子类并无太大必要，这时你也可以在子类中复用基类中的控制参数。</p>
+<blockquote>
+<p>设想你有以下一些层次结构的类。基类 邮件 及其子类 航空邮件 和 陆路邮件 ； 运输 及其子类 飞机 , 卡车和 火车 。 航空邮件 仅使用 飞机 对象，而 陆路邮件 则会同时使用 卡车 和 火车 对象。你可以编写一个新的子类（例如 火车邮件 ）来处理这两种情况，但是还有其他可选的方案。客户端代码可以给 陆路邮件 类传递一个参数，用于控制其希望获得的产品。</p>
+</blockquote>
+</li>
+<li><p>如果代码经过上述移动后，基础工厂方法中已经没有任何代码，你可以将其转变为抽象类。如果基础工厂方法中还有其他语句，你可以将其设置为该方法的默认行为。</p>
+</li>
+</ol>
+<h3 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h3><ul>
+<li>可以<strong>避免</strong>创建者和具体产品之间的<strong>紧密耦合</strong></li>
+<li><strong>单一职责原则</strong>。你可以将产品创建代码放在程序的单一位置，从而使得代码更容易维护</li>
+<li><strong>开闭原则</strong>。无需更改现有客户端代码，你就可以在程序中引入新的产品类型</li>
+</ul>
+<hr>
+<ul>
+<li>应用工厂方法模式需要引入许多新的子类，代码可能会因此变得<strong>更复杂</strong>。最好的情况是将该模式引入创建者类的现有层次结构中</li>
+</ul>
+<h3 id="与其他模式的关系"><a href="#与其他模式的关系" class="headerlink" title="与其他模式的关系"></a>与其他模式的关系</h3><ul>
+<li>在许多设计工作的初期都会使用<a href="# 工厂方法">工厂方法</a>（较为简单，而且可以更方便地通过子类进行定制），随后演化为使用<a href="# 抽象工厂">抽象工厂</a>、<a href="# 原型">原型</a>或<a href="# 生成器">生成器</a>（更灵活但更加复杂）。</li>
+<li>抽象工厂模式通常基于一组工厂方法，但你也可以使用原型模式来生成这些类的方法。</li>
+<li>你可以同时使用工厂方法和迭代器来让子类集合返回不同类型的迭代器，并使得迭代器与集合相匹配。</li>
+<li>原型并不基于继承，因此没有继承的缺点。另一方面，原型需要对被复制对象进行复杂的初始化。 工厂方法基于继承，但是它不需要初始化步骤。</li>
+<li>工厂方法是<a href="# 模板">模板</a>方法的一种特殊形式。同时，工厂方法可以作为一个大型模板方法中的一个步骤。</li>
+</ul>
+<h2 id="抽象工厂"><a href="#抽象工厂" class="headerlink" title="抽象工厂"></a>抽象工厂</h2><p>Abstract Factory</p>
+<p>抽象工厂是一种创建型设计模式，它能创建一系列相关的对象，而无需指定其具体类</p>
+<h3 id="问题背景-1"><a href="#问题背景-1" class="headerlink" title="问题背景"></a>问题背景</h3><p>假设你正在开发一款家具商店模拟器，包括一些类，用于抽象：</p>
+<ol>
+<li>一系列相关产品， 例如椅子<code>Chair</code>、沙发<code>Sofa</code>和咖啡桌CoffeeTable</li>
+<li>系列产品的不同变体。 例如， 你可以使用现代<code>Modern</code>、维多利亚 <code>Victorian</code>、装饰风艺术<code>ArtDeco</code>等风格生成椅子、沙发和咖啡桌 </li>
+</ol>
+<p><img src="/posts/16062/image-20240228181453632.png" alt="image-20240228181453632"></p>
+<p>你需要设法单独生成每件家具对象，这样才能确保其风格一致。如果顾客收到的家具风格不一样，他们可不会开心。  </p>
+<p>此外， 你也不希望在添加新产品或新风格时修改已有代码。家具供应商对于产品目录的更新非常频繁，你不会想在每次更新时都去修改核心代码的。  </p>
+<h3 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h3><p>首先，抽象工厂模式建议为系列中的每件产品明确声明接口（例如椅子、沙发或咖啡桌）。然后，确保所有产品变体都继承这些接口。例如，所有风格的椅子都实现椅子接口；所有风格的咖啡桌都实现咖啡桌接口，以此类推</p>
+<p><img src="/posts/16062/image-20240228182311775.png" alt="image-20240228182311775"></p>
+<p>接下来，我们需要声明抽象工厂——包含系列中所有产品构造方法的接口。例如 <code>createChair</code> 创建椅子 、 <code>createSofa</code>创建沙发 和 <code>createCoffeeTable</code> 创建咖啡桌 。 这些方法必须返回抽象产品类型，即我们之前抽取的那些接口：椅子，沙发和咖啡桌等等  </p>
+<p><img src="/posts/16062/image-20240228182424624.png" alt="image-20240228182424624"></p>
+<p>那么该如何处理产品变体呢？对于系列产品的每个变体,我们都将基于抽象工厂接口创建不同的工厂类。每个工厂类都只能返回特定类别的产品，例如，现代家具工厂<code>ModernFurnitureFactory</code>只能创建现代椅子<code>ModernChair</code>，现代沙发<code>ModernSofa</code>和现代咖啡桌<code>ModernCoffeeTable</code>对象。</p>
+<p>客户端代码可以通过相应的抽象接口调用工厂和产品类。你无需修改实际客户端代码，就能更改传递给客户端的工厂类，也能更改客户端代码接收的产品变体。  </p>
+<p>假设客户端想要工厂创建一把椅子。客户端无需了解工厂类，也不用管工厂类创建出的椅子类型。无论是现代风格，还是维多利亚风格的椅子，对于客户端来说没有分别，它只需调用抽象椅子接口就可以了。这样一来，客户端只需知道椅子以某种方式实现了<code>sitOn</code>坐下方法就足够了。此外，无论工厂返回的是何种椅子变体，它都会和由同一工厂对象创建的沙发或咖啡桌风格一致。  </p>
+<p>最后一点说明：如果客户端仅接触抽象接口，那么谁来创建实际的工厂对象呢？一般情况下，应用程序会在初始化阶段创建具体工厂对象。而在此之前，应用程序必须根据配置文件或环境设定选择工厂类别。  </p>
+<h3 id="结构-1"><a href="#结构-1" class="headerlink" title="结构"></a>结构</h3><p><img src="/posts/16062/image-20240228182719053.png" alt="image-20240228182719053"></p>
+<ol>
+<li><strong>抽象产品</strong>（<code>Abstract Product</code>）为构成系列产品的一组不同但相关的产品声明接口</li>
+<li><strong>具体产品</strong>（<code>Concrete Product</code>）是抽象产品的多种不同类型实现。所有变体 (维多利亚/现代)都必须实现相应的抽象产品(椅子/沙发)</li>
+<li><strong>抽象工厂</strong>（<code>Abstract Factory</code>）接口声明了一组创建各种抽象产品的方法</li>
+<li><strong>具体工厂</strong>（<code>Concrete Factory</code>）实现抽象工厂的构建方法。每个具体工厂都对应特定产品变体，且仅创建此种产品变体</li>
+<li>尽管具体工厂会对具体产品进行初始化，其构建方法签名必须返回相应的抽象产品。这样，使用工厂类的客户端代码就不会与工厂创建的特定产品变体耦合。客户端（Client）只需通过抽象接口调用工厂和产品对象，就能与任何具体工厂/产品变体交互</li>
+</ol>
+<h3 id="伪代码-1"><a href="#伪代码-1" class="headerlink" title="伪代码"></a>伪代码</h3><p>跨平台 UI 类示例</p>
+<p><img src="/posts/16062/image-20240228183848178.png" alt="image-20240228183848178"></p>
+<p>应用程序启动后检测当前操作系统。根据该信息，应用程序通过与该操作系统对应的类创建工厂对象。其余代码使用该工厂对象创建UI元素。这样可以避免生成错误类型的元素。  </p>
+<p>使用这种方法，客户端代码只需调用抽象接口，而无需了解具体工厂类和 UI元素。此外，客户端代码还支持未来添加新的工厂或UI元素 ，即每次在应用程序中添加新的UI元素变体时，你都无需修改客户端代码。你只需创建一个能够生成这些UI元素的工厂类，然后稍微修改应用程序的初始代码，使其能够选择合适的工厂类即可。  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 抽象工厂接口声明了一组能返回不同抽象产品的方法。这些产品属于同一个系列且在高层主题或概念上具有相关性。同系列的产品通常能相互搭配使用。系列产品可有多个变体，但不同变体的产品不能搭配使用。</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">GUIFactory</span> is</span><br><span class="line">	method <span class="title function_">createButton</span><span class="params">()</span> :Button</span><br><span class="line">	method <span class="title function_">createCheckbox</span><span class="params">()</span> :Checkbox</span><br><span class="line">  </span><br><span class="line"><span class="comment">// 具体工厂可生成属于同一变体的系列产品。工厂会确保其创建的产品能相互搭配使用。具体工厂方法签名会返回一个抽象产品，但在方法内部则会对具体产品进行实例化。</span></span><br><span class="line">  </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">WinFactory</span> <span class="keyword">implements</span> <span class="title class_">GUIFactory</span> is</span><br><span class="line">  method <span class="title function_">createButton</span><span class="params">()</span>:Button is</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">WinButton</span>()</span><br><span class="line">  method <span class="title function_">createCheckbox</span><span class="params">()</span>:Checkbox is</span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">WinCheckbox</span>()</span><br><span class="line"> </span><br><span class="line"><span class="comment">//每个具体工厂中都会包含一个相应的产品变体。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MacFactory</span> <span class="keyword">implements</span> <span class="title class_">GUIFactory</span> is</span><br><span class="line">  method <span class="title function_">createButton</span><span class="params">()</span> :Button is</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">MacButton</span>()</span><br><span class="line">  method <span class="title function_">createCheckbox</span><span class="params">()</span>:Checkbox is</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">MacCheckbox</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">//系列产品中的特定产品必须有一个基础接口。所有产品变体都必须实现这个接口。</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Button</span> is</span><br><span class="line">  method <span class="title function_">paint</span><span class="params">()</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//具体产品由相应的具体工厂创建。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">WinButton</span> <span class="keyword">implements</span> <span class="title class_">Button</span> is</span><br><span class="line">  method <span class="title function_">paint</span><span class="params">()</span> is</span><br><span class="line">  <span class="comment">// 根据windows样式渲染按钮</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MacButton</span> <span class="keyword">implements</span> <span class="title class_">Button</span> is</span><br><span class="line">  method <span class="title function_">paint</span><span class="params">()</span> is</span><br><span class="line">  <span class="comment">//根据macoS样式渲染按钮</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//这是另一个产品的基础接口。所有产品都可以互动，但是只有相同具体变体的产品之间才能够正确地进行交互。</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Checkbox</span> is</span><br><span class="line">  method <span class="title function_">paint</span><span class="params">()</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">WinCheckbox</span> <span class="keyword">implements</span> <span class="title class_">Checkbox</span> is</span><br><span class="line">  method <span class="title function_">paint</span><span class="params">()</span> is</span><br><span class="line">  <span class="comment">//根据Windows样式渲染复选框。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">MacCheckbox</span> <span class="keyword">implements</span> <span class="title class_">Checkbox</span> is</span><br><span class="line">  method <span class="title function_">paint</span><span class="params">()</span> is</span><br><span class="line">  <span class="comment">//根据macoS样式渲染复选框。</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">//客户端代码仅通过抽象类型（GUIFactory、Button 和Checkbox）使用工厂和产品，实现无需修改任何工厂或产品子类就能将其传递给客户端代码。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Application</span> is</span><br><span class="line">  <span class="keyword">private</span> field factory: GUIFactory</span><br><span class="line">  <span class="keyword">private</span> field button: Button</span><br><span class="line">  constructor <span class="title function_">Application</span><span class="params">(factory: GUIFactory)</span> is</span><br><span class="line">    <span class="built_in">this</span>.factory = factory</span><br><span class="line">  method <span class="title function_">createUI</span><span class="params">()</span> is</span><br><span class="line">    <span class="built_in">this</span>.button = factory.createButton()</span><br><span class="line">  method <span class="title function_">paint</span><span class="params">()</span> is</span><br><span class="line">    button.paint()  </span><br><span class="line"> </span><br><span class="line"><span class="comment">//程序会根据当前配置或环境设定选择工厂类型，并在运行时创建工厂（通常在初始化阶段）。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ApplicationConfigurator</span> is</span><br><span class="line">  method <span class="title function_">main</span><span class="params">()</span> <span class="type">is</span></span><br><span class="line">    <span class="variable">config</span> <span class="operator">=</span> readApplicationConfigFile()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(config.OS ==<span class="string">&quot;Windows&quot;</span>) <span class="type">then</span></span><br><span class="line">      <span class="variable">factory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">WinFactory</span>()</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (config.OS == <span class="string">&quot;Mac&quot;</span>) <span class="type">then</span></span><br><span class="line">      <span class="variable">factory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MacFactory</span>()</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Exception</span>（<span class="string">&quot;错误！未知的操作系统&quot;</span>）</span><br><span class="line">    </span><br><span class="line">    <span class="type">Application</span> <span class="variable">app</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Application</span>(factory)</span><br></pre></td></tr></table></figure>
+<h3 id="应用场景-1"><a href="#应用场景-1" class="headerlink" title="应用场景"></a>应用场景</h3><ol>
+<li><p>如果代码需要与多个不同系列的相关产品交互，但是由于无法提前获取相关信息，或者出于对未来扩展性的考虑，你不希望代码基于产品的具体类进行构建，在这种情况下，你可以使用抽象工厂</p>
+<blockquote>
+<p>抽象工厂为你提供了一个接口，可用于创建每个系列产品的对象。只要代码通过该接口创建对象，那么你就不会生成与应用程序已生成的产品类型不一致的产品  </p>
+</blockquote>
+</li>
+<li><p>如果你有一个基于一组抽象方法的类，且其主要功能因此变得不明确，那么在这种情况下可以考虑使用抽象工厂模式</p>
+<blockquote>
+<p>在设计良好的程序中，每个类仅负责一件事。如果一个类与多种类型产品交互，就可以考虑将工厂方法抽取到独立的工厂类或具备完整功能的抽象工厂类中 </p>
+</blockquote>
+</li>
+</ol>
+<h3 id="实现方式-1"><a href="#实现方式-1" class="headerlink" title="实现方式"></a>实现方式</h3><ol>
+<li>以不同的产品类型与产品变体为维度绘制矩阵</li>
+<li>为所有产品声明抽象产品接口。然后让所有具体产品类实现这些接口</li>
+<li>声明抽象工厂接口，并且在接口中为所有抽象产品提供一组构建方法</li>
+<li>为每种产品变体实现一个具体工厂类</li>
+<li>在应用程序中开发初始化代码。该代码根据应用程序配置或当前环境，对特定具体工厂类进行初始化。然后将该工厂对象传递给所有需要创建产品的类</li>
+<li>找出代码中所有对产品构造函数的直接调用，将其替换为对工厂对象中相应构建方法的调用</li>
+</ol>
+<h3 id="优缺点-1"><a href="#优缺点-1" class="headerlink" title="优缺点"></a>优缺点</h3><ul>
+<li>你可以确保同一工厂生成的产品相互匹配</li>
+<li>你可以避免客户端和具体产品代码的耦合</li>
+<li>单一职责原则。你可以将产品生成代码抽取到同一位置，使得代码易于维护</li>
+<li>开闭原则。向应用程序中引I入新产品变体时，你无需修改客户端代码</li>
+</ul>
+<hr>
+<ul>
+<li>由于采用该模式需要向应用中引入众多接口和类，代码可能会比之前更加复杂</li>
+</ul>
+<h3 id="与其他模式的关系-1"><a href="#与其他模式的关系-1" class="headerlink" title="与其他模式的关系"></a>与其他模式的关系</h3><ul>
+<li>在许多设计工作的初期都会使用<a href="# 工厂方法">工厂方法</a>（较为简单，而且可以更方便地通过子类进行定制)，随后演化为使用<a href="# 抽象工厂">抽象工厂</a>、<a href="# 原型">原型</a>或<a href="# 生成器">生成器</a>(更灵活但更加复杂)。</li>
+<li>生成器重点关注如何分步生成复杂对象。抽象工厂专门用于生产一系列相关对象。抽象工厂会马上返回产品，生成器则允许你在获取产品前执行一些额外构造步骤。</li>
+<li>抽象工厂模式通常基于一组工厂方法，但你也可以使用原型模式来生成这些类的方法。</li>
+<li>当只需对客户端代码隐藏子系统创建对象的方式时，你可以使用抽象工厂来代替外观</li>
+<li>你可以将抽象工厂和<a href="# 桥接">桥接</a>搭配使用。如果由桥接定义的抽象只能与特定实现合作，这一模式搭配就非常有用。在这种情况下，抽象工厂可以对这些关系进行封装，并且对客户端代码隐藏其复杂性</li>
+<li>抽象工厂、生成器和原型都可以用<a href="# 单例">单例</a>来实现  </li>
+</ul>
+<h2 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h2><blockquote>
+<p>建造者模式、Builder</p>
+</blockquote>
+<p><strong>生成器</strong>是一种创建型设计模式，使你能够分步骤创建复杂对象。该模式允许你使用相同的创建代码生成不同类型和形式的对象。</p>
+<h3 id="问题背景-2"><a href="#问题背景-2" class="headerlink" title="问题背景"></a>问题背景</h3><p>假设有这样一个复杂对象，在对其进行构造时需要对诸多成员变量和嵌套对象进行繁复的初始化工作。这些初始化代码通常深藏于一个包含众多参数且让人基本看不懂的构造函数中。甚至还有更糟糕的情况，那就是这些代码散落在客户端代码的多个位置。</p>
+<p><img src="/posts/16062/image-20240306184615376.png" alt="image-20240306184615376"></p>
+<p>例如，我们来思考如何创建一个 房屋<code>House</code>对象。建造一栋简单的房屋，首先你需要建造四面墙和地板，安装房门和一套窗户，然后再建造一个屋顶。但是如果你想要一栋更宽敞更明亮的房屋，还要有院子和其他设施（例如暖气、排水和供电设备），有如下两种简单的方法： </p>
+<ol>
+<li>最简单的方法是扩展 房屋 基类，然后<strong>创建一系列涵盖所有参数组合的子类</strong>。但最终你将面对相当数量的子类。任何新增的参数（例如门廊类型）都会让这个层次结构更加复杂。  </li>
+<li>可以在 房屋 基类中创建一个包括所有可能参数的<strong>超级构造函数</strong>，并用它来控制房屋对象。这种方法确实可以避免生成子类，但它却会造成另外一个问题。  </li>
+</ol>
+<p><img src="/posts/16062/image-20240306184805162.png" alt="image-20240306184805162"></p>
+<h3 id="解决方案-2"><a href="#解决方案-2" class="headerlink" title="解决方案"></a>解决方案</h3><p>生成器模式建议将对象构造代码从产品类中抽取出来，并将其放在一个名为生成器的独立对象中。  </p>
+<p><img src="/posts/16062/image-20240306184900394.png" alt="image-20240306184900394"></p>
+<p>该模式会将对象构造过程划分为一组步骤，比如<code>buildWalls</code>创建墙壁和 <code>buildDoor</code>创建房门等。每次创建对象时，你都需要通过生成器对象执行一系列步骤。重点在于你无需调用所有步骤，而只需调用创建特定对象配置所需的那些步骤即可。 </p>
+<p>当你需要创建不同形式的产品时，其中的一些构造步骤可能需要不同的实现。例如，木屋的房门可能需要使用木头制造，而城堡的房门则必须使用石头制造。</p>
+<p>在这种情况下，你可以创建多个不同的生成器，用不同方式实现一组相同的创建步骤。然后你就可以在创建过程中使用这些生成器（例如按顺序调用多个构造步骤）来生成不同类型的对象。  </p>
+<p><strong>主管</strong></p>
+<p>进一步可以将用于创建产品的一系列生成器步骤调用抽取成为单独的主管类。主管类可定义创建步骤的执行顺序，而生成器则提供这些步骤的实现。  </p>
+<p>实际上，客户端代码可以直接以特定顺序调用创建步骤，但是主管的优势在于复用，即例行构造流程不需要每次都写一遍。并且，主管能够隐藏构造顺序。</p>
+<h3 id="结构-2"><a href="#结构-2" class="headerlink" title="结构"></a>结构</h3><p><img src="/posts/16062/image-20240306185309368.png" alt="image-20240306185309368"></p>
+<ol>
+<li><strong>生成器</strong>（Builder）接口声明在所有类型生成器中通用的产品构造步骤</li>
+<li><strong>具体生成器</strong>（Concrete Builders）提供构造过程的不同实现。<br> 具体生成器也可以构造不遵循通用接口的产品</li>
+<li><strong>产品</strong>（Products）是最终生成的对象。由不同生成器构造的<br> 产品无需属于同一类层次结构或接口</li>
+<li><strong>主管</strong>（Director）类定义调用构造步骤的顺序，这样你就可以<br> 创建和复用特定的产品配置</li>
+<li><strong>客户端</strong>（Client）必须将某个生成器对象与主管类关联。一<br> 般情况下，你只需通过主管类构造函数的参数进行一次性关<br> 联即可。此后主管类就能使用生成器对象完成后续所有的构<br> 造任务。但在客户端将生成器对象传递给主管类制造方法时<br> 还有另一种方式。在这种情况下，你在使用主管类生产产品<br> 时每次都可以使用不同的生成器</li>
+</ol>
+<h3 id="伪代码-2"><a href="#伪代码-2" class="headerlink" title="伪代码"></a>伪代码</h3><p>分步骤制造汽车并制作对应型号用户使用手册的示例</p>
+<p><img src="/posts/16062/image-20240306185840793.png" alt="image-20240306185840793"></p>
+<p>汽车是一个复杂对象，有数百种不同的制造方法。我们没有在 汽车 类中塞入一个巨型构造函数，而是将汽车组装代码抽取到单独的汽车生成器类中。该类中有一组方法可用来配置汽车的各种部件  </p>
+<p>如果客户端代码需要组装一辆与众不同、 精心调教的汽车，它可以直接调用生成器。或者，客户端可以将组装工作委托给主管类，因为主管类知道如何使用生成器制造最受欢迎的几种型号汽车。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 只有当产品较为复杂且需要详细配置时，使用生成器模式才有意义。下面的两个产品尽管没有同样的接口，但却相互关联。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Car</span> is</span><br><span class="line"><span class="comment">// 一辆汽车可能配备有 GPS 设备、行车电脑和几个座位。不同型号的汽车运动型轿车、SUV和敞篷车）可能会安装或启用不同的功能</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Manual</span> is</span><br><span class="line">  <span class="comment">// 用户使用手册应该根据汽车配置进行编制，并介绍汽车的所有功能</span></span><br><span class="line">  </span><br><span class="line"><span class="comment">// 生成器接口声明了创建产品对象不同部件的方法</span></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Builder</span> is</span><br><span class="line">	method <span class="title function_">reset</span><span class="params">()</span></span><br><span class="line">  method <span class="title function_">setSeats</span><span class="params">(...)</span></span><br><span class="line">  method <span class="title function_">setEngine</span><span class="params">(...)</span></span><br><span class="line">  method <span class="title function_">setTripComputer</span><span class="params">(...)</span></span><br><span class="line">  method <span class="title function_">setGPS</span><span class="params">(...)</span></span><br><span class="line"><span class="comment">// 具体生成器类将遵循生成器接口并提供生成步骤的具体实现。你的程序中可能会有多个以不同方式实现的生成器变体</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CarBuilder</span> <span class="keyword">implements</span> <span class="title class_">Builder</span> is</span><br><span class="line">  <span class="keyword">private</span> field car:Car</span><br><span class="line">  <span class="comment">// 一个新的生成器实例必须包含一个在后续组装过程中使用的空对象</span></span><br><span class="line">  constructor <span class="title function_">CarBuilder</span><span class="params">()</span> is</span><br><span class="line">  	<span class="built_in">this</span>.reset()</span><br><span class="line">    </span><br><span class="line">  <span class="comment">// reset（重置）方法可清除正在生成的对象。</span></span><br><span class="line">  method <span class="title function_">reset</span><span class="params">()</span> is</span><br><span class="line">    <span class="built_in">this</span>.car = <span class="keyword">new</span> <span class="title class_">Car</span>()</span><br><span class="line">    </span><br><span class="line">  <span class="comment">// 所有生成步骤都会与同一个产品实例进行交互。</span></span><br><span class="line">  method <span class="title function_">setSeats</span><span class="params">(...)</span> is</span><br><span class="line">    <span class="comment">// 设置汽车座位的数量</span></span><br><span class="line">  </span><br><span class="line">  method <span class="title function_">setEngine</span><span class="params">(...)</span> is</span><br><span class="line">    <span class="comment">// 安装指定的引擎</span></span><br><span class="line">  </span><br><span class="line">  method <span class="title function_">setTripComputer</span><span class="params">(...)</span> is</span><br><span class="line">    <span class="comment">// 安装行车电脑</span></span><br><span class="line">    </span><br><span class="line">  method <span class="title function_">setGPS</span><span class="params">(...)</span> is</span><br><span class="line">    <span class="comment">// 安装GPS</span></span><br><span class="line">    </span><br><span class="line">  <span class="comment">// 具体生成器需要自行提供获取结果的方法。这是因为不同类型的生成器可能会创建不遵循相同接口的、完全不同的产品。所以也就无法在生成器接口中声明这些方法（至少在静态类型的编程语言中是这样的）。</span></span><br><span class="line">  <span class="comment">// 通常在生成器实例将结果返回给客户端后，它们应该做好生成另一个产品的准备。因此生成器实例通常会在 `getProduct（获取产品）`方法主体末尾调用重置方法。但是该行为并不是必需的，你也可让生成器等待客户端明确调用重置方法后再去处理之前的结果。</span></span><br><span class="line">  method <span class="title function_">getProduct</span><span class="params">()</span>:Car <span class="type">is</span></span><br><span class="line">    <span class="variable">product</span> <span class="operator">=</span> <span class="built_in">this</span>.car</span><br><span class="line">    <span class="built_in">this</span>.reset()</span><br><span class="line">    <span class="keyword">return</span> product</span><br><span class="line"></span><br><span class="line"><span class="comment">// 生成器与其他创建型模式的不同之处在于：它让你能创建不遵循相同接口的产品。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CarManualBuilder</span> <span class="keyword">implements</span> <span class="title class_">Builder</span> is</span><br><span class="line">  <span class="keyword">private</span> field manual:Manual</span><br><span class="line">  constructor <span class="title function_">CarManualBuilder</span><span class="params">()</span> is</span><br><span class="line">    <span class="built_in">this</span>.reset()</span><br><span class="line">  </span><br><span class="line">  method <span class="title function_">reset</span><span class="params">()</span> is</span><br><span class="line">    <span class="built_in">this</span>.manual = <span class="keyword">new</span> <span class="title class_">Manual</span>()</span><br><span class="line">    </span><br><span class="line">  method <span class="title function_">setSeats</span><span class="params">(...)</span> is</span><br><span class="line">    <span class="comment">// 添加关于汽车座椅功能的文档。</span></span><br><span class="line">    </span><br><span class="line">  method <span class="title function_">setEngine</span><span class="params">(...)</span> is</span><br><span class="line">		<span class="comment">// 添加关于引擎的介绍。</span></span><br><span class="line">    </span><br><span class="line">  method <span class="title function_">setTripComputer</span><span class="params">(...)</span> is</span><br><span class="line">		<span class="comment">// 添加关于行车电脑的介绍。</span></span><br><span class="line"></span><br><span class="line">	method <span class="title function_">setGPS</span><span class="params">(...)</span> is</span><br><span class="line">		<span class="comment">// 添加关于 GPS 的介绍。</span></span><br><span class="line"></span><br><span class="line">	method <span class="title function_">getProduct</span><span class="params">()</span>:Manual is</span><br><span class="line">		<span class="comment">// 返回使用手册并重置生成器。</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">// 主管只负责按照特定顺序执行生成步骤。其在根据特定步骤或配置来生成产品时会很有帮助。由于客户端可以直接控制生成器，所以严格意义上来说，主管类并不是必需的。</span></span><br><span class="line">    </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Director</span> is</span><br><span class="line">  <span class="keyword">private</span> field builder:Builder</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 主管可同由客户端代码传递给自身的任何生成器实例进行交互。客户端可通过这种方式改变最新组装完毕的产品的最终类型。</span></span><br><span class="line">  method <span class="title function_">setBuilder</span><span class="params">(builder:Builder)</span></span><br><span class="line">    <span class="built_in">this</span>.builder = builder</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 主管可使用同样的生成步骤创建多个产品变体</span></span><br><span class="line">  method <span class="title function_">constructSportsCar</span><span class="params">(builder: Builder)</span> is</span><br><span class="line">    builder.reset()</span><br><span class="line">    builder.setSeats(<span class="number">2</span>)</span><br><span class="line">		builder.setEngine(<span class="keyword">new</span> <span class="title class_">SportEngine</span>())</span><br><span class="line">		builder.setTripComputer(<span class="literal">true</span>)</span><br><span class="line">    builder.setGPS(<span class="literal">true</span>)</span><br><span class="line">  </span><br><span class="line">  method <span class="title function_">constructSUV</span><span class="params">(builder: Builder)</span> is</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">// 客户端代码会创建生成器对象并将其传递给主管，然后执行构造过程。最终结果将需要从生成器对象中获取。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Application</span> is</span><br><span class="line">  method <span class="title function_">makeCar</span><span class="params">()</span> <span class="type">is</span></span><br><span class="line">  	<span class="variable">director</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Director</span>()</span><br><span class="line">  	<span class="type">CarBuilder</span> <span class="variable">builder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CarBuilder</span>()</span><br><span class="line">  	director.constructSportsCar(builder)</span><br><span class="line">  	<span class="type">Car</span> <span class="variable">car</span> <span class="operator">=</span> builder.getProduct()</span><br><span class="line">  	<span class="type">CarManualBuilder</span> <span class="variable">builder</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">CarManualBuilder</span>()</span><br><span class="line">  	director.constructSportsCar(builder)</span><br><span class="line">  	<span class="comment">// 最终产品通常需要从生成器对象中获取，因为主管不知晓具体生成器和产品的存在，也不会对其产生依赖。</span></span><br><span class="line">  	<span class="type">Manual</span> <span class="variable">manual</span> <span class="operator">=</span> builder.getProduct()</span><br></pre></td></tr></table></figure>
+<h3 id="应用场景-2"><a href="#应用场景-2" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
+<li><p><strong>使用生成器模式可避免重叠构造函数</strong></p>
+<p>  假设你的构造函数中有十个可选参数，那么调用该函数会非常不方便；因此，你需要重载这个构造函数，新建几个只有较少参数的简化版。 但这些构造函数仍需调用主构造函数，传递一些默认数值来替代省略掉的参数。</p>
+<p>  生成器模式让你可以分步骤生成对象，而且允许你仅使用必须的步骤。应用该模式后，你再也不需要将几十个参数塞进构造函数里了。</p>
+</li>
+<li><p><strong>使用代码创建不同形式的产品（例如石头或木头房</strong><br>  <strong>屋）时，可使用生成器模式</strong></p>
+<p>  如果你需要创建的各种形式的产品，它们的制造过程相似且仅有细节上的差异，此时可使用生成器模式</p>
+<p>  基本生成器接口中定义了所有可能的制造步骤，具体生成器将实现这些步骤来制造特定形式的产品。同时，主管类将负责管理制造步骤的顺序。</p>
+</li>
+<li><p><strong>使用生成器构造组合树或其他复杂对象</strong></p>
+<p>  生成器模式让你能分步骤构造产品。你可以延迟执行某些步骤而不会影响最终产品。你甚至可以递归调用这些步骤，这在创建对象树时非常方便。</p>
+<p>  生成器在执行制造步骤时，不能对外发布未完成的产品。这可以避免客户端代码获取到不完整结果对象的情况。</p>
+</li>
+</ul>
+<h3 id="实现方式-2"><a href="#实现方式-2" class="headerlink" title="实现方式"></a>实现方式</h3><ol>
+<li><p>清晰地定义通用步骤， 确保它们可以制造所有形式的产品。否则你将无法进一步实施该模式。</p>
+</li>
+<li><p>在基本生成器接口中声明这些步骤。</p>
+</li>
+<li><p>为每个形式的产品创建具体生成器类，并实现其构造步骤。</p>
+<p> 不要忘记实现获取构造结果对象的方法。你不能在生成器接口中声明该方法，因为不同生成器构造的产品可能没有公共接口，因此你就不知道该方法返回的对象类型。但是，如果所有产品都位于单一类层次中，你就可以安全地在基本接口中添加获取生成对象的方法。  </p>
+</li>
+<li><p>考虑创建主管类。它可以使用同一生成器对象来封装多种构造产品的方式。 </p>
+</li>
+<li><p>客户端代码会同时创建生成器和主管对象。构造开始前，客户端必须将生成器对象传递给主管对象。通常情况下，客户端只需调用主管类构造函数一次即可。主管类使用生成器对象完成后续所有制造任务。还有另一种方式，那就是客户端可以将生成器对象直接传递给主管类的制造方法。</p>
+</li>
+<li><p>只有在所有产品都遵循相同接口的情况下，构造结果可以直接通过主管类获取。否则，客户端应当通过生成器获取构造结果。</p>
+</li>
+</ol>
+<h3 id="优缺点-2"><a href="#优缺点-2" class="headerlink" title="优缺点"></a>优缺点</h3><ul>
+<li>你可以分步创建对象，暂缓创建步骤或递归运行创建步骤。</li>
+<li>生成不同形式的产品时，你可以复用相同的制造代码。</li>
+<li>单一职责原则。你可以将复杂构造代码从产品的业务逻辑中分离出来。</li>
+</ul>
+<hr>
+<ul>
+<li>由于该模式需要新增多个类，因此代码整体复杂程度会有所增加。</li>
+</ul>
+<h3 id="与其他模式的关系-2"><a href="#与其他模式的关系-2" class="headerlink" title="与其他模式的关系"></a>与其他模式的关系</h3><ul>
+<li>在许多设计工作的初期都会使用<a href="# 工厂方法">工厂方法</a>（较为简单，而且<br>  可以更方便地通过子类进行定制），随后演化为使用<a href="# 抽象工厂">抽象工<br>  厂</a>、<a href="# 原型">原型</a>或<a href="# 生成器">生成器</a>（更灵活但更加复杂）。</li>
+<li>生成器重点关注如何分步生成复杂对象。抽象工厂专门用于生产一系列相关对象。抽象工厂会马上返回产品，生成器则允许你在获取产品前执行一些额外构造步骤。</li>
+<li>你可以在创建复杂<a href="# 组合">组合树</a>时使用生成器，因为这可使其构造步骤以递归的方式运行。</li>
+<li>你可以结合使用生成器和<a href="# 桥接">桥接</a>模式： 主管类负责抽象工作，各种不同的生成器负责实现工作。  </li>
+<li>抽象工厂、生成器和原型都可以用<a href="# 单例">单例</a>来实现。</li>
+</ul>
+<h2 id="原型"><a href="#原型" class="headerlink" title="原型"></a>原型</h2><blockquote>
+<p>克隆、Clone、Prototype  </p>
+</blockquote>
+<p>原型是一种创建型设计模式，使你能够复制已有对象，而又无需使代码依赖它们所属的类</p>
+<h3 id="问题背景-3"><a href="#问题背景-3" class="headerlink" title="问题背景"></a>问题背景</h3><p>如果你有一个对象，并希望生成与其完全相同的一个复制品，你该如何实现呢？首先，你必须新建一个属于相同类的对象。然后，你必须遍历原始对象的所有成员变量，并将成员变量值复制到新对象中。但是并非所有对象都能通过这种方式进行复制，因为有些对象可能拥有私有成员变量，它们在对象本身以外是不可见的。</p>
+<p>此外，直接复制还有另外一个问题。因为你必须知道对象所属的类才能创建复制品，所以代码必须依赖该类。即使你可以接受额外的依赖性，那还有另外一个问题：有时你只知道对象所实现的接口，而不知道其所属的具体类，比如<strong>可向方法的某个参数传入实现了某个接口的任何对象（你只知道接口而不知道类）</strong>。  </p>
+<h3 id="解决方案-3"><a href="#解决方案-3" class="headerlink" title="解决方案"></a>解决方案</h3><p>原型模式将克隆过程委派给被克隆的实际对象。模式为所有支持克隆的对象声明了一个通用接口，该接口让你能够克隆对象，同时又无需将代码和对象所属类耦合。通常情况下，这样的接口中仅包含一个 克隆 方法。</p>
+<p>所有的类对 克隆 方法的实现都非常相似。该方法会创建一个当前类的对象，然后将原始对象所有的成员变量值复制到新建的类中。你甚至可以复制私有成员变量，因为绝大部分编程语言都允许对象访问其同类对象的私有成员变量。  </p>
+<p>支持克隆的对象即为原型。当你的对象有几十个成员变量和几百种类型时，对其进行克隆甚至可以代替子类的构造。  </p>
+<p>其运作方式如下：创建一系列不同类型的对象并不同的方式对其进行配置。如果所需对象与预先配置的对象相同，那么你只需克隆原型即可，无需新建一个对象。  </p>
+<h3 id="结构-3"><a href="#结构-3" class="headerlink" title="结构"></a>结构</h3><p><strong>基本实现</strong></p>
+<p><img src="/posts/16062/image-20240311192308784.png" alt="image-20240311192308784" style="zoom:50%;"></p>
+<ol>
+<li><strong>原型</strong>（Prototype）接口将对克隆方法进行声明。在绝大多数情况下，其中只会有一个名为<code>clone</code>的方法</li>
+<li><strong>具体原型</strong>（Concrete Prototype）类将实现克隆方法。除了将原始对象的数据复制到克隆体中之外，该方法有时还需处理克隆过程中的极端情况，例如克隆关联对象和梳理递归依赖等等。  </li>
+<li><strong>客户端</strong>（Client）可以复制实现了原型接口的任何对象。  </li>
+</ol>
+<p><strong>原型注册表实现</strong></p>
+<p><img src="/posts/16062/image-20240311193232360.png" alt="image-20240311193232360" style="zoom:50%;"></p>
+<ol>
+<li><strong>原型注册表</strong>（Prototype Registry）提供了一种访问常用原型的简单方法，其中存储了一系列可供随时复制的预生成对象。最简单的注册表原型是一个 名称 → 原型 的哈希表。 但如果需要使用名称以外的条件进行搜索，你可以创建更加完善的注册表版本。  </li>
+</ol>
+<h3 id="伪代码-3"><a href="#伪代码-3" class="headerlink" title="伪代码"></a>伪代码</h3><p>原型模式能让你生成完全相同的几何对象副本，同时无需代码与对象所属类耦合</p>
+<p><img src="/posts/16062/image-20240311193454637.png" alt="image-20240311193454637" style="zoom:50%;"></p>
+<p>所有形状类都遵循同一个提供克隆方法的接口。在复制自身成员变量值到结果对象前，子类可调用其父类的克隆方法。  </p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 基础原型。</span></span><br><span class="line"><span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Shape</span> is</span><br><span class="line">	field X: <span class="type">int</span></span><br><span class="line">	field Y: <span class="type">int</span></span><br><span class="line">	field color: string</span><br><span class="line"></span><br><span class="line"><span class="comment">// 常规构造函数。</span></span><br><span class="line">constructor <span class="title function_">Shape</span><span class="params">()</span> is</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">	</span><br><span class="line"><span class="comment">// 原型构造函数。使用已有对象的数值来初始化一个新对象。</span></span><br><span class="line">constructor <span class="title function_">Shape</span><span class="params">(source: Shape)</span> is</span><br><span class="line">  <span class="title function_">this</span><span class="params">()</span></span><br><span class="line">  <span class="built_in">this</span>.X = source.X</span><br><span class="line">  <span class="built_in">this</span>.Y = source.Y</span><br><span class="line">  <span class="built_in">this</span>.color = source.color</span><br><span class="line">  </span><br><span class="line"><span class="comment">// clone（克隆）操作会返回一个形状子类。</span></span><br><span class="line"><span class="keyword">abstract</span> method <span class="title function_">clone</span><span class="params">()</span>:Shape</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 具体原型。克隆方法会创建一个新对象并将其传递给构造函数。直到构造函数运</span></span><br><span class="line">  <span class="comment">// 行完成前，它都拥有指向新克隆对象的引用。因此，任何人都无法访问未完全生</span></span><br><span class="line">  <span class="comment">// 成的克隆对象。这可以保持克隆结果的一致。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Rectangle</span> <span class="keyword">extends</span> <span class="title class_">Shape</span> is</span><br><span class="line">  field width: <span class="type">int</span></span><br><span class="line">  field height: <span class="type">int</span></span><br><span class="line">  	</span><br><span class="line">  constructor <span class="title function_">Rectangle</span><span class="params">(source: Rectangle)</span> is</span><br><span class="line">    <span class="comment">// 需要调用父构造函数来复制父类中定义的私有成员变量。</span></span><br><span class="line">    <span class="built_in">super</span>(source)</span><br><span class="line">    <span class="built_in">this</span>.width = source.width</span><br><span class="line">    <span class="built_in">this</span>.height = source.height</span><br><span class="line">    </span><br><span class="line">  method <span class="title function_">clone</span><span class="params">()</span>:Shape is</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Rectangle</span>(<span class="built_in">this</span>)</span><br><span class="line">    </span><br><span class="line">  </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Circle</span> <span class="keyword">extends</span> <span class="title class_">Shape</span> is</span><br><span class="line">	field radius: <span class="type">int</span></span><br><span class="line">	</span><br><span class="line">	constructor <span class="title function_">Circle</span><span class="params">(source: Circle)</span> is</span><br><span class="line">		<span class="title function_">super</span><span class="params">(source)</span></span><br><span class="line">		<span class="built_in">this</span>.radius = source.radius</span><br><span class="line">	</span><br><span class="line">	method <span class="title function_">clone</span><span class="params">()</span>:Shape is</span><br><span class="line">		<span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Circle</span>(<span class="built_in">this</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 客户端代码中的某个位置。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Application</span> is</span><br><span class="line">	field shapes: array of Shape</span><br><span class="line">	constructor <span class="title function_">Application</span><span class="params">()</span> is</span><br><span class="line">		<span class="type">Circle</span> <span class="variable">circle</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Circle</span>()</span><br><span class="line">		circle.X = <span class="number">10</span></span><br><span class="line">		circle.Y = <span class="number">10</span></span><br><span class="line">		circle.radius = <span class="number">20</span></span><br><span class="line">		shapes.add(circle)</span><br><span class="line">		<span class="type">Circle</span> <span class="variable">anotherCircle</span> <span class="operator">=</span> circle.clone()</span><br><span class="line">		shapes.add(anotherCircle)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 变量 `anotherCircle（另一个圆）`与 `circle（圆）`对象的内容完全一样。</span></span><br><span class="line">    <span class="type">Rectangle</span> <span class="variable">rectangle</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Rectangle</span>()</span><br><span class="line">    rectangle.width = <span class="number">10</span></span><br><span class="line">    rectangle.height = <span class="number">20</span></span><br><span class="line">    shapes.add(rectangle)</span><br><span class="line">    </span><br><span class="line">method <span class="title function_">businessLogic</span><span class="params">()</span> is</span><br><span class="line">	<span class="comment">// 原型是很强大的东西，因为它能在不知晓对象类型的情况下生成一个与其完全相同的复制品。</span></span><br><span class="line">	<span class="type">Array</span> <span class="variable">shapesCopy</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Array</span> of Shapes.</span><br><span class="line">  <span class="comment">// 例如，我们不知晓形状数组中元素的具体类型，只知道它们都是形状。但在多态机制的帮助下，当我们在某个形状上调用 `clone（克隆）`方法时，程序会检查其所属的类并调用其中所定义的克隆方法。这样，我们将获得一个正确的复制品，而不是一组简单的形状对象。</span></span><br><span class="line">  foreach (s in shapes) <span class="keyword">do</span></span><br><span class="line">  	shapesCopy.add(s.clone())</span><br><span class="line">  <span class="comment">// `shapesCopy（形状副本）`数组中包含 `shape（形状）`数组所有子元素的复制品。</span></span><br></pre></td></tr></table></figure>
+<h3 id="应用场景-3"><a href="#应用场景-3" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
+<li><p>如果你需要复制一些对象，同时又希望代码独立于这些对象所属的具体类，可以使用原型模式</p>
+<p>  这一点考量通常出现在代码需要处理第三方代码通过接口传递过来的对象时。即使不考虑代码耦合的情况，你的代码也不能依赖这些对象所属的具体类，因为你不知道它们的具体信息</p>
+<p>  原型模式为客户端代码提供一个通用接口，客户端代码可通过这一接口与所有实现了克隆的对象进行交互，它也使得客户端代码与其所克隆的对象具体类独立开来。    </p>
+</li>
+<li><p>如果子类的区别仅在于其对象的初始化方式，那么你可以使用该模式来减少子类的数量。别人创建这些子类的目的可能是为了创建特定类型的对象</p>
+<p>  在原型模式中，你可以使用一系列预生成的、各种类型的对象作为原型</p>
+<p>  客户端不必根据需求对子类进行实例化，只需找到合适的原型并对其进行克隆即可</p>
+</li>
+</ul>
+<h3 id="实现方式-3"><a href="#实现方式-3" class="headerlink" title="实现方式"></a>实现方式</h3><ol>
+<li><p>创建原型接口，并在其中声明 克隆 方法。如果你已有类层次结构，则只需在其所有类中添加该方法即可</p>
+</li>
+<li><p>原型类必须另行定义一个以该类对象为参数的构造函数。构造函数必须复制参数对象中的所有成员变量值到新建实体中。如果你需要修改子类，则必须调用父类构造函数，让父类复制其私有成员变量值。</p>
+<p> 如果编程语言不支持方法重载，那么你可能需要定义一个特殊方法来复制对象数据。在构造函数中进行此类处理比较方便，因为它在调用 <code>new</code> 运算符后会马上返回结果对象  </p>
+</li>
+<li><p>克隆方法通常只有一行代码：使用 <code>new</code> 运算符调用原型版本的构造函数。注意，每个类都必须显式重写克隆方法并使用自身类名调用 <code>new</code> 运算符。否则，克隆方法可能会生成父类的对象</p>
+</li>
+<li><p>你还可以创建一个中心化原型注册表，用于存储常用原型</p>
+<p> 你可以新建一个工厂类来实现注册表，或者在原型基类中添加一个获取原型的静态方法。该方法必须能够根据客户端代码设定的条件进行搜索。搜索条件可以是简单的字符串，或者是一组复杂的搜索参数。找到合适的原型后，注册表应对原型进行克隆，并将复制生成的对象返回给客户端。</p>
+<p> 最后还要将对子类构造函数的直接调用替换为对原型注册表工厂方法的调用。</p>
+</li>
+</ol>
+<h3 id="优缺点-3"><a href="#优缺点-3" class="headerlink" title="优缺点"></a>优缺点</h3><ul>
+<li>你可以克隆对象，而无需与它们所属的具体类相耦合</li>
+<li>你可以克隆预生成原型，避免反复运行初始化代码</li>
+<li>你可以更方便地生成复杂对象</li>
+<li>你可以用继承以外的方式来处理复杂对象的不同配置</li>
+</ul>
+<hr>
+<ul>
+<li>克隆包含循环引用的复杂对象可能会非常麻烦</li>
+</ul>
+<h3 id="与其他模式的关系-3"><a href="#与其他模式的关系-3" class="headerlink" title="与其他模式的关系"></a>与其他模式的关系</h3><ul>
+<li>在许多设计工作的初期都会使用<a href="# 工厂方法">工厂方法</a>（较为简单，而且可以更方便地通过子类进行定制），随后演化为使用<a href="￥ 抽象工厂">抽象工厂</a>、<a href="# 原型">原型</a>或<a href="# 生成器">生成器</a>（更灵活但更加复杂）。</li>
+<li>抽象工厂模式通常基于一组工厂方法，但你也可以使用原型模式来生成这些类的方法。</li>
+<li>原型可用于保存命令的历史记录。</li>
+<li>大量使用组合和装饰的设计通常可从对于原型的使用中获益。</li>
+<li>你可以通过该模式来复制复杂结构，而非从零开始重新构造。</li>
+<li>原型并不基于继承，因此没有继承的缺点。另一方面，原型需要对被复制对象进行复杂的初始化。工厂方法基于继承，但是它不需要初始化步骤。</li>
+<li>有时候原型可以作为<a href="# 备忘录">备忘录</a>的一个简化版本，其条件是你需要在历史记录中存储的对象的状态比较简单，不需要链接其他外部资源，或者链接可以方便地重建。抽象工厂、生成器和原型都可以用单例来实现。</li>
+</ul>
+<h2 id="单例"><a href="#单例" class="headerlink" title="单例"></a>单例</h2><blockquote>
+<p>单件模式、Singleton</p>
+</blockquote>
+<p>单例是一种创建型设计模式，让你能够保证一个类只有一个实例，并提供一个访问该实例的全局节点。</p>
+<h3 id="问题背景-4"><a href="#问题背景-4" class="headerlink" title="问题背景"></a>问题背景</h3><ol>
+<li><p><strong>保证一个类只有一个实例。</strong>为什么会有人想要控制一个类所<br> 拥有的实例数量？最常见的原因是控制某些共享资源（例如<br> 数据库或文件）的访问权限</p>
+</li>
+<li><p><strong>为该实例提供一个全局访问节点。</strong>还记得那些存储重要对象的全局变量吗？它们在使用上十分方便，但同时也非常不安全，因为任何代码都有可能覆盖掉那些变量的内容，从而引发程序崩溃</p>
+<p> 和全局变量一样，单例模式也允许在程序的任何地方访问特定对象。但是它可以保护该实例不被其他代码覆盖。</p>
+</li>
+</ol>
+<h3 id="解决方案-4"><a href="#解决方案-4" class="headerlink" title="解决方案"></a>解决方案</h3><p>所有单例的实现都包含以下两个相同的步骤：  </p>
+<ol>
+<li>将默认构造函数设为私有， 防止其他对象使用单例类的 <code>new</code> 运算符。</li>
+<li>新建一个静态构建方法作为构造函数。该函数会调用私有构造函数来创建对象，并将其保存在一个静态成员变量中。此后所有对于该函数的调用都将返回这一缓存对象。</li>
+</ol>
+<h3 id="结构-4"><a href="#结构-4" class="headerlink" title="结构"></a>结构</h3><p><img src="/posts/16062/image-20240312180931884.png" alt="image-20240312180931884"></p>
+<ol>
+<li><p><strong>单例</strong>（Singleton）类声明了一个名为 <code>getInstance</code> 获取实<br> 例 的静态方法来返回其所属类的一个相同实例。</p>
+<p> 单例的构造函数必须对客户端（Client） 代码隐藏。 调用<br> 获取实例 方法必须是获取单例对象的唯一方式</p>
+</li>
+</ol>
+<h3 id="伪代码-4"><a href="#伪代码-4" class="headerlink" title="伪代码"></a>伪代码</h3><p>数据库连接类即是一个单例，该类不提供公有构造函数，因此获取该对象的唯一方式是调用 获取实例 方法。该方法将缓存首次生成的对象，并为所有后续调用返回该对象。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 数据库类会对`getInstance（获取实例）`方法进行定义以让客户端在程序各处都能访问相同的数据库连接实例。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Database</span> is</span><br><span class="line">  <span class="comment">// 保存单例实例的成员变量必须被声明为静态类型。</span></span><br><span class="line">  <span class="keyword">private</span> <span class="keyword">static</span> field instance: Database</span><br><span class="line">  <span class="comment">// 单例的构造函数必须永远是私有类型，以防止使用`new`运算符直接调用构造方法。</span></span><br><span class="line">  <span class="keyword">private</span> constructor <span class="title function_">Database</span><span class="params">()</span> is</span><br><span class="line">   <span class="comment">// 部分初始化代码（例如到数据库服务器的实际连接）。</span></span><br><span class="line">   <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">  <span class="comment">// 用于控制对单例实例的访问权限的静态方法。</span></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> method <span class="title function_">getInstance</span><span class="params">()</span> is</span><br><span class="line">  	<span class="title function_">if</span> <span class="params">(Database.instance == <span class="literal">null</span>)</span> then</span><br><span class="line">			<span class="title function_">acquireThreadLock</span><span class="params">()</span> and then</span><br><span class="line"> 				<span class="comment">// 确保在该线程等待解锁时，其他线程没有初始化该实例。</span></span><br><span class="line"> 				<span class="keyword">if</span> (Database.instance == <span class="literal">null</span>) then</span><br><span class="line"> 					Database.instance = <span class="keyword">new</span> <span class="title class_">Database</span>()</span><br><span class="line"> 		<span class="keyword">return</span> Database.instance</span><br><span class="line"></span><br><span class="line">   <span class="comment">// 最后，任何单例都必须定义一些可在其实例上执行的业务逻辑。</span></span><br><span class="line">   <span class="keyword">public</span> method <span class="title function_">query</span><span class="params">(sql)</span> is</span><br><span class="line">   <span class="comment">// 比如应用的所有数据库查询请求都需要通过该方法进行。因此，你可以在这里添加限流或缓冲逻辑。</span></span><br><span class="line">   <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Application</span> is</span><br><span class="line">  method <span class="title function_">main</span><span class="params">()</span> is</span><br><span class="line">    <span class="type">Database</span> <span class="variable">foo</span> <span class="operator">=</span> Database.getInstance()</span><br><span class="line">    foo.query(<span class="string">&quot;SELECT ...&quot;</span>)</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">    <span class="type">Database</span> <span class="variable">bar</span> <span class="operator">=</span> Database.getInstance()</span><br><span class="line">    bar.query(<span class="string">&quot;SELECT ...&quot;</span>)</span><br><span class="line">    <span class="comment">// 变量 `bar` 和 `foo` 中将包含同一个对象。</span></span><br></pre></td></tr></table></figure>
+<h3 id="应用场景-4"><a href="#应用场景-4" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
+<li><p>如果程序中的某个类对于所有客户端只有一个可用的实例，可以使用单例模式。</p>
+<p>  单例模式禁止通过除特殊构建方法以外的任何方式来创建自身类的对象。该方法可以创建一个新对象，但如果该对象已经被创建，则返回已有的对象</p>
+</li>
+<li><p>如果你需要更加严格地控制全局变量，可以使用单例模式</p>
+<p>  单例模式与全局变量不同，它保证类只存在一个实例。除了单例类自己以外，无法通过任何方式替换缓存的实例</p>
+<p>  请注意， 你可以随时调整限制并设定生成单例实例的数量，只需修改 获取实例 方法， 即 <code>getInstance</code> 中的代码即可实现</p>
+</li>
+</ul>
+<h3 id="实现方式-4"><a href="#实现方式-4" class="headerlink" title="实现方式"></a>实现方式</h3><ol>
+<li>在类中添加一个私有静态成员变量用于保存单例实例。</li>
+<li>声明一个公有静态构建方法用于获取单例实例。</li>
+<li>在静态方法中实现”延迟初始化”。该方法会在首次被调用时创建一个新对象，并将其存储在静态成员变量中。此后该方法每次被调用时都返回该实例。</li>
+<li>将类的构造函数设为私有。类的静态方法仍能调用构造函数，但是其他对象不能调用。</li>
+<li>检查客户端代码，将对单例的构造函数的调用替换为对其静态构建方法的调用。</li>
+</ol>
+<h3 id="优缺点-4"><a href="#优缺点-4" class="headerlink" title="优缺点"></a>优缺点</h3><ul>
+<li>你可以保证一个类只有一个实例</li>
+<li>你获得了一个指向该实例的全局访问节点</li>
+<li>仅在首次请求单例对象时对其进行初始化</li>
+</ul>
+<hr>
+<ul>
+<li>违反了单一职责原则。该模式同时解决了两个问题（实例唯一、全局访问）。</li>
+<li>单例模式可能掩盖不良设计，比如程序各组件之间相互了解过多等。</li>
+<li>该模式在多线程环境下需要进行特殊处理，避免多个线程多次创建单例对象。</li>
+<li><strong>单例的客户端代码单元测试可能会比较困难，因为许多测试框架以基于继承的方式创建模拟对象。由于单例类的构造函数是私有的，而且绝大部分语言无法重写静态方法，所以你需要想出仔细考虑模拟单例的方法。要么干脆不编写测试代码，或者不使用单例模式。</strong></li>
+</ul>
+<h3 id="与其他模式的关系-4"><a href="#与其他模式的关系-4" class="headerlink" title="与其他模式的关系"></a>与其他模式的关系</h3><ul>
+<li><a href="# 外观">外观</a>类通常可以转换为<a href="# 单例">单例</a>类，因为在大部分情况下一个外观对象就足够了。</li>
+<li>如果你能将对象的所有共享状态简化为一个<a href="# 享元">享元</a>对象，那么享元就和单例类似了。但这两个模式有两个根本性的不同。<ul>
+<li>只会有一个单例实体，但是享元类可以有多个实体，各实体的内在状态也可以不同。</li>
+<li>单例对象可以是可变的。享元对象是不可变的。</li>
+</ul>
+</li>
+<li><a href="# 抽象工厂">抽象工厂</a>、<a href="# 生成器">生成器</a>和<a href="# 原型">原型</a>都可以用单例来实现。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
+      <tags>
+        <tag>开发进阶知识</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>设计模式-SOLID原则</title>
+    <url>/posts/12321.html</url>
+    <content><![CDATA[<h1 id="SOLID原则"><a href="#SOLID原则" class="headerlink" title="SOLID原则"></a>SOLID原则</h1><p>SOLID能够让软件设计更易于理解、更加灵活和更易于维护，但是盲目遵守这些原则可能会弊大于利，在程序架构中应用这些原则可能会使其变得过于复杂，所以还是需要从实用的角度出发来考量是否需要应用这些原则。</p>
+<h2 id="单一职责原则"><a href="#单一职责原则" class="headerlink" title="单一职责原则"></a>单一职责原则</h2><blockquote>
+<p>Single Responsibility Principle：修改一个类的原因只能有一个  </p>
+</blockquote>
+<p>尽量让每个类只负责软件中的一个功能，并将该功能完全封装（你也可称之为隐藏）在该类中。</p>
+<p>这条原则的主要目的是减少复杂度，应用该原则的主要原因如下：</p>
+<ol>
+<li>当程序规模不断扩大、变更不断增加后，真实问题才会逐渐显现出来。此时，类会变得过于庞大，以至于无法记住其细节。查找代码将变得非常缓慢，修复bug、扩展功能都会很难。</li>
+<li>如果类负责的东西太多，那么当其中任何一件事发生改变时，你都必须对类进行修改。而在进行修改时，你就有可能改动类中自己并不希望改动的部分。</li>
+</ol>
+<p><strong>示例</strong></p>
+<p><img src="/posts/12321/image-20240226184504917.png" alt="image-20240226184504917"></p>
+<p>虽然打印考勤表属于雇员行为，但是雇员不应该负责打印考勤表报告，因为该类的主要功能应该是管理雇员的基本属性，且考勤表的格式可能会改变，这样就需要对类中的代码进行修改。</p>
+<p><img src="/posts/12321/image-20240226184659828.png" alt="image-20240226184659828"></p>
+<p>解决该问题的方法是将该行为移动到一个单独的类中，专门实现接收雇员的方法。</p>
+<h2 id="开闭原则"><a href="#开闭原则" class="headerlink" title="开闭原则"></a>开闭原则</h2><blockquote>
+<p>Open/closed Principle：对于扩展，类应该是“开放”的；对于修改，类则应是“封闭”的</p>
+</blockquote>
+<p>在实现新功能时能保持已有代码不变。开放和封闭定义如下：</p>
+<ul>
+<li>如果你可以对一个类进行扩展，可以创建它的子类并对其做任何事情（如新增方法或成员变量、重写基类行为等），那么它就是开放的  </li>
+<li>有些编程语言允许你通过特殊关键字（例如 final ）来限制对于类的进一步扩展， 这样类就不再是“开放”的了。如果某个类已做好了充分的准备并可供其他类使用的话（即其接口已明确定义且以后不会修改），那么该类就是封闭（你可以称之为完整）的  </li>
+</ul>
+<p>如果一个类已经完成开发、测试和审核工作，而且属于某个框架或者可被其他类的代码直接使用的话，对其代码进行修改就是有风险的。你可以创建一个子类并重写原始类的部分内容以完成不同的行为，而不是直接对原始类的代码进行修改。</p>
+<p>当然，如果该类本身就存在问题，那么只需要进行修复即可，而不是留到子类去修复。</p>
+<p><strong>示例</strong></p>
+<p><img src="/posts/12321/image-20240226190305820.png" alt="image-20240226190305820"></p>
+<p>不同的运输方式计算方式不一样，新增运输方式时，就需要对<code>Order</code>类进行修改，破坏其封闭原则</p>
+<p><img src="/posts/12321/image-20240226190723449.png" alt="image-20240226190723449"></p>
+<p>通过应用策略模式，将运输方法抽取为接口，然后不同的运输方法用实现该接口的不同类实现。这样，添加新的运输方式，只需要实现<code>Shipping</code>接口，完善业务代码即可，而无需修改<code>Order</code>中的<code>getShippingCost</code>方法。</p>
+<p>此外，根据单一职责原则，计算运输时间的方法也可以剥离到更为相关的类中</p>
+<h2 id="里氏替换原则"><a href="#里氏替换原则" class="headerlink" title="里氏替换原则"></a>里氏替换原则</h2><blockquote>
+<p>Liskov Substitution Principle：当你扩展一个类时， 记住你应该要能在不修改客户端代码的情况下将子类的对象作为父类对象进行传递。  </p>
+</blockquote>
+<p>子类必须保持与父类行为的兼容。在重写一个方法时，你要对基类行为进行扩展，而不是将其完全替换。  </p>
+<p>替代原则包含一组对子类（特别是其方法）的形式要求：</p>
+<ol>
+<li><p><strong>子类方法的参数类型必须与其超类的参数类型相匹配或更抽象</strong></p>
+<p> 假设有一个方法<code>feed(Cat c)</code>。</p>
+<p> <strong>满足要求的实现方式</strong>：<code>feed(Animal c)</code>，如果现在你将一个子类对象而非超类对象传递给客户端代码，程序仍将正常工作。该方法可用于给任何动物喂食，因此它仍然可以用于给传递给客户端的任何“猫”喂食。</p>
+<p> <strong>不满足要求的实现方式</strong>：<code>feed(BengalCat c)</code>，即创建了另一个子类且限制喂食方法仅接 受 “孟 加 拉 猫 （<code>BengalCat</code>， 一 个 ‘猫’ 的 子 类）。此时，如果用它来替代链接在某个对象中的原始类，客户端中会发生什么呢？由于该方法只能对特殊种类的猫进行喂食，因此无法为传递给客户端的普通猫提供服务，从而将破坏所有相关的功能。</p>
+</li>
+<li><p><strong>子类方法的返回值类型必须与超类方法的返回值类型或是其子类别相匹配</strong></p>
+<p> 假如你的一个类中有一个方法<code>buyCat(): Cat</code>。 客户端代码执行该方法后的预期返回结果是任意类型的“猫”。</p>
+<p> <strong>满足要求的实现方式</strong>： <code>buyCat(): BengalCat</code>。客户端将获得一只“孟加拉猫”，自然它也是一只“猫”，因此一切正常。</p>
+<p> <strong>不满足要求的实现方式</strong>：<code>buyCat(): Animal</code>。客户端代码将会出错，因为它获得的是自己未知的动物种类（短吻鳄？熊？），不适用于为一只“猫”而设计的结构。</p>
+</li>
+<li><p><strong>子类中的方法不应抛出基础方法预期之外的异常类型</strong></p>
+<p> 异常类型必须与基础方法能抛出的异常或是其子类别相匹配。这是因为，客户端的<code>try-catch</code>代码块针对的是基础方法可能抛出的异常类型。因此，预期之外的异常可能会穿透客户端的防御代码，从而使整个应用崩溃。  </p>
+<blockquote>
+<p>实际上，上述规则已经内置于大部分的编程语言中</p>
+</blockquote>
+</li>
+<li><p><strong>子类不应该加强其前置条件</strong></p>
+<p> 例如，基类的方法有一个 int类型的参数。如果子类重写该方法时，要求传递给该方法的参数值必须为正数（如果该值为负则抛出异常），这就是加强了前置条件。客户端代码之前将负数传递给该方法时程序能够正常运行，但现在使用子类的对象时会使程序出错。</p>
+</li>
+<li><p><strong>子类不应该削弱其后置条件</strong></p>
+<p> 假如你的某个类中有个方法需要使用数据库，该方法应该在接收到返回值后关闭所有活跃的数据库连接。</p>
+<p> 你创建了一个子类并对其进行了修改，使得数据库保持连接以便重用。但客户端可能对你的意图一无所知。由于它认为该方法会关闭所有的连接，因此可能会在调用该方法后就马上关闭程序，使得无用的数据库连接对系统造成“污染”  。</p>
+</li>
+<li><p><strong>超类的不变量必须保留</strong></p>
+<p> 因此，扩展一个类的最安全做法是引入新的成员变量和方法，而不要去招惹超类中已有的成员。</p>
+</li>
+<li><p><strong>子类不能修改超类中私有成员变量的值</strong></p>
+<p> 因为包括java在内的编程语言，可以通过反射机制实现上述操作。</p>
+</li>
+</ol>
+<p><strong>示例</strong></p>
+<p><img src="/posts/12321/image-20240226192828494.png" alt="image-20240226192828494"></p>
+<p>只读文件<code>ReadOnlyDocuments</code>子类中的<code>save</code>保存方法会在被调用时抛出一个异常。基础方法则没有这个限制。这意味着如果我们没有在保存前检查文档类型，客户端代码将会出错。  </p>
+<p>代码也将违反开闭原则，因为客户端代码将依赖于具体的文档类。如果你引入了新的文档子类，则需要修改客户端代码才能对其进行支持。</p>
+<p><img src="/posts/12321/image-20240226193046853.png" alt="image-20240226193046853"></p>
+<p><code>ReadOnlyDocument→Document</code>：一个子类必须扩展其超类的行为，因此只读文档变成了层次结构中的基类。可写文件现在变成了子类，对基类进行扩展并添加了保存行为。  </p>
+<h2 id="接口隔离原则"><a href="#接口隔离原则" class="headerlink" title="接口隔离原则"></a>接口隔离原则</h2><blockquote>
+<p>Interface Segregation Principle：客户端不应被强迫依赖于其不使用的方法</p>
+</blockquote>
+<p>尽量缩小接口的范围，使得客户端的类不必实现其不需要的行为。根据接口隔离原则，你必须将“臃肿”的方法拆分为多个颗粒度更小的具体方法。客户端必须仅实现其实际需要的方法。否则，对于“臃肿”接口的修改可能会导致程序出错，即使客户端根本没有使用修改后的方法  </p>
+<p><strong>示例</strong></p>
+<p>假如你创建了一个程序库，它能让程序方便地与多种云计算供应商进行整合。尽管最初版本仅支持阿里云服务，但它也覆盖了一套完整的云服务和功能。  </p>
+<p>假设所有云服务供应商都与阿里云一样提供相同种类的功能。但当你着手为其他供应商提供支持时，程序库中绝大部分的接口会显得过于宽泛。其他云服务供应商没有提供部分方法所描述的功能。  </p>
+<p><img src="/posts/12321/image-20240226193535876.png" alt="image-20240226193535876"></p>
+<p>尽管你仍然可以去实现这些方法并放入一些桩代码，但这绝不是优良的解决方案。更好的方法是将接口拆分为多个部分。能够实现原始接口的类现在只需改为实现多个精细的接口即可。其他类则可仅实现对自己有意义的接口。</p>
+<p><img src="/posts/12321/image-20240226193624769.png" alt="image-20240226193624769"></p>
+<p>但是，创建的接口越多，代码就越复杂，因此要保持平衡。  </p>
+<h2 id="依赖倒置原则"><a href="#依赖倒置原则" class="headerlink" title="依赖倒置原则"></a>依赖倒置原则</h2><blockquote>
+<p>Dependency Inversion Principle：高层次的类不应该依赖于低层次的类。两者都应该依赖于抽象接口。抽象接口不应依赖于具体实现。具体实现应该依赖于抽象接口。</p>
+</blockquote>
+<p>不同层次的类：</p>
+<ul>
+<li>低层次的类实现基础操作（例如磁盘操作、传输网络数据和连接数据库等）</li>
+<li>高层次类包含复杂业务逻辑以指导低层次类执行特定操作</li>
+</ul>
+<p>这是非常容易违反的原则：由于低层次的东西还没有实现或不确定，你甚至无法确定高层次类能实现哪些功能，所以有时我们会先设计低层次的类， 然后才会开发高层次的类。如果采用这种方式，业务逻辑类可能会更依赖于低层原语类。</p>
+<p>依赖倒置原则则建议改变这种依赖方向：</p>
+<ol>
+<li>作为初学者， 你最好使用业务术语来对高层次类依赖的低层次操作接口进行描述。例如， 业务逻辑应该调用名为<code>openReport(file)</code>的方法， 而不是<code>openFile(x)</code>、<code>readBytes(n)</code>和<code>closeFile(x)</code>等一系列方法</li>
+<li>现在你可基于这些接口创建高层次类，而不是基于低层次的具体类</li>
+<li>一旦低层次的类实现了这些接口，它们将依赖于业务逻辑层，从而倒置了原始的依赖关系</li>
+</ol>
+<p><strong>示例</strong></p>
+<p>高层次的预算报告类（<code>BudgetReport</code>）使用低层次的数据库类（<code>MySQLDatabase</code>）来读取和保存其数据。这意味着低层次类中的任何改变（例如当数据库服务器发布新版本时）都可能会影响到高层次的类，但高层次的类不应关注数据存储的细节。</p>
+<p><img src="/posts/12321/image-20240226194200993.png" alt="image-20240226194200993"></p>
+<p>可以创建一个描述读写操作的高层接口，并让报告类使用该接口代替低层次的类。然后你可以修改或扩展低层次的原始类来实现业务逻辑声明的读写接口  </p>
+<p><img src="/posts/12321/image-20240226194246267.png" alt="image-20240226194246267"></p>
+]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
+      <tags>
+        <tag>开发进阶知识</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>设计模式-设计原则</title>
+    <url>/posts/18543.html</url>
+    <content><![CDATA[<h1 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h1><h2 id="代码复用"><a href="#代码复用" class="headerlink" title="代码复用"></a>代码复用</h2><p>无论是开发何种软件产品，成本和时间都是最重要的两个维度。较短的开发时间意味着可比竞争对手更早进入市场；较低的开发成本意味着能够留出更多营销资金，因此能更广泛地覆盖潜在客户。</p>
+<p><strong>代码复用</strong>是减少开发成本时最常用的方式之一。其意图非常明显：与其反复从头开发，不如在新对象中重用已有代码。但实际上要让已有代码在全新的上下文中工作，通常还是需要付出额外努力的。<strong>组件间紧密的耦合</strong>、<strong>对具体类而非接口的依赖</strong>和<strong>硬编码的行为</strong>都会降低代码的灵活性，使得复用这些代码变得更加困难。<strong>使用设计模式是增加软件组件灵活性并使其易于复用的方式之一</strong>。但是有时，这也会让组件变得更加复杂。</p>
+<p>复用可以认为有三个层次，而设计模式通常扮演中间层：</p>
+<ol>
+<li><p>复用的最底层是类：类库、容器、迭代器等</p>
+</li>
+<li><p>复用的最高层是框架：能帮助你精简自己的设计，可以用于明确解决问题所需的抽象概念，然后用类来表示这些概念并定义其关系。框架通常比单个类的颗粒度要大。 你可以通过在某处构建子类来与框架建立联系。 这些子类信奉“别给我们打电话，我们会给你打电话的。”   框架让你可以自定义行为， 并会在需要完成工作时告知你。 这和 JUnit 一样，对吧？当它希望执行测试时就会告诉你，但其他的一切都仅会在框架中发生。  </p>
+<p> <code>JUnit</code>是一个小型框架， 也是框架的“Hello, world”， 其中定义了<code>Test</code> 、<code>TestCase</code> 和<code>TestSuite</code>这几个类及其关系。  </p>
+</li>
+<li><p>复用的中间层次就是设计模式。设计模式比框架更小且更抽象。 它们实际上是对一组类的关系及其互动方式的描述。当你从类转向模式，并最终到达框架的过程中，复用程度会不断增加。</p>
+<p> 中间层次的优点在于模式提供的复用方式要比框架的风险小。创建框架是一项投入重大且风险很高的工作。 模式则让你能独立于具体代码来复用设计思想和理念。  </p>
+</li>
+</ol>
+<h2 id="扩展性"><a href="#扩展性" class="headerlink" title="扩展性"></a>扩展性</h2><p>程序经常变化：平台迁移、UI变化、功能拓展等，优秀的设计模式能够支撑程序较好的扩展性</p>
+<h2 id="封装变化的内容"><a href="#封装变化的内容" class="headerlink" title="封装变化的内容"></a>封装变化的内容</h2><blockquote>
+<p>找到程序中的变化内容并将其与不变的内容区分开，这样能够将变更造成的影响最小化</p>
+</blockquote>
+<h3 id="方法层面的封装"><a href="#方法层面的封装" class="headerlink" title="方法层面的封装"></a>方法层面的封装</h3><p>假如开发一个电子商务网站。 代码中某处有一个<code>getOrderTotal</code> 获取订单总额的方法， 用于计算订单的总价（包括税金在内）。预计在未来可能会修改与税金相关的代码。税率会根据客户居住的国家/地区、州/省甚至城市而有所不同；而且一段时间后，实际的计算公式可能会由于新的法律或规定而修改，这就导致将需要经常性地修改<code>getOrderTotal</code>方法，因此可以选择将税相关的代码剥离出去。</p>
+<p><strong>修改前</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">method <span class="title function_">getOrderTotal</span><span class="params">(order)</span> <span class="type">is</span></span><br><span class="line">	<span class="variable">total</span> <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">	foreach item in order.lineItems</span><br><span class="line">		total += item.price * item.quantity</span><br><span class="line">	<span class="title function_">if</span> <span class="params">(order.country == <span class="string">&quot;US&quot;</span>)</span></span><br><span class="line">		total += total * <span class="number">0.07</span> <span class="comment">// 美国营业税</span></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (order.country == <span class="string">&quot;EU&quot;</span>):</span><br><span class="line">		total += total * <span class="number">0.20</span> <span class="comment">// 欧洲增值税</span></span><br><span class="line">	<span class="keyword">return</span> total</span><br></pre></td></tr></table></figure>
+<p><strong>修改后</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">method <span class="title function_">getOrderTotal</span><span class="params">(order)</span> <span class="type">is</span></span><br><span class="line">	<span class="variable">total</span> <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">	foreach item in order.lineItems</span><br><span class="line">		total += item.price * item.quantity</span><br><span class="line">	total += total * getTaxRate(order.country)</span><br><span class="line">	<span class="keyword">return</span> total</span><br><span class="line">	</span><br><span class="line">method <span class="title function_">getTaxRate</span><span class="params">(country)</span> is</span><br><span class="line">	<span class="title function_">if</span> <span class="params">(country == <span class="string">&quot;US&quot;</span>)</span></span><br><span class="line">		<span class="keyword">return</span> <span class="number">0.07</span> <span class="comment">// 美国营业税</span></span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (country == <span class="string">&quot;EU&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0.20</span> <span class="comment">// 欧洲增值税</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<h3 id="类层面的封装"><a href="#类层面的封装" class="headerlink" title="类层面的封装"></a>类层面的封装</h3><p>一段时间后，你可能会在一个以前完成简单工作的方法中添加越来越多的职责。新增行为通常还会带来助手成员变量和方法，最终使得包含接纳它们的类的主要职责变得模糊。将所有这些内容抽取到一个新类中会让程序更加清晰和简洁。  </p>
+<p><img src="/posts/18543/image-20240225143448249.png" alt="image-20240225143448249"></p>
+<p>修改前，在订单中计算税金</p>
+<p><img src="/posts/18543/image-20240225143517925.png" alt="image-20240225143517925"></p>
+<p>修改后，将订单类中所有与税金相关的工作委派给一个专门负责的特殊对象。  </p>
+<h2 id="面向接口进行开发，而不是面向实现"><a href="#面向接口进行开发，而不是面向实现" class="headerlink" title="面向接口进行开发，而不是面向实现"></a>面向接口进行开发，而不是面向实现</h2><blockquote>
+<p>面向接口进行开发，而不是面向实现；依赖于抽象类型，而不是具体类。</p>
+</blockquote>
+<p>如果无需修改已有代码就能轻松对类进行扩展，那就可以说这样的设计是灵活的  </p>
+<p>当你需要两个类进行合作时，可以让其中一个类依赖于另一个类，但是可以用如下更为灵活的方式：</p>
+<ol>
+<li>确定一个对象对另一对象的确切需求：它需执行哪些方法？</li>
+<li>在一个新的接口或抽象类中描述这些方法。</li>
+<li>让被依赖的类实现该接口。</li>
+<li>现在让有需求的类依赖于这个接口， 而不依赖于具体的类。你仍可与原始类中的对象进行互动，但现在其连接将会灵活得多。  </li>
+</ol>
+<p><img src="/posts/18543/image-20240225144305488.png" alt="image-20240225144305488"></p>
+<p>类似：一只可以吃任何食物的猫<code>Cat</code>要比只吃香肠的猫更加灵活  </p>
+<p><strong>这样设计的优势？</strong></p>
+<p><img src="/posts/18543/image-20240225144657457.png" alt="image-20240225144657457"></p>
+<p>首先，可以归纳出几个与工作相关的方法，并将其提取未所有员工的通用接口，并运用多态机制，实现不同员工做不同处理</p>
+<p><img src="/posts/18543/image-20240225144811303.png" alt="image-20240225144811303"></p>
+<p>但是，公司的其他部分仍然依赖于具体的雇员类，这样如果引入包含其他类型雇员的公司类型的话，<strong>我们就需要重写绝大部分的公司类了，不能复用其代码</strong>。  为此，我们可以声明一个抽象方法来获取雇员，每个具体公司都将以不同的方式实现该方法，从而创建自己公司的雇员。</p>
+<p><img src="/posts/18543/image-20240225145020407.png" alt="image-20240225145020407"></p>
+<p>修改后的 公司 类将独立于各种雇员类。现在你可以对该类进行扩展，并在复用部分公司基类的情况下引入新的公司和雇员类型。对公司基类进行扩展时无需修改任何依赖于基类的已有代码。[<strong>工厂模式</strong>]</p>
+<h3 id="组合优于继承"><a href="#组合优于继承" class="headerlink" title="组合优于继承"></a>组合优于继承</h3><p>继承可能是类之间最明显、最简便的代码复用方式。如果你有两个代码相同的类， 就可以为它们创建一个通用的基类，然后将相似的代码移动到其中。但是，继承存在如下问题：</p>
+<ol>
+<li><strong>子类不能减少超类的接口。</strong>你必须实现父类中所有的抽象方法，即使它们没什么用。</li>
+<li><strong>在重写方法时，你需要确保新行为与其基类中的版本兼容。</strong>因为子类的所有对象都可能被传递给以超类对象为参数的任何代码。</li>
+<li><strong>继承打破了超类的封装，</strong>因为子类拥有访问父类内部详细内容的权限。此外还可能会有相反的情况出现，那就是程序员为了进一步扩展的方便而让超类知晓子类的内部详细内容。  </li>
+<li><strong>子类与超类紧密耦合。</strong>超类中的任何修改都可能会破坏子类的功能。  </li>
+<li><strong>通过继承复用代码可能导致平行继承体系的产生。</strong>继承通常仅发生在一个维度中。只要出现了两个以上的维度，你就必须创建数量巨大的类组合，从而使类层次结构膨胀到不可思议的程度。  </li>
+</ol>
+<p>组合/聚合是代替继承的一种方法。继承代表类之间的“是”关系（汽车是交通工具），而组合则代表“有”关系（汽车有一个引擎），聚合则是更为弱的组合，拥有该对象，但是不负责管理其生命周期。</p>
+<p><strong>示例[策略模式]</strong></p>
+<p>假如你需要为汽车制造商创建一个目录程序。 该公司同时生产汽车<code>Car</code>和卡车<code>Truck</code>， 车辆可能是电动车<code>Electric</code>或 汽油车 <code>Combustion</code>； 所 有 车 型 都 配 备 了手动控制<code>manual control</code> 或 自动驾驶 <code>Autopilot</code> 功能。  </p>
+<p><img src="/posts/18543/image-20240225150233917.png" alt="image-20240225150233917"></p>
+<p>每个额外参数都将使子类数量倍增。子类中将有大量的重复代码，因为子类不能同时继承两个类。</p>
+<p>可以使用组合来解决这个问题。汽车对象可将行为委派给其他对象，而不是自行实现。  </p>
+<p>还有一个好处是你可以在运行时对行为进行替换。例如，你可以通过重新为汽车对象分配一个不同的引擎对象来替换已连接至汽车的引擎。  </p>
+<p><img src="/posts/18543/image-20240225150332506.png" alt="image-20240225150332506"></p>
+]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
+      <tags>
+        <tag>开发进阶知识</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>设计模式-简介</title>
+    <url>/posts/8883.html</url>
+    <content><![CDATA[<h2 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h2><h3 id="模式是什么"><a href="#模式是什么" class="headerlink" title="模式是什么"></a>模式是什么</h3><p>设计模式是软件设计中常见问题的典型解决方案。它们就像能根据需求进行调整的预制蓝图，可用于解决代码中反复出现的设计问题。  </p>
+<h4 id="模式-vs-库"><a href="#模式-vs-库" class="headerlink" title="模式 vs 库"></a>模式 vs 库</h4><p>库中的方法可以直接调用，但是很难直接在自己的程序中套用某个设计模式。模式并不是一段特定的代码，而是解决特定问题的一般性概念。你可以根据模式来实现符合自己程序实际所需的解决方案  </p>
+<h4 id="模式-vs-算法"><a href="#模式-vs-算法" class="headerlink" title="模式 vs 算法"></a>模式 vs 算法</h4><p>算法总是明确定义达成特定目标所需的一系列步骤，而模式则是对解决方案的更高层次描述。  </p>
+<p>算法更像是菜谱：提供达成目标的明确步骤。而模式更像是蓝图：你可以看到最终的结果和模式的功能，但需要自己确定实现步骤  </p>
+<h3 id="模式如何描述"><a href="#模式如何描述" class="headerlink" title="模式如何描述"></a>模式如何描述</h3><p>模式的描述通常会包括以下部分：</p>
+<ol>
+<li><strong>意图部分</strong>简要地描述问题和解决方案  </li>
+<li><strong>动机部分</strong>进一步解释问题并说明模式会如何提供解决方案。</li>
+<li><strong>结构部分</strong>展示模式的各个部分和它们之间的关系。</li>
+<li><strong>在不同语言中的实现</strong>提供流行编程语言的代码，让读者更好地理解模式背后的思想</li>
+</ol>
+<h3 id="模式的分类"><a href="#模式的分类" class="headerlink" title="模式的分类"></a>模式的分类</h3><p>不同设计模式在其复杂程度、细节层次以及在整个系统中的应用范围等方面各不相同。我喜欢将其比作道路的建造：如果你希望让十字路口更加安全，那么可以安装一些交通信号灯，或者修建有行人地下通道的多层互通式立交桥。  </p>
+<ul>
+<li>最基础的、底层的模式通常被称为<strong>惯用技巧</strong>。这类模式一般只能在一种编程语言中使用。</li>
+<li>最通用的、高层的模式是<strong>架构模式</strong>。开发者可以在任何编程语言中使用这类模式。与其他模式不同，它们可用于整个应用程序的架构设计。</li>
+</ul>
+<p>此外，可以根据意图或目的来分类：</p>
+<ul>
+<li><strong>创建型模式</strong>。提供创建对象的机制，增加已有代码的灵活性和可复用性。</li>
+<li><strong>结构型模式</strong>。介绍如何将对象和类组装成较大的结构，并同时保持结构的灵活和高效。</li>
+<li><strong>行为模式</strong>。负责对象间的高效沟通和职责委派。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
+      <tags>
+        <tag>开发进阶知识</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>设计模式-面向对象程序设计</title>
+    <url>/posts/22370.html</url>
+    <content><![CDATA[<h1 id="面向对象程序设计"><a href="#面向对象程序设计" class="headerlink" title="面向对象程序设计"></a>面向对象程序设计</h1><p>面向对象程序设计（Object-Oriented Programming， OOP）是一种范式，其基本理念是将数据块及与数据相关的行为封装成为特殊的、名为对象的实体，同时对象实体的生成工作则是基于程序员给出的一系列“蓝图”，这些“蓝图”就是类。  </p>
+<h2 id="对象和类"><a href="#对象和类" class="headerlink" title="对象和类"></a>对象和类</h2><p><img src="/posts/22370/image-20240220160635635.png" alt="image-20240220160635635"></p>
+<p>每只猫<code>Cat</code>都有许多基本属性：名字、年龄、体重、毛色等，这些就叫类的<strong>成员变量</strong>；所有猫都有相似的行为：呼吸、吃饭、跑步等，这些就叫<strong>类的方法</strong>。上述变量和方法都可以统称为类的成员，存储在对象成员变量中的数据通常也可称为状态，而类的所有方法则定义了其行为。</p>
+<p>一只具体的猫（共享猫这个类的属性，但是区别在于属性值可能不同），就是猫这个类的一个实例。因此，类就像是定义对象结构的蓝图，而对象则是类的具体体现。</p>
+<h2 id="类层次结构"><a href="#类层次结构" class="headerlink" title="类层次结构"></a>类层次结构</h2><p>程序通常包括多个类，这些类就会组织形成类层次结构。</p>
+<p>比如，现在除了猫还有狗，而狗和猫共享很多属性，比如名字、年龄、体重等，而且也有很多行为是一样的，包括呼吸、吃饭和睡觉。因此，我们可以定义一个动物类<code>Animal</code>来列出狗和猫的共同属性和行为，这里的动物其实就是<strong>父类</strong>或者叫<strong>超类</strong>，而狗和猫就是其<strong>子类</strong>，子类会继承父类的状态和行为，因此只需要定义不同于父类的属性和方法，比如猫的喵喵叫和狗的汪汪叫。此外，子类也可以对从父类继承来的行为进行重写，包括完全替换或者进行加强。</p>
+<p><img src="/posts/22370/image-20240220161538620.png" alt="image-20240220161538620"></p>
+<p>随着业务拓展，有可能需要进一步抽象出新的父类，比如动物、植物的父类是生物</p>
+<p><img src="/posts/22370/image-20240220161652580.png" alt="image-20240220161652580"></p>
+<h2 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h2><p>面向对象程序设计包括抽象、封装、继承、多态四个特性</p>
+<ul>
+<li><p><strong>抽象</strong>：抽象是一种反映真实世界对象或现象中特定内容的模型，它能高精度地反映所有与特定内容相关的详细信息，同时忽略其他内容。当使用面向对象程序设计的理念开发一款程序时，你会将大部分时间用于根据真实世界对象来设计程序中的对象。但是，程序中的对象并不需要能够百分之百准确地反映其原型（极少情况下才需要做到这一点）。实际上，你的对象只需模拟真实对象的特定属性和行为即可，其他内容可以忽略。  </p>
+<p>  飞行模拟器和航班预订程序中都可能会包含一个飞机 <code>Airplane</code> 类。但是前者需包含与实际飞行相关的详细信息，而后者则只关心座位图和哪些座位可供预订。  </p>
+<p>  <img src="/posts/22370/image-20240220162014748.png" alt="image-20240220162014748"></p>
+</li>
+<li><p><strong>封装</strong>：指一个对象对其他对象隐藏其部分状态和行为，而仅向程序其他部分暴露有限的接口的能力。</p>
+<p>  如果想要启动一辆车的发动机，你只需转动钥匙或按下按钮即可，无需打开引擎盖手动接线、转动曲轴和气缸并启动发动机的动力循环。这些细节都隐藏在引擎盖下，你只会看到一些简单的接口：启动开关、方向盘和一些踏板。  </p>
+<p>  这里的接口表示的是类的公共属性和方法，但是Java等编程语言中又有接口<code>interface</code>这一类型，所以需要进行区分</p>
+<p>  <img src="/posts/22370/image-20240220162841400.png" alt="image-20240220162841400"></p>
+<p>  假 如 你 的 航空运输 <code>FlyingTransport</code> 接 口 中 有 一 个<code>fly(origin, destination, passengers)</code> 方法 （即以起点、 终点以及乘客为参数的飞行方法）。 在设计航空运输模拟器时， 你可以对 机场 <code>Airport</code> 类做出限制， 使其仅与<strong>实现</strong>了 <strong>航空运输接口</strong>的对象进行交互。 此后， 你可以确保传递给机场对象的任何对象——无论是飞机 <code>Airplane</code>、 直升机<code>Helicopter</code> 还是可怕的 家养狮鹫 <code>DomesticatedGryphon</code>都能到达或离开这种类型的机场。</p>
+</li>
+<li><p><strong>继承</strong>：根据已有类创建新类的能力，主要目的就是代码复用。如果你想要创建的类与已有的类差异不大，那也没必要重复编写相同的代码。你只需扩展已有的类并将额外功能放入生成的子类（它会继承父类的成员变量和方法）中即可。  </p>
+<p>  <img src="/posts/22370/image-20240220163409462.png" alt="image-20240220163409462"></p>
+</li>
+<li><p><strong>多态</strong>  ：程序能够检测对象所属的实际类，并在当前上下文不知道其真实类型的情况下调用其实现的能力。  </p>
+<p>  <img src="/posts/22370/image-20240220163356708.png" alt="image-20240220163356708"></p>
+<p>  因为几乎所有动物都会发出声音，因此所有子类都需要重写该方法，故可以将该方法定义为抽象方法，这样就可以忽略父类中该方法的所有实现，而强制要求子类必须实现该方法。</p>
+  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">bag = [<span class="keyword">new</span> <span class="title class_">Cat</span>(), <span class="keyword">new</span> <span class="title class_">Dog</span>()];</span><br><span class="line"></span><br><span class="line">foreach (Animal a : bag)</span><br><span class="line">	a.makeSound()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 喵喵！</span></span><br><span class="line"><span class="comment">// 汪汪</span></span><br></pre></td></tr></table></figure>
+<p>  我们往包里放猫和狗，但是取出来时闭上了眼，并不知道取出来的是啥，多态机制就是让程序可以追踪到对象的子类并调用其方法，从而执行恰当的行为（猫叫还是狗叫）</p>
+</li>
+</ul>
+<h2 id="对象之间的关系"><a href="#对象之间的关系" class="headerlink" title="对象之间的关系"></a>对象之间的关系</h2><p>前文已经介绍了继承和实现两者关系，此外还有依赖、关联、聚合、组合等关系</p>
+<ul>
+<li><p><strong>依赖</strong>：类之间最基础的、也是最微弱的关系类型。如果修改一个类的定义可能会造成另一个类的变化，那么这两个类之间就存在依赖关系。当你在代码中使用具体类的名称时，通常意味着存在依赖关系。例如在指定方法签名类型时，或是通过调用构造函数对对象进行初始化时等。通过让代码依赖接口或抽象类（而不是具体类），你可以降低其依赖程度。  </p>
+<p>  <img src="/posts/22370/image-20240220164241424.png" alt="image-20240220164241424"></p>
+</li>
+<li><p><strong>关联</strong>：一个对象使用另一对象或与另一对象进行交互的关系。关联可视为一种特殊类型的依赖，即一个对象总是拥有访问与其交互的对象的权限，而简单的依赖关系并不会在对象间建立永久性的联系。类似于类成员变量的关系，但是并不仅仅通过类成员变量来实现。比如通过订单获取对应顾客，既可以通过订单类包含顾客成员变量实现，也可以通过定义一个能够返回顾客的方法来实现。</p>
+<p>  <img src="/posts/22370/image-20240220164304152.png" alt="image-20240220164304152"></p>
+<blockquote>
+<p><strong>依赖 vs 关联</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Professor</span> is</span><br><span class="line">	field Student student</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">	method <span class="title function_">teach</span><span class="params">(Course c)</span> is</span><br><span class="line">	<span class="comment">// ...</span></span><br><span class="line">	<span class="built_in">this</span>.student.remember(c.getKnowledge())</span><br></pre></td></tr></table></figure>
+<p>教授知识<code>teach</code>方法中接收课程<code>Course</code>参数，同时调用了课程的<code>getKnowledge</code>方法，如果修改了该方法，比如修改方法名或者添加形参，那么<code>teach</code>方法就会失败，这就是依赖</p>
+<p>学生<code>student</code>作为其成员变量，肯定是依赖，因为<code>remember</code>方法如果被修改，教授<code>Professor</code>也会失败。进一步，由于教授所有方法都能访问<code>student</code>成员变量，所以也是关联关系</p>
+</blockquote>
+</li>
+<li><p><strong>聚合</strong>：一种特殊类型的关联，用于表示多个对象之间的“一对多”、“多对多”或“整体对部分”的关系。通常在聚合关系中，一个对象“拥有”一组其他对象，并扮演着容器或集合的角色。组件可以独立于容器存在，也可以同时连接多个容器。  </p>
+<p>  <img src="/posts/22370/image-20240220165109520.png" alt="image-20240220165109520"></p>
+</li>
+<li><p><strong>组合</strong>：一种特殊类型的聚合，其中一个对象由一个或多个其他对象实例构成。组合与其他关系的区别在于组件仅能作为容器的一部分存在。</p>
+<p>  <img src="/posts/22370/image-20240220165229900.png" alt="image-20240220165229900"></p>
+<p>  院系只有在大学里才有意义。</p>
+</li>
+</ul>
+<p><strong>具体示例</strong></p>
+<p><img src="/posts/22370/image-20240220165431087.png" alt="image-20240220165431087"></p>
+<ul>
+<li>依赖：对类 B 进行修改会影响到类 A </li>
+<li>关联：对象 A 知道对象 B。类 A 依赖于类 B</li>
+<li>聚合：对象 A 知道对象 B 且由 B 构成。类 A 依赖于类 B。</li>
+<li>组合：对象 A 知道对象 B、由 B 构成而且管理着 B 的生命周期。类 A 依赖于类 B。</li>
+<li>实现：类 A 定义的方法由接口 B 声明。对象 A 可被视为对象B。类 A 依赖于类 B。  </li>
+<li>继承：类 A 继承类 B 的接口和实现， 但是可以对其进行扩展。对象 A 可被视为对象 B。类 A 依赖于类 B。  </li>
+</ul>
+]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
+      <tags>
+        <tag>开发进阶知识</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Tomcat了解</title>
     <url>/posts/17791.html</url>
     <content><![CDATA[<h1 id="Tomcat"><a href="#Tomcat" class="headerlink" title="Tomcat"></a>Tomcat</h1><h2 id="Tomcat是什么"><a href="#Tomcat是什么" class="headerlink" title="Tomcat是什么"></a>Tomcat是什么</h2><p>我们开发的<code>App</code>后端需要部署到服务器上才能运行，而服务器需要配置必要的环境才能支持<code>App</code>的运行，比如一个<code>java</code>程序，需要配置<code>JRE</code>环境和<code>Tomcat</code>（<code>java</code>实现的服务器软件，运行在<code>JRE</code>环境中，专门用于运行<code>web</code>应用程序），相当于是由<code>Tomcat</code>来运行<code>java</code>程序</p>
