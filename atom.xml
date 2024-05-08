@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-04-10T11:56:14.463Z</updated>
+  <updated>2024-04-23T02:44:53.318Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="http://example.com/posts/23570.html"/>
     <id>http://example.com/posts/23570.html</id>
     <published>2024-04-10T10:51:54.000Z</published>
-    <updated>2024-04-10T11:56:14.463Z</updated>
+    <updated>2024-04-23T02:44:53.318Z</updated>
     
     
     <summary type="html">行为模式负责对象间的高效沟通和职责委派</summary>
@@ -135,7 +135,7 @@
     <link href="http://example.com/posts/22370.html"/>
     <id>http://example.com/posts/22370.html</id>
     <published>2024-02-20T08:02:11.000Z</published>
-    <updated>2024-04-10T12:04:20.623Z</updated>
+    <updated>2024-04-10T12:04:28.829Z</updated>
     
     
     <summary type="html">学习设计模式前对面向对象的初步了解</summary>
