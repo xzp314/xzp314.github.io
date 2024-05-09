@@ -109,8 +109,12 @@
 <meta property="og:image" content="http://example.com/posts/23570/image-20240422192149797.png">
 <meta property="og:image" content="http://example.com/posts/23570/image-20240423100304200.png">
 <meta property="og:image" content="http://example.com/posts/23570/image-20240423101135481.png">
+<meta property="og:image" content="http://example.com/posts/23570/image-20240508182231899-1715163766878-1.png">
+<meta property="og:image" content="http://example.com/posts/23570/image-20240508183247912.png">
+<meta property="og:image" content="http://example.com/posts/23570/image-20240508184044562.png">
+<meta property="og:image" content="http://example.com/posts/23570/image-20240508184338773.png">
 <meta property="article:published_time" content="2024-04-10T10:51:54.000Z">
-<meta property="article:modified_time" content="2024-04-23T02:44:53.318Z">
+<meta property="article:modified_time" content="2024-05-08T11:02:48.000Z">
 <meta property="article:author" content="Xu Zhipeng">
 <meta property="article:tag" content="开发进阶知识">
 <meta name="twitter:card" content="summary">
@@ -405,7 +409,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  13.9k
+                  17.1k
                 </span>
               
 
@@ -421,7 +425,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  48
+                  59
                 </span>
               
             </div>
@@ -573,16 +577,16 @@
 <p>命令是一种行为设计模式，它可将请求转换为一个包含与请求相关的所有信息的独立对象。该转换让你能根据不同的请求将方法参数化、延迟请求执行或将其放入队列中，且能实现可撤销操作</p>
 <h3 id="问题背景-1"><a href="#问题背景-1" class="headerlink" title="问题背景"></a>问题背景</h3><p>假如你正在开发一款新的文字编辑器，当前的任务是创建一个包含多个按钮的工具栏，并让每个按钮对应编辑器的不同操作。你创建了一个非常简洁的 按钮 类，它不仅可用于生成工具栏上的按钮，还可用于生成各种对话框的通用按钮。</p>
 <p><img src="/posts/23570/image-20240412184528332.png" alt="image-20240412184528332" style="zoom:50%;"></p>
-<p>尽管所有按钮看上去都很相似，但它们可以完成不同的操作（打开、保存、打印和应用等）。你会在哪里放置这些按钮的点击处理代码呢？最简单的解决方案是在使用按钮的每个地方都创建大量的子类。这些子类中包含按钮点击后必须执行的代码</p>
+<p>尽管所有按钮看上去都很相似，但它们可以完成不同的操作（打开、保存、打印和应用等）。你会在哪里放置这些按钮的点击处理代码呢？最简单的解决方案是在使用按钮的每个地方都创建大量的子类。这些子类中包含按钮点击后必须执行的代码。</p>
 <p><img src="/posts/23570/image-20240412185130774.png" alt="image-20240412185130774"></p>
-<p>你很快就意识到这种方式有严重缺陷。首先，你创建了大量的子类，当每次修改基类 按钮 时，你都有可能需要修改所有子类的代码。简单来说，GUI代码以一种拙劣的方式依赖于业务逻辑中的不稳定代码</p>
+<p>你很快就意识到这种方式有严重缺陷。首先，你创建了大量的子类，当每次修改基类 按钮 时，你都有可能需要修改所有子类的代码。简单来说，GUI代码以一种拙劣的方式依赖于业务逻辑中的不稳定代码。</p>
 <p><img src="/posts/23570/image-20240412185243002.png" alt="image-20240412185243002"></p>
 <p>还有一个部分最难办。复制/粘贴文字等操作可能会在多个地方被调用。例如用户可以点击工具栏上小小的“复制”按钮，或者通过上下文菜单复制一些内容，又或者直接使用键盘上的 Ctrl+C。</p>
 <p>我们的程序最初只有工具栏，因此可以使用按钮子类来实现各种不同操作。换句话来说， 复制按钮 <code>CopyButton</code> 子类包含复制文字的代码是可行的。在实现了上下文菜单、快捷方式和其他功能后，你要么需要将操作代码复制进许多个类中，要么需要让菜单依赖于按钮，而后者是更糟糕的选择</p>
 <h3 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h3><p>优秀的软件设计通常会将关注点进行分离，而这往往会导致软件的分层。最常见的例子：一层负责用户图像界面；另一层负责业务逻辑。GUI层负责在屏幕上渲染美观的图形，捕获所有输入并显示用户和程序工作的结果。当需要完成一些重要内容时（比如计算月球轨道或撰写年度报告），GUI层则会将工作委派给业务逻辑底层。</p>
 <p>这在代码中看上去就像这样：一个 GUI 对象传递一些参数来调用一个业务逻辑对象。这个过程通常被描述为一个对象发送请求给另一个对象</p>
 <p> <img src="/posts/23570/image-20240412190345111.png" alt="image-20240412190345111"></p>
-<p>命令模式建议GUI对象不直接提交这些请求。你应该将请求的所有细节（例如调用的对象、方法名称和参数列表）抽取出来组成命令类，该类中仅包含一个用于触发请求的方法。</p>
+<p>命令模式建议GUI对象不直接提交这些请求。<strong>你应该将请求的所有细节（例如调用的对象、方法名称和参数列表）抽取出来组成命令类，该类中仅包含一个用于触发请求的方法。</strong></p>
 <p>命令对象负责连接不同的GUI和业务逻辑对象。此后，GUI对象无需了解业务逻辑对象是否获得了请求，也无需了解其对请求进行处理的方式。GUI对象触发命令即可，命令对象会自行处理所有细节工作。</p>
 <p><img src="/posts/23570/image-20240412190415337.png" alt="image-20240412190415337"></p>
 <p>下一步是让所有命令实现相同的接口。该接口通常只有一个没有任何参数的执行方法，让你能在不和具体命令类耦合的情况下使用同一请求发送者执行不同命令。此外还有额外的好处，现在你能在运行时切换连接至发送者的命令对象，以此改变发送者的行为。</p>
@@ -820,6 +824,84 @@
 <p>假设有一个程序，其所有的组件都变成了发布者，它们之间可以相互建立动态连接。这样程序中就没有中心化的中介者对象，而只有一些分布式的观察者。</p>
 </li>
 </ul>
+<h2 id="备忘录"><a href="#备忘录" class="headerlink" title="备忘录"></a>备忘录</h2><blockquote>
+<p>快照、Snapshot、Memento</p>
+</blockquote>
+<p>备忘录是一种行为设计模式，允许在不暴露对象实现细节的情况下保存和恢复对象之前的状态</p>
+<h3 id="问题背景-4"><a href="#问题背景-4" class="headerlink" title="问题背景"></a>问题背景</h3><p>假如你正在开发一款文字编辑器应用程序。除了简单的文字编辑功能外，编辑器中还要有设置文本格式和插入内嵌图片等功能。</p>
+<p>后来，你决定让用户能撤销施加在文本上的任何操作。这项功能在过去几年里变得十分普遍，因此用户期待任何程序都有这项功能。你选择采用直接的方式来实现该功能：程序在执行任何操作前会记录所有的对象状态， 并将其保存下来。当用户此后需要撤销某个操作时，程序将从历史记录中获取最近的快照，然后使用它来恢复所有对象的状态。</p>
+<p><img src="/posts/23570/image-20240508182231899-1715163766878-1.png" alt="image-20240508182231899"></p>
+<p>首先，到底该如何生成一个快照呢？很可能你会需要遍历对象的所有成员变量并将其数值复制保存。但只有当对象对其内容没有严格访问权限限制的情况下，你才能使用该方式。不过很遗憾，绝大部分对象会使用私有成员变量来存储重要数据，这样别人就无法轻易查看其中的内容。  </p>
+<p>即使不考虑访问权限问题，通过上述方式虽然能够随时生成对象的快照，但是依然存在一些严重问题。</p>
+<p>未来你可能会添加或删除一些成员变量。这听上去很简单，但需要对负责复制受影响对象状态的类进行更改  </p>
+<p>此外，让我们来考虑编辑器（Editor）状态的实际“快照”， 它需要包含哪些数据？ 至少必须包含实际的文本、光标坐标和当前滚动条位置等。你需要收集这些数据并将其放入特定容器中，才能生成快照。  </p>
+<p>为了让其他对象能保存或读取快照，你很可能需要将快照的成员变量设为公有。无论这些状态是否私有，其都将暴露一切编辑器状态。其他类会对快照类的每个小改动产生依赖，除非这些改动仅存在于私有成员变量或方法中，而不会影响外部类。</p>
+<p>我们似乎走进了一条死胡同：要么会暴露类的所有内部细节而使其过于脆弱；要么会限制对其状态的访问权限而无法生成快照。那么，我们还有其他方式来实现“撤销”功能吗？</p>
+<h3 id="解决方案-4"><a href="#解决方案-4" class="headerlink" title="解决方案"></a>解决方案</h3><p>备忘录模式将创建状态快照（Snapshot）的工作委派给实际状态的拥有者原发器（Originator）对象。这样其他对象就不再需要从“外部”复制编辑器状态了，编辑器类拥有其状态的完全访问权，因此可以自行生成快照。</p>
+<p>该模式建议将对象状态的副本存储在一个名为备忘录（Memento）的特殊对象中。除了创建备忘录的对象外，任何对象都不能访问备忘录的内容。其他对象必须使用受限接口与备忘录进行交互，它们可以获取快照的元数据（创建时间和操作名称等），但不能获取快照中原始对象的状态。</p>
+<p><img src="/posts/23570/image-20240508183247912.png" alt="image-20240508183247912" style="zoom:33%;"></p>
+<p>这种限制策略允许你将备忘录保存在通常被称为负责人（Caretakers）的对象中。由于负责人仅通过受限接口与备忘录互动，故其无法修改存储在备忘录内部的状态。同时，原发器拥有对备忘录所有成员的访问权限，从而能随时恢复其以前的状态</p>
+<p>在文字编辑器的示例中， 我们可以创建一个独立的历史（History）类作为负责人。编辑器每次执行操作前，存储在负责人中的备忘录栈都会生长。你甚至可以在应用的 UI 中渲染该栈，为用户显示之前的操作历史。</p>
+<p>当用户触发撤销操作时，历史类将从栈中取回最近的备忘录，并将其传递给编辑器以请求进行回滚。由于编辑器拥有对备忘录的完全访问权限，因此它可以使用从备忘录中获取的数值来替换自身的状态</p>
+<h3 id="结构-4"><a href="#结构-4" class="headerlink" title="结构"></a>结构</h3><h4 id="基于嵌套类的实现"><a href="#基于嵌套类的实现" class="headerlink" title="基于嵌套类的实现"></a>基于嵌套类的实现</h4><p><img src="/posts/23570/image-20240508184044562.png" alt="image-20240508184044562"></p>
+<ol>
+<li><p>原发器（Originator）类可以生成自身状态的快照，也可以在<br>需要时通过快照恢复自身状态。</p>
+</li>
+<li><p>备忘录 （Memento） 是原发器状态快照的值对象 （valueobject）。通常做法是将备忘录设为不可变的，并通过构造函数一次性传递数据。</p>
+</li>
+<li><p>负责人（Caretaker）仅知道“何时”和“为何”捕捉原发器的状态，以及何时恢复状态。</p>
+<p>负责人通过保存备忘录栈来记录原发器的历史状态。当原发器需要回溯历史状态时，负责人将从栈中获取最顶部的备忘录，并将其传递给原发器的恢复（restoration）方法。  </p>
+</li>
+<li><p>在该实现方法中，备忘录类将被嵌套在原发器中。这样原发器就可访问备忘录的成员变量和方法，即使这些方法被声明为私有。另一方面，负责人对于备忘录的成员变量和方法的访问权限非常有限：它们只能在栈中保存备忘录，而不能修改其状态。  </p>
+</li>
+</ol>
+<h3 id="伪代码-4"><a href="#伪代码-4" class="headerlink" title="伪代码"></a>伪代码</h3><p>本例结合使用了命令模式与备忘录模式，可保存复杂文字编辑器的状态快照，并能在需要时从快照中恢复之前的状态。</p>
+<p><img src="/posts/23570/image-20240508184338773.png" alt="image-20240508184338773"></p>
+<p>命令（command）对象将作为负责人，它们会在执行与命令相关的操作前获取编辑器的备忘录。当用户试图撤销最近的命令时，编辑器可以使用保存在命令中的备忘录来将自身回滚到之前的状态。</p>
+<p>备忘录类没有声明任何公有的成员变量、 获取器（getter）和设置器，因此没有对象可以修改其内容。备忘录与创建自己的编辑器相连接，这使得备忘录能够通过编辑器对象的设置器传递数据，恢复与其相连接的编辑器的状态。由于备忘录与特定的编辑器对象相连接，程序可以使用中心化的撤销栈实现对多个独立编辑器窗口的支持。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//原发器中包含了一些可能会随时间变化的重要数据。它还定义了在备忘录中保存自身状态的方法，以及从备忘录中恢复状态的方法。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Editor</span> is</span><br><span class="line">  <span class="keyword">private</span> field text, curX, curY, selectionWidth</span><br><span class="line">  method <span class="title function_">setText</span><span class="params">(text)</span> is</span><br><span class="line">  	<span class="built_in">this</span>.text = text</span><br><span class="line">  </span><br><span class="line">  method <span class="title function_">setCursor</span><span class="params">(x, y)</span> is</span><br><span class="line">  	<span class="built_in">this</span>.curX = X</span><br><span class="line">   	<span class="built_in">this</span>.curY = y</span><br><span class="line">  </span><br><span class="line">  method <span class="title function_">setSelectionWidth</span><span class="params">(width)</span> is</span><br><span class="line">  	<span class="built_in">this</span>.selectionWidth = width</span><br><span class="line">  </span><br><span class="line">  <span class="comment">//在备忘录中保存当前的状态。</span></span><br><span class="line">  method <span class="title function_">createSnapshot</span><span class="params">()</span>:Snapshot is</span><br><span class="line">  <span class="comment">//备忘录是不可变的对象；因此原发器会将自身状态作为参数传递给备忘录的构造函数。</span></span><br><span class="line">  	<span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Snapshot</span>(<span class="built_in">this</span>, text, curX, curY, selectionWidth)</span><br><span class="line">  </span><br><span class="line"><span class="comment">//备忘录类保存有编辑器的过往状态。</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Snapshot</span> is</span><br><span class="line">  <span class="keyword">private</span> field editor: Editor</span><br><span class="line">  <span class="keyword">private</span> field text, curX, curY, selectionWidth</span><br><span class="line">    </span><br><span class="line">  constructor <span class="title function_">Snapshot</span><span class="params">(editor, text, curX, curY， selectionWidth)</span> is</span><br><span class="line">  	<span class="built_in">this</span>.editor = editor</span><br><span class="line">    <span class="built_in">this</span>.text = text</span><br><span class="line">    <span class="built_in">this</span>.curX = x</span><br><span class="line">    <span class="built_in">this</span>.curY = y</span><br><span class="line">    <span class="built_in">this</span>.selectionWidth = selectionWidth</span><br><span class="line">    </span><br><span class="line"><span class="comment">// 在某一时刻，编辑器之前的状态可以使用备忘录对象来恢复。</span></span><br><span class="line">	method <span class="title function_">restore</span><span class="params">()</span> is</span><br><span class="line">    editor.setText(text)</span><br><span class="line">    editor.setCursor(curX, curY)</span><br><span class="line">    editor.setSelectionWidth(selectionWidth)</span><br><span class="line">    </span><br><span class="line"><span class="comment">// 命令对象可作为负责人。在这种情况下，命令会在修改原发器状态之前获取一个备忘录。当需要撤销时，它会从备忘录中恢复原发器的状态。</span></span><br><span class="line">  <span class="keyword">class</span> <span class="title class_">Command</span> is</span><br><span class="line">    <span class="keyword">private</span> field backup: Snapshot</span><br><span class="line">        </span><br><span class="line">    method <span class="title function_">makeBackup</span><span class="params">()</span> <span class="type">is</span></span><br><span class="line">      <span class="variable">backup</span> <span class="operator">=</span> editor.createSnapshot()</span><br><span class="line">      </span><br><span class="line">    method <span class="title function_">undo</span><span class="params">()</span> is</span><br><span class="line">      <span class="title function_">if</span> <span class="params">(backup != <span class="literal">null</span>)</span></span><br><span class="line">        backup.restore()</span><br><span class="line"> <span class="comment">// ...</span></span><br></pre></td></tr></table></figure>
+<h3 id="应用场景-4"><a href="#应用场景-4" class="headerlink" title="应用场景"></a>应用场景</h3><ul>
+<li><p><strong>当你需要创建对象状态快照来恢复其之前的状态时，可以使用备忘录模式。</strong>  </p>
+<p>备忘录模式允许你复制对象中的全部状态（包括私有成员变量），并将其独立于对象进行保存。尽管大部分人因为“撤销”这个用例才记得该模式，但其实它在处理事务（比如需要在出现错误时回滚一个操作）的过程中也必不可少。  </p>
+</li>
+<li><p><strong>当直接访问对象的成员变量、获取器或设置器将导致封装被突破时，可以使用该模式。</strong>  </p>
+<p>备忘录让对象自行负责创建其状态的快照。任何其他对象都不能读取快照，这有效地保障了数据的安全性。</p>
+</li>
+</ul>
+<h3 id="实现方式-4"><a href="#实现方式-4" class="headerlink" title="实现方式"></a>实现方式</h3><ol>
+<li><p>确定担任原发器角色的类。重要的是明确程序使用的一个原发器中心对象，还是多个较小的对象。</p>
+</li>
+<li><p>创建备忘录类。逐一声明对应每个原发器成员变量的备忘录成员变量。  </p>
+</li>
+<li><p>将备忘录类设为不可变。备忘录只能通过构造函数一次性接收数据。该类中不能包含设置器。</p>
+</li>
+<li><p>如果你所使用的编程语言支持嵌套类，则可将备忘录嵌套在原发器中；如果不支持，那么你可从备忘录类中抽取一个空接口，然后让其他所有对象通过接口来引用备忘录。你可在该接口中添加一些元数据操作，但不能暴露原发器的状态。</p>
+</li>
+<li><p>在原发器中添加一个创建备忘录的方法。原发器必须通过备忘录构造函数的一个或多个实际参数来将自身状态传递给备忘录。</p>
+<p>该方法返回结果的类型必须是你在上一步中抽取的接口（如果你已经抽取了）。实际上，创建备忘录的方法必须直接与备忘录类进行交互。  </p>
+</li>
+<li><p>在原发器类中添加一个用于恢复自身状态的方法。该方法接受备忘录对象作为参数。如果你在之前的步骤中抽取了接口，那么可将接口作为参数的类型。在这种情况下，你需要将输入对象强制转换为备忘录，因为原发器需要拥有对该对象的完全访问权限。</p>
+</li>
+<li><p>无论负责人是命令对象、 历史记录或其他完全不同的东西，它都必须要知道何时向原发器请求新的备忘录、如何存储备忘录以及何时使用特定备忘录来对原发器进行恢复。  </p>
+</li>
+<li><p>负责人与原发器之间的连接可以移动到备忘录类中。在本例中，每个备忘录都必须与创建自己的原发器相连接。恢复方法也可以移动到备忘录类中，但只有当备忘录类嵌套在原发器中，或者原发器类提供了足够多的设置器并可对其状态进行重写时，这种方式才能实现。</p>
+</li>
+</ol>
+<h3 id="优缺点-4"><a href="#优缺点-4" class="headerlink" title="优缺点"></a>优缺点</h3><ul>
+<li>你可以在不破坏对象封装情况的前提下创建对象状态快照</li>
+<li>你可以通过让负责人维护原发器状态历史记录来简化原发器代码</li>
+</ul>
+<hr>
+<ul>
+<li>如果客户端过于频繁地创建备忘录，程序将消耗大量内存</li>
+<li>负责人必须完整跟踪原发器的生命周期，这样才能销毁弃用的备忘录</li>
+<li>绝大部分动态编程语言（例如 PHP、 Python 和 JavaScript）不能确保备忘录中的状态不被修改</li>
+</ul>
+<h3 id="与其他模式的关系-4"><a href="#与其他模式的关系-4" class="headerlink" title="与其他模式的关系"></a>与其他模式的关系</h3><ul>
+<li>你可以同时使用命令和备忘录来实现“撤销”。在这种情况下，命令用于对目标对象执行各种不同的操作，备忘录用来保存一条命令执行前该对象的状态。  </li>
+<li>你可以同时使用备忘录和迭代器来获取当前迭代器的状态，并且在需要的时候进行回滚。</li>
+<li>有时候原型可以作为备忘录的一个简化版本，其条件是你需要在历史记录中存储的对象的状态比较简单，不需要链接其他外部资源，或者链接可以方便地重建。</li>
+</ul>
 
       
     </div>
@@ -1009,7 +1091,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A1%8C%E4%B8%BA%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">行为模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%A3%E4%BB%BB%E9%93%BE"><span class="nav-number">1.1.</span> <span class="nav-text">责任链</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%83%8C%E6%99%AF"><span class="nav-number">1.1.1.</span> <span class="nav-text">问题背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">1.1.2.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.3.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81"><span class="nav-number">1.1.4.</span> <span class="nav-text">伪代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.5.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="nav-number">1.1.6.</span> <span class="nav-text">实现方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">1.1.7.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E%E5%85%B6%E4%BB%96%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.1.8.</span> <span class="nav-text">与其他模式的关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4"><span class="nav-number">1.2.</span> <span class="nav-text">命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%83%8C%E6%99%AF-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">问题背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%84-1"><span class="nav-number">1.2.3.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81-1"><span class="nav-number">1.2.4.</span> <span class="nav-text">伪代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-1"><span class="nav-number">1.2.5.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F-1"><span class="nav-number">1.2.6.</span> <span class="nav-text">实现方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9-1"><span class="nav-number">1.2.7.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E%E5%85%B6%E4%BB%96%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%85%B3%E7%B3%BB-1"><span class="nav-number">1.2.8.</span> <span class="nav-text">与其他模式的关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="nav-number">1.3.</span> <span class="nav-text">迭代器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%83%8C%E6%99%AF-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">问题背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-2"><span class="nav-number">1.3.2.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%84-2"><span class="nav-number">1.3.3.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81-2"><span class="nav-number">1.3.4.</span> <span class="nav-text">伪代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-2"><span class="nav-number">1.3.5.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F-2"><span class="nav-number">1.3.6.</span> <span class="nav-text">实现方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9-2"><span class="nav-number">1.3.7.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E%E5%85%B6%E4%BB%96%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%85%B3%E7%B3%BB-2"><span class="nav-number">1.3.8.</span> <span class="nav-text">与其他模式的关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E4%BB%8B%E8%80%85"><span class="nav-number">1.4.</span> <span class="nav-text">中介者</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%83%8C%E6%99%AF-3"><span class="nav-number">1.4.1.</span> <span class="nav-text">问题背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-3"><span class="nav-number">1.4.2.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%84-3"><span class="nav-number">1.4.3.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81-3"><span class="nav-number">1.4.4.</span> <span class="nav-text">伪代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-3"><span class="nav-number">1.4.5.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F-3"><span class="nav-number">1.4.6.</span> <span class="nav-text">实现方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9-3"><span class="nav-number">1.4.7.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E%E5%85%B6%E4%BB%96%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%85%B3%E7%B3%BB-3"><span class="nav-number">1.4.8.</span> <span class="nav-text">与其他模式的关系</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A1%8C%E4%B8%BA%E6%A8%A1%E5%BC%8F"><span class="nav-number">1.</span> <span class="nav-text">行为模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%A3%E4%BB%BB%E9%93%BE"><span class="nav-number">1.1.</span> <span class="nav-text">责任链</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%83%8C%E6%99%AF"><span class="nav-number">1.1.1.</span> <span class="nav-text">问题背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">1.1.2.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%84"><span class="nav-number">1.1.3.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81"><span class="nav-number">1.1.4.</span> <span class="nav-text">伪代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.1.5.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F"><span class="nav-number">1.1.6.</span> <span class="nav-text">实现方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">1.1.7.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E%E5%85%B6%E4%BB%96%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.1.8.</span> <span class="nav-text">与其他模式的关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4"><span class="nav-number">1.2.</span> <span class="nav-text">命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%83%8C%E6%99%AF-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">问题背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%84-1"><span class="nav-number">1.2.3.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81-1"><span class="nav-number">1.2.4.</span> <span class="nav-text">伪代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-1"><span class="nav-number">1.2.5.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F-1"><span class="nav-number">1.2.6.</span> <span class="nav-text">实现方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9-1"><span class="nav-number">1.2.7.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E%E5%85%B6%E4%BB%96%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%85%B3%E7%B3%BB-1"><span class="nav-number">1.2.8.</span> <span class="nav-text">与其他模式的关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="nav-number">1.3.</span> <span class="nav-text">迭代器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%83%8C%E6%99%AF-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">问题背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-2"><span class="nav-number">1.3.2.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%84-2"><span class="nav-number">1.3.3.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81-2"><span class="nav-number">1.3.4.</span> <span class="nav-text">伪代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-2"><span class="nav-number">1.3.5.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F-2"><span class="nav-number">1.3.6.</span> <span class="nav-text">实现方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9-2"><span class="nav-number">1.3.7.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E%E5%85%B6%E4%BB%96%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%85%B3%E7%B3%BB-2"><span class="nav-number">1.3.8.</span> <span class="nav-text">与其他模式的关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E4%BB%8B%E8%80%85"><span class="nav-number">1.4.</span> <span class="nav-text">中介者</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%83%8C%E6%99%AF-3"><span class="nav-number">1.4.1.</span> <span class="nav-text">问题背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-3"><span class="nav-number">1.4.2.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%84-3"><span class="nav-number">1.4.3.</span> <span class="nav-text">结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81-3"><span class="nav-number">1.4.4.</span> <span class="nav-text">伪代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-3"><span class="nav-number">1.4.5.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F-3"><span class="nav-number">1.4.6.</span> <span class="nav-text">实现方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9-3"><span class="nav-number">1.4.7.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E%E5%85%B6%E4%BB%96%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%85%B3%E7%B3%BB-3"><span class="nav-number">1.4.8.</span> <span class="nav-text">与其他模式的关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%87%E5%BF%98%E5%BD%95"><span class="nav-number">1.5.</span> <span class="nav-text">备忘录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E8%83%8C%E6%99%AF-4"><span class="nav-number">1.5.1.</span> <span class="nav-text">问题背景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-4"><span class="nav-number">1.5.2.</span> <span class="nav-text">解决方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%84-4"><span class="nav-number">1.5.3.</span> <span class="nav-text">结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%B5%8C%E5%A5%97%E7%B1%BB%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.5.3.1.</span> <span class="nav-text">基于嵌套类的实现</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%AA%E4%BB%A3%E7%A0%81-4"><span class="nav-number">1.5.4.</span> <span class="nav-text">伪代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF-4"><span class="nav-number">1.5.5.</span> <span class="nav-text">应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F-4"><span class="nav-number">1.5.6.</span> <span class="nav-text">实现方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9-4"><span class="nav-number">1.5.7.</span> <span class="nav-text">优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8E%E5%85%B6%E4%BB%96%E6%A8%A1%E5%BC%8F%E7%9A%84%E5%85%B3%E7%B3%BB-4"><span class="nav-number">1.5.8.</span> <span class="nav-text">与其他模式的关系</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
@@ -1043,7 +1125,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">221.7k</span>
+    <span title="Site words total count">224.8k</span>
   
 </div>
 
