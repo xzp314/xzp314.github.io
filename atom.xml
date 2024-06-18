@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-06-03T04:48:33.615Z</updated>
+  <updated>2024-06-18T04:45:11.126Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,68 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>开发问题记录</title>
+    <link href="http://example.com/posts/19657.html"/>
+    <id>http://example.com/posts/19657.html</id>
+    <published>2024-06-18T04:23:53.000Z</published>
+    <updated>2024-06-18T04:45:11.126Z</updated>
+    
+    
+    <summary type="html">开发过程中碰到的共性问题与解决方法记录</summary>
+    
+    
+    
+    <category term="经验" scheme="http://example.com/categories/%E7%BB%8F%E9%AA%8C/"/>
+    
+    
+    <category term="开发基础知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Maven-命令</title>
+    <link href="http://example.com/posts/10725.html"/>
+    <id>http://example.com/posts/10725.html</id>
+    <published>2024-06-14T08:07:20.000Z</published>
+    <updated>2024-06-14T08:12:33.000Z</updated>
+    
+    
+    <summary type="html">如何手动执行Maven的一系列清理、编译、测试、报告等命令</summary>
+    
+    
+    
+    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+    
+    <category term="开发基础知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Maven-pom文件</title>
+    <link href="http://example.com/posts/9687.html"/>
+    <id>http://example.com/posts/9687.html</id>
+    <published>2024-06-03T04:55:37.000Z</published>
+    <updated>2024-06-18T07:30:02.200Z</updated>
+    
+    
+    <summary type="html">pom.xml文件详解，包括标签作用、依赖、聚合等等</summary>
+    
+    
+    
+    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+    
+    <category term="开发基础知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Maven-工程构建</title>
     <link href="http://example.com/posts/29056.html"/>
     <id>http://example.com/posts/29056.html</id>
     <published>2024-06-03T04:45:41.000Z</published>
-    <updated>2024-06-03T04:48:33.615Z</updated>
+    <updated>2024-06-03T04:53:00.000Z</updated>
     
     
     <summary type="html">如何构建一个Maven项目（脚手架）</summary>
@@ -40,7 +97,7 @@
     <link href="http://example.com/posts/64597.html"/>
     <id>http://example.com/posts/64597.html</id>
     <published>2024-05-20T11:05:39.000Z</published>
-    <updated>2024-05-20T11:32:22.000Z</updated>
+    <updated>2024-06-03T04:53:00.000Z</updated>
     
     
     <summary type="html">Maven安装与环境配置</summary>
@@ -59,7 +116,7 @@
     <link href="http://example.com/posts/48828.html"/>
     <id>http://example.com/posts/48828.html</id>
     <published>2024-05-15T10:55:45.000Z</published>
-    <updated>2024-05-20T11:08:53.000Z</updated>
+    <updated>2024-06-03T04:53:00.000Z</updated>
     
     
     <summary type="html">Maven是什么？为什么要学习Maven？</summary>
@@ -337,69 +394,6 @@
     
     
     <summary type="html">分布式数据库的数据分布，基于东南大学徐立臻数据库课程（研究生）</summary>
-    
-    
-    
-    <category term="课程学习" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/"/>
-    
-    <category term="数据库管理系统及其实现" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/"/>
-    
-    
-    <category term="学科基础知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>DBMS-数据库访问管理</title>
-    <link href="http://example.com/posts/27905.html"/>
-    <id>http://example.com/posts/27905.html</id>
-    <published>2022-06-11T06:48:02.000Z</published>
-    <updated>2023-09-24T05:18:15.357Z</updated>
-    
-    
-    <summary type="html">访问类型、文件组织形式、索引，基于东南大学徐立臻数据库课程（研究生）</summary>
-    
-    
-    
-    <category term="课程学习" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/"/>
-    
-    <category term="数据库管理系统及其实现" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/"/>
-    
-    
-    <category term="学科基础知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>DBMS-体系结构</title>
-    <link href="http://example.com/posts/97.html"/>
-    <id>http://example.com/posts/97.html</id>
-    <published>2022-06-11T06:18:29.000Z</published>
-    <updated>2023-08-28T02:00:57.000Z</updated>
-    
-    
-    <summary type="html">数据库体系结构，基于东南大学徐立臻数据库课程（研究生）</summary>
-    
-    
-    
-    <category term="课程学习" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/"/>
-    
-    <category term="数据库管理系统及其实现" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/"/>
-    
-    
-    <category term="学科基础知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>DBMS-引言</title>
-    <link href="http://example.com/posts/57766.html"/>
-    <id>http://example.com/posts/57766.html</id>
-    <published>2022-06-11T06:16:27.000Z</published>
-    <updated>2023-08-28T02:00:37.000Z</updated>
-    
-    
-    <summary type="html">数据库基本概念，基于东南大学徐立臻数据库课程（研究生）</summary>
     
     
     
