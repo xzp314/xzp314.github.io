@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-06-18T07:35:08.162Z</updated>
+  <updated>2024-07-15T08:14:45.854Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -17,11 +17,238 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>领域驱动设计-数量关系</title>
+    <link href="http://example.com/posts/17868.html"/>
+    <id>http://example.com/posts/17868.html</id>
+    <published>2024-07-15T08:14:45.000Z</published>
+    <updated>2024-07-15T08:14:45.854Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-DDD与敏捷开发</title>
+    <link href="http://example.com/posts/34284.html"/>
+    <id>http://example.com/posts/34284.html</id>
+    <published>2024-07-15T08:14:33.000Z</published>
+    <updated>2024-07-15T08:14:33.935Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-DDD与微服务</title>
+    <link href="http://example.com/posts/26335.html"/>
+    <id>http://example.com/posts/26335.html</id>
+    <published>2024-07-15T08:14:28.000Z</published>
+    <updated>2024-07-15T08:14:28.986Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-DDD与MVC</title>
+    <link href="http://example.com/posts/54442.html"/>
+    <id>http://example.com/posts/54442.html</id>
+    <published>2024-07-15T08:14:24.000Z</published>
+    <updated>2024-07-15T08:14:24.134Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-LMAX架构</title>
+    <link href="http://example.com/posts/31911.html"/>
+    <id>http://example.com/posts/31911.html</id>
+    <published>2024-07-15T08:14:17.000Z</published>
+    <updated>2024-07-15T08:14:17.926Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-子领域</title>
+    <link href="http://example.com/posts/64137.html"/>
+    <id>http://example.com/posts/64137.html</id>
+    <published>2024-07-15T08:14:04.000Z</published>
+    <updated>2024-07-15T08:14:04.031Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-事件溯源</title>
+    <link href="http://example.com/posts/46889.html"/>
+    <id>http://example.com/posts/46889.html</id>
+    <published>2024-07-15T08:13:59.000Z</published>
+    <updated>2024-07-15T08:13:59.314Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-限界上下文</title>
+    <link href="http://example.com/posts/48778.html"/>
+    <id>http://example.com/posts/48778.html</id>
+    <published>2024-07-15T08:13:52.000Z</published>
+    <updated>2024-07-15T08:13:52.938Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-图书借阅系统示例</title>
+    <link href="http://example.com/posts/57321.html"/>
+    <id>http://example.com/posts/57321.html</id>
+    <published>2024-07-15T08:13:41.000Z</published>
+    <updated>2024-07-15T08:13:41.774Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-事件风暴</title>
+    <link href="http://example.com/posts/27943.html"/>
+    <id>http://example.com/posts/27943.html</id>
+    <published>2024-07-15T08:13:30.000Z</published>
+    <updated>2024-07-15T08:13:30.857Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-实现面向对象领域模型</title>
+    <link href="http://example.com/posts/55083.html"/>
+    <id>http://example.com/posts/55083.html</id>
+    <published>2024-07-15T08:13:22.000Z</published>
+    <updated>2024-07-15T08:13:22.211Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-CQRS</title>
+    <link href="http://example.com/posts/17660.html"/>
+    <id>http://example.com/posts/17660.html</id>
+    <published>2024-07-15T08:13:13.000Z</published>
+    <updated>2024-07-15T08:13:13.620Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-聚合</title>
+    <link href="http://example.com/posts/55850.html"/>
+    <id>http://example.com/posts/55850.html</id>
+    <published>2024-07-15T08:13:09.000Z</published>
+    <updated>2024-07-15T08:13:09.604Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-六边形架构</title>
+    <link href="http://example.com/posts/8292.html"/>
+    <id>http://example.com/posts/8292.html</id>
+    <published>2024-07-15T08:13:04.000Z</published>
+    <updated>2024-07-15T08:13:04.587Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-与重构的关系</title>
+    <link href="http://example.com/posts/32726.html"/>
+    <id>http://example.com/posts/32726.html</id>
+    <published>2024-07-15T08:12:58.000Z</published>
+    <updated>2024-07-15T08:12:58.215Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-学习方法和路径</title>
+    <link href="http://example.com/posts/24545.html"/>
+    <id>http://example.com/posts/24545.html</id>
+    <published>2024-07-15T08:12:49.000Z</published>
+    <updated>2024-07-15T08:12:49.784Z</updated>
+    
+    
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-核心方法论</title>
+    <link href="http://example.com/posts/27223.html"/>
+    <id>http://example.com/posts/27223.html</id>
+    <published>2024-07-15T08:12:12.000Z</published>
+    <updated>2024-07-15T08:18:09.815Z</updated>
+    
+    
+    <summary type="html">领域驱动设计的核心方法论</summary>
+    
+    
+    
+    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
+    
+    
+    <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
     <title>开发问题记录</title>
     <link href="http://example.com/posts/19657.html"/>
     <id>http://example.com/posts/19657.html</id>
     <published>2024-06-18T04:23:53.000Z</published>
-    <updated>2024-06-18T07:35:08.162Z</updated>
+    <updated>2024-07-07T00:45:18.731Z</updated>
     
     
     <summary type="html">开发过程中碰到的共性问题与解决方法记录</summary>
@@ -70,339 +297,6 @@
     
     
     <category term="开发基础知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Maven-工程构建</title>
-    <link href="http://example.com/posts/29056.html"/>
-    <id>http://example.com/posts/29056.html</id>
-    <published>2024-06-03T04:45:41.000Z</published>
-    <updated>2024-06-03T04:53:00.000Z</updated>
-    
-    
-    <summary type="html">如何构建一个Maven项目（脚手架）</summary>
-    
-    
-    
-    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
-    
-    
-    <category term="开发基础知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Maven-安装与配置</title>
-    <link href="http://example.com/posts/64597.html"/>
-    <id>http://example.com/posts/64597.html</id>
-    <published>2024-05-20T11:05:39.000Z</published>
-    <updated>2024-06-03T04:53:00.000Z</updated>
-    
-    
-    <summary type="html">Maven安装与环境配置</summary>
-    
-    
-    
-    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
-    
-    
-    <category term="开发基础知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Maven-简介</title>
-    <link href="http://example.com/posts/48828.html"/>
-    <id>http://example.com/posts/48828.html</id>
-    <published>2024-05-15T10:55:45.000Z</published>
-    <updated>2024-06-03T04:53:00.000Z</updated>
-    
-    
-    <summary type="html">Maven是什么？为什么要学习Maven？</summary>
-    
-    
-    
-    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
-    
-    
-    <category term="开发基础知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>设计模式-行为模式</title>
-    <link href="http://example.com/posts/23570.html"/>
-    <id>http://example.com/posts/23570.html</id>
-    <published>2024-04-10T10:51:54.000Z</published>
-    <updated>2024-05-13T11:25:15.000Z</updated>
-    
-    
-    <summary type="html">行为模式负责对象间的高效沟通和职责委派</summary>
-    
-    
-    
-    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
-    
-    
-    <category term="开发进阶知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>设计模式-结构型模式</title>
-    <link href="http://example.com/posts/18127.html"/>
-    <id>http://example.com/posts/18127.html</id>
-    <published>2024-03-13T10:11:38.000Z</published>
-    <updated>2024-04-10T12:04:09.088Z</updated>
-    
-    
-    <summary type="html">结构型模式介绍如何将对象和类组装成较大的结构，并同时保持结构的灵活和高效</summary>
-    
-    
-    
-    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
-    
-    
-    <category term="开发进阶知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>设计模式-创建型模式</title>
-    <link href="http://example.com/posts/16062.html"/>
-    <id>http://example.com/posts/16062.html</id>
-    <published>2024-02-27T10:44:05.000Z</published>
-    <updated>2024-04-10T12:04:09.086Z</updated>
-    
-    
-    <summary type="html">创建型模式提供创建对象的机制，提升已有代码的灵活性和可复用性</summary>
-    
-    
-    
-    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
-    
-    
-    <category term="开发进阶知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>设计模式-SOLID原则</title>
-    <link href="http://example.com/posts/12321.html"/>
-    <id>http://example.com/posts/12321.html</id>
-    <published>2024-02-26T10:01:47.000Z</published>
-    <updated>2024-04-10T12:03:17.711Z</updated>
-    
-    
-    <summary type="html">SOLID是让软件设计更易于理解、更加灵活和更易于维护的五个原则</summary>
-    
-    
-    
-    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
-    
-    
-    <category term="开发进阶知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>设计模式-设计原则</title>
-    <link href="http://example.com/posts/18543.html"/>
-    <id>http://example.com/posts/18543.html</id>
-    <published>2024-02-25T06:07:26.000Z</published>
-    <updated>2024-04-10T12:04:09.084Z</updated>
-    
-    
-    <summary type="html">学习实际的设计模式前，了解一下软件机构的设计过程</summary>
-    
-    
-    
-    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
-    
-    
-    <category term="开发进阶知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>设计模式-简介</title>
-    <link href="http://example.com/posts/8883.html"/>
-    <id>http://example.com/posts/8883.html</id>
-    <published>2024-02-23T10:20:09.000Z</published>
-    <updated>2024-04-10T12:04:09.077Z</updated>
-    
-    
-    <summary type="html">设计模式是什么？</summary>
-    
-    
-    
-    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
-    
-    
-    <category term="开发进阶知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>设计模式-面向对象程序设计</title>
-    <link href="http://example.com/posts/22370.html"/>
-    <id>http://example.com/posts/22370.html</id>
-    <published>2024-02-20T08:02:11.000Z</published>
-    <updated>2024-04-10T12:04:28.829Z</updated>
-    
-    
-    <summary type="html">学习设计模式前对面向对象的初步了解</summary>
-    
-    
-    
-    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
-    
-    
-    <category term="开发进阶知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E8%BF%9B%E9%98%B6%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Tomcat了解</title>
-    <link href="http://example.com/posts/17791.html"/>
-    <id>http://example.com/posts/17791.html</id>
-    <published>2024-01-24T06:08:36.000Z</published>
-    <updated>2024-01-26T02:15:19.615Z</updated>
-    
-    
-    <summary type="html">Tomcat的简单了解</summary>
-    
-    
-    
-    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
-    
-    
-    <category term="开发基础知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Git</title>
-    <link href="http://example.com/posts/52196.html"/>
-    <id>http://example.com/posts/52196.html</id>
-    <published>2024-01-16T11:54:56.000Z</published>
-    <updated>2024-01-22T11:34:05.526Z</updated>
-    
-    
-    <summary type="html">Git学习</summary>
-    
-    
-    
-    <category term="编程语言" scheme="http://example.com/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/"/>
-    
-    
-    <category term="开发基础知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>DBMS-并发</title>
-    <link href="http://example.com/posts/23083.html"/>
-    <id>http://example.com/posts/23083.html</id>
-    <published>2022-06-11T06:48:29.000Z</published>
-    <updated>2023-08-28T02:10:10.000Z</updated>
-    
-    
-    <summary type="html">数据库并发访问控制，基于东南大学徐立臻数据库课程（研究生）</summary>
-    
-    
-    
-    <category term="课程学习" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/"/>
-    
-    <category term="数据库管理系统及其实现" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/"/>
-    
-    
-    <category term="学科基础知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>DBMS-恢复</title>
-    <link href="http://example.com/posts/26000.html"/>
-    <id>http://example.com/posts/26000.html</id>
-    <published>2022-06-11T06:48:24.000Z</published>
-    <updated>2023-08-30T04:27:45.164Z</updated>
-    
-    
-    <summary type="html">数据库故障恢复，基于东南大学徐立臻数据库课程（研究生）</summary>
-    
-    
-    
-    <category term="课程学习" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/"/>
-    
-    <category term="数据库管理系统及其实现" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/"/>
-    
-    
-    <category term="学科基础知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>DBMS-查询优化</title>
-    <link href="http://example.com/posts/19931.html"/>
-    <id>http://example.com/posts/19931.html</id>
-    <published>2022-06-11T06:48:20.000Z</published>
-    <updated>2023-08-28T02:01:48.000Z</updated>
-    
-    
-    <summary type="html">查询语句的优化原理，基于东南大学徐立臻数据库课程（研究生）</summary>
-    
-    
-    
-    <category term="课程学习" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/"/>
-    
-    <category term="数据库管理系统及其实现" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/"/>
-    
-    
-    <category term="学科基础知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>DBMS-目录分布</title>
-    <link href="http://example.com/posts/61373.html"/>
-    <id>http://example.com/posts/61373.html</id>
-    <published>2022-06-11T06:48:14.000Z</published>
-    <updated>2023-08-28T02:01:26.000Z</updated>
-    
-    
-    <summary type="html">分布式数据库的目录分布，基于东南大学徐立臻数据库课程（研究生）</summary>
-    
-    
-    
-    <category term="课程学习" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/"/>
-    
-    <category term="数据库管理系统及其实现" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/"/>
-    
-    
-    <category term="学科基础知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>DBMS-数据分布</title>
-    <link href="http://example.com/posts/33675.html"/>
-    <id>http://example.com/posts/33675.html</id>
-    <published>2022-06-11T06:48:09.000Z</published>
-    <updated>2023-08-28T02:01:12.000Z</updated>
-    
-    
-    <summary type="html">分布式数据库的数据分布，基于东南大学徐立臻数据库课程（研究生）</summary>
-    
-    
-    
-    <category term="课程学习" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/"/>
-    
-    <category term="数据库管理系统及其实现" scheme="http://example.com/categories/%E8%AF%BE%E7%A8%8B%E5%AD%A6%E4%B9%A0/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%AE%A1%E7%90%86%E7%B3%BB%E7%BB%9F%E5%8F%8A%E5%85%B6%E5%AE%9E%E7%8E%B0/"/>
-    
-    
-    <category term="学科基础知识" scheme="http://example.com/tags/%E5%AD%A6%E7%A7%91%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
     
   </entry>
   

@@ -1,6 +1,153 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>领域驱动设计-数量关系</title>
+    <url>/posts/17868.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>领域驱动设计-DDD与敏捷开发</title>
+    <url>/posts/34284.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>领域驱动设计-DDD与微服务</title>
+    <url>/posts/26335.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>领域驱动设计-DDD与MVC</title>
+    <url>/posts/54442.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>领域驱动设计-LMAX架构</title>
+    <url>/posts/31911.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>领域驱动设计-子领域</title>
+    <url>/posts/64137.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>领域驱动设计-事件溯源</title>
+    <url>/posts/46889.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>领域驱动设计-限界上下文</title>
+    <url>/posts/48778.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>领域驱动设计-图书借阅系统示例</title>
+    <url>/posts/57321.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>领域驱动设计-事件风暴</title>
+    <url>/posts/27943.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>领域驱动设计-实现面向对象领域模型</title>
+    <url>/posts/55083.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>领域驱动设计-CQRS</title>
+    <url>/posts/17660.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>领域驱动设计-聚合</title>
+    <url>/posts/55850.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>领域驱动设计-六边形架构</title>
+    <url>/posts/8292.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>领域驱动设计-与重构的关系</title>
+    <url>/posts/32726.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>领域驱动设计-学习方法和路径</title>
+    <url>/posts/24545.html</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>领域驱动设计-核心方法论</title>
+    <url>/posts/27223.html</url>
+    <content><![CDATA[<h2 id="核心方法论"><a href="#核心方法论" class="headerlink" title="核心方法论"></a>核心方法论</h2><h3 id="DDD是什么"><a href="#DDD是什么" class="headerlink" title="DDD是什么"></a>DDD是什么</h3><p>DDD = Domain(领域/问题域)-Driven(驱动) Design(设计)</p>
+<p>软件设计应该由领域驱动</p>
+<p><strong>领域驱动是什么？</strong></p>
+<p>在软件工程过程中，</p>
+<ol>
+<li>思考和协作从领域出发</li>
+<li>软件架构以领域为核心</li>
+</ol>
+<p><strong>领域如何驱动软件设计？</strong></p>
+<p>通过模型，模型能够解决主要问题，忽略当前不需要考虑的一些次要细节</p>
+<blockquote>
+<p>比如汽车模型能够展现汽车的外形，但是不需要在当前阶段就关注如何设计一个发动机</p>
+</blockquote>
+<p>所以DDD的核心方法论即为<strong>领域通过领域模型驱动软件设计</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">graph LR;</span><br><span class="line">	问题域--&gt;模型--&gt;软件设计</span><br></pre></td></tr></table></figure>
+<ol>
+<li>从问题域出发，对问题域进行分析与设计得到一个领域模型</li>
+<li>然后通过工程化的手段把这些领域模型变成软件的设计，指导代码实现</li>
+</ol>
+<p>DDD的其他概念则是对上述过程的方法支撑，比如事件风暴、四色建模、统一语言等都是解决如何从问题域得到模型，而命令、聚合、限界上下文则是常用的表示模型的方法，六边形架构、分层架构、CQRS、时间溯源等则是一些如何把模型变成软件的一些设计经验</p>
+<h3 id="DDD相关概念简述"><a href="#DDD相关概念简述" class="headerlink" title="DDD相关概念简述"></a>DDD相关概念简述</h3><p><img src="/posts/27223/image-20240701104809827.png" alt="image-20240701104809827"></p>
+<p><strong>补充</strong></p>
+<ul>
+<li><p>面向对象分析设计：分析问题与设计模型，通用的建模方法</p>
+</li>
+<li><p>CQRS：分解命令类问题和查询类问题</p>
+</li>
+<li><p>四层架构：把领域这个模块独立到一个分层结构中的某个层次中，但是领域层依赖于基础设施层</p>
+</li>
+<li><p>六边形架构：使得领域模块不再依赖于具体的技术实现</p>
+</li>
+<li><p>事件溯源：事件溯源将所有状态更改表示为一系列事件，事件是一些按照时间排列的不可变数据，比较容易持久化，而聚合则是结构性数据，需要随时更新。事件溯源能够解决对象模型和数据库不匹配的问题，其不匹配在于数据库往往更适合存储静态数据，而对象模型则更关注业务逻辑和行为，事件溯源通过记录状态变化的事件，而不是直接存储对象的当前状态，使得数据库只需要记录这些事件，不需要关注对象的具体内部结构。这减少了对象模型和数据库结构之间的不匹配。</p>
+<p>事件溯源有点类似于MySQL数据库中的redo log，其记录的是对 XXX 表空间中的 YYY 数据页 ZZZ 偏移量的地方做了AAA 更新</p>
+</li>
+</ul>
+<h3 id="错误实践"><a href="#错误实践" class="headerlink" title="错误实践"></a>错误实践</h3><ul>
+<li><p>无领域模型</p>
+<p>不设计领域模型，直接设计技术实现细节，比如数据库、消息、分布式方案等等。代码中不存在和领域模型对应的模块。每行代码都知道什么意思，就是不知道这些代码在干什么。要搞懂代码意图，需要靠猜想。</p>
+</li>
+<li><p>银弹</p>
+<p>过度打造通用系统，试图用一个系统解决所有问题，结果只能解决80%的非核心问题，剩下那20%核心问题却要了你的命。比如某些中台、某些低代码平台、某些通用电商系统</p>
+</li>
+<li><p>经验主义</p>
+<p>某某大公司是怎么做的，所以我们就怎么做，如果效果不好，那就是你的需求有问题。经验可以借鉴，但也仅仅是借鉴。从具体的问题域出发，才是正道。</p>
+</li>
+<li><p>浮夸</p>
+<p>领域模型只存活在PPT中，高端大气上档次，领导看了开心，程序员看了头疼，不能落地为代码。一切不以写代码为目的的DDD都是扯淡！</p>
+</li>
+<li><p>理想主义</p>
+<p>死磕值对象、实体、服务等等概念不带入到实际业务场景，模型过度解耦过度使用设计模式。</p>
+<p>其实就是要懂得变通，不一定要完美匹配或者遵循规范，比如数据库表字段设计的不可再分</p>
+</li>
+<li><p>性能之上</p>
+<p>为了解决想象中的性能问题，过早过度性能优化，一而再再而三的牺牲领域模型除非有证据，否则不要去优化！</p>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>编程语言</category>
+      </categories>
+      <tags>
+        <tag>开发拓展知识</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>开发问题记录</title>
     <url>/posts/19657.html</url>
     <content><![CDATA[<h2 id="java版本"><a href="#java版本" class="headerlink" title="java版本"></a>java版本</h2><h3 id="不支持发现版本5"><a href="#不支持发现版本5" class="headerlink" title="不支持发现版本5"></a>不支持发现版本5</h3><h4 id="错误提示"><a href="#错误提示" class="headerlink" title="错误提示"></a>错误提示</h4><blockquote>
@@ -31,6 +178,11 @@
 <p>其次，进入settings.xml文件，找到profiles标签，加入以下代码</p>
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">id</span>&gt;</span>jdk-11<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">activation</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">activeByDefault</span>&gt;</span>true<span class="tag">&lt;/<span class="name">activeByDefault</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">jdk</span>&gt;</span>11<span class="tag">&lt;/<span class="name">jdk</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;/<span class="name">activation</span>&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">project.build.sourceEncoding</span>&gt;</span>UTF-8<span class="tag">&lt;/<span class="name">project.build.sourceEncoding</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">maven.compiler.source</span>&gt;</span>11<span class="tag">&lt;/<span class="name">maven.compiler.source</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">maven.compiler.target</span>&gt;</span>11<span class="tag">&lt;/<span class="name">maven.compiler.target</span>&gt;</span> </span><br><span class="line">     <span class="tag">&lt;/<span class="name">properties</span>&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>最后，重新启动IDEA</p>
+<h2 id="代码语法"><a href="#代码语法" class="headerlink" title="代码语法"></a>代码语法</h2><h3 id="PlantUML错误绘制—"><a href="#PlantUML错误绘制—" class="headerlink" title="PlantUML错误绘制—"></a>PlantUML错误绘制—</h3><h4 id="错误提示-1"><a href="#错误提示-1" class="headerlink" title="错误提示"></a>错误提示</h4><p>绘制UML图时，”—“无法被PlantUML识别为横线，而是绘制为删除线</p>
+<h4 id="出现时机-1"><a href="#出现时机-1" class="headerlink" title="出现时机"></a>出现时机</h4><p>从bilibili文章复制PlantUML代码后将那些绘制出现该问题</p>
+<h4 id="原因分析-1"><a href="#原因分析-1" class="headerlink" title="原因分析"></a>原因分析</h4><p>复制时产生了不必要的空白行，被错误地进行了识别</p>
+<h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h4><p>删除即可，对应正则表达式<code>^\s*\n</code>，即匹配以0个或n个<code>\s</code>空白符起首的换行<code>\n</code></p>
+<p>如果想只删除连续多行的空行，就需要调整一下正则 <code>^\s*\n\s*\n</code>就可以了</p>
 ]]></content>
       <categories>
         <category>经验</category>
