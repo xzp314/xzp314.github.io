@@ -39,6 +39,7 @@
 ]]></content>
       <categories>
         <category>扩展学习</category>
+        <category>领域驱动设计</category>
       </categories>
       <tags>
         <tag>开发拓展知识</tag>
@@ -72,6 +73,7 @@
 ]]></content>
       <categories>
         <category>扩展学习</category>
+        <category>领域驱动设计</category>
       </categories>
       <tags>
         <tag>开发拓展知识</tag>
@@ -105,6 +107,7 @@
 ]]></content>
       <categories>
         <category>扩展学习</category>
+        <category>领域驱动设计</category>
       </categories>
       <tags>
         <tag>开发拓展知识</tag>
@@ -156,6 +159,7 @@
 ]]></content>
       <categories>
         <category>扩展学习</category>
+        <category>领域驱动设计</category>
       </categories>
       <tags>
         <tag>开发拓展知识</tag>
@@ -187,6 +191,121 @@
 ]]></content>
       <categories>
         <category>扩展学习</category>
+        <category>领域驱动设计</category>
+      </categories>
+      <tags>
+        <tag>开发拓展知识</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>领域驱动设计-LMAX</title>
+    <url>/posts/24946.html</url>
+    <content><![CDATA[<h2 id="LMAX架构"><a href="#LMAX架构" class="headerlink" title="LMAX架构"></a>LMAX架构</h2><p>DDD的极致性能架构，但并不局限于DDD，其目标是超高TPS（事务数/秒），例如金融零售平台</p>
+<h3 id="总体架构"><a href="#总体架构" class="headerlink" title="总体架构"></a>总体架构</h3><p><img src="/posts/24946/image-20240708110641088.png" alt="image-20240708110641088"></p>
+<ol>
+<li><p>外部系统发过来的请求置于一个串行队列进行处理</p>
+<p>Disruptor是java的一个高性能队列框架</p>
+</li>
+<li><p>经过业务处理后得到处理结果，即domain event</p>
+</li>
+<li><p>将结果写到输出队列中</p>
+</li>
+</ol>
+<p>并不存在一个直接response给客户端的步骤，实际上这是一个异步过程，客户端发送请求后就不管了，设置一个监听器进行监听</p>
+<h3 id="架构要素"><a href="#架构要素" class="headerlink" title="架构要素"></a>架构要素</h3><ul>
+<li><p>聚合常驻内存</p>
+<p>传统做法通常聚合在本次使用完后就会被垃圾回收，下次再从数据库加载</p>
+</li>
+<li><p>事件溯源</p>
+</li>
+<li><p>单线程异步非阻塞IO（串行化、无锁）</p>
+</li>
+</ul>
+<h4 id="内存常驻"><a href="#内存常驻" class="headerlink" title="内存常驻"></a>内存常驻</h4><h5 id="时序图对比"><a href="#时序图对比" class="headerlink" title="时序图对比"></a>时序图对比</h5><p><strong>传统时序</strong></p>
+<p><img src="/posts/24946/image-20240708112544322.png" alt="image-20240708112544322"></p>
+<ul>
+<li>每次收到命令后，<strong>从数据库读取聚合状态数据重建聚合</strong></li>
+<li>每次处理完业务功能后，将聚合状态写入数据库</li>
+<li>领域事件可持久化也可不持久化</li>
+</ul>
+<p><strong>事件溯源时序</strong></p>
+<p><img src="/posts/24946/image-20240708113355031.png" alt="image-20240708113355031"></p>
+<ul>
+<li>每次收到命令后，<strong>从数据库读取领域事件和聚合快照，重建聚合</strong></li>
+<li>每次处理完业务功能后将领域事件持久化</li>
+</ul>
+<p><strong>LMAX时序</strong></p>
+<ul>
+<li><p>每次收到命令后，<strong>从内存中找到聚合对象</strong></p>
+<p><strong>第一次查询时需要查询事件进行重建，后续则直接查找聚合对象</strong></p>
+</li>
+<li><p>每次处理完业务功能后将领域事件异步持久化</p>
+</li>
+<li><p>持久化成功后，异步通知客户端结果</p>
+</li>
+<li><p>第一次启动服务器时重建所有聚合，仓储创建好内存索引</p>
+</li>
+</ul>
+<h5 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h5><p><img src="/posts/24946/image-20240708115038195.png" alt="image-20240708115038195"></p>
+<h4 id="事件溯源"><a href="#事件溯源" class="headerlink" title="事件溯源"></a>事件溯源</h4><p>如果写的是聚合的数据，那么在业务过程中，需要在数据库中找到原来的对象，然后进行update，开销肯定是比事件溯源的追加要大的（空间换时间）</p>
+<h4 id="单线程非阻塞异步IO（reactor）"><a href="#单线程非阻塞异步IO（reactor）" class="headerlink" title="单线程非阻塞异步IO（reactor）"></a>单线程非阻塞异步IO（reactor）</h4><ul>
+<li>多线程<ul>
+<li>CPU在多线程间切换开销高(相对reactor)</li>
+<li>阻塞<ul>
+<li>每个请求分配一个线程进行处理，并发受线程数限制</li>
+<li>如果某个线程阻塞，那么没办法执行，但是依然占用内存空间</li>
+</ul>
+</li>
+<li>非阻塞<ul>
+<li>聚合在内存中只有一个实例，对实例加锁，每个聚合实际并发1</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>单线程</strong><ul>
+<li>串行执行，无需加锁，一个CPU执行一个线程</li>
+<li>阻塞<ul>
+<li>并发能力1，性能暴跌</li>
+</ul>
+</li>
+<li><strong>非阻塞 (超高性能的唯一选择，节省了线程切换、缓存失效开销)</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="实践方案"><a href="#实践方案" class="headerlink" title="实践方案"></a>实践方案</h3><p><img src="/posts/24946/image-20240708123701322.png" alt="image-20240708123701322"></p>
+<p>主从关系的冗余确保可靠性，在主设备宕机时，启用从设备，并调整主从关系</p>
+<h3 id="代价"><a href="#代价" class="headerlink" title="代价"></a>代价</h3><ul>
+<li><strong>无数据库事务</strong><ul>
+<li>无先操作后回滚的弥补措施，必须严格前置完成所有校验，才能变更聚合内的状态数据，才能发布领域事件</li>
+</ul>
+</li>
+<li><strong>运行时外部调用变复杂（设计、实现时较为复杂）</strong><ul>
+<li>减少主动外部调用：监听事件提前组装数据 (数据量小)</li>
+<li>显式事件驱动方式</li>
+</ul>
+</li>
+<li><strong>受内存大小限制</strong><ul>
+<li>聚合实例数据量太大：数据分区，多服务器，架构更复杂</li>
+</ul>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>极致性能</li>
+<li>全内存化模型设计，更灵活自由</li>
+</ul>
+<hr>
+<ul>
+<li>异步编程带来的编程难度</li>
+<li>高可用架构更复杂</li>
+</ul>
+<hr>
+<ul>
+<li>聚合数据量适合内存化，需要极致TPS场景，比如:某些游戏服务器，火车订票</li>
+</ul>
+]]></content>
+      <categories>
+        <category>扩展学习</category>
+        <category>领域驱动设计</category>
       </categories>
       <tags>
         <tag>开发拓展知识</tag>
@@ -300,6 +419,7 @@
 ]]></content>
       <categories>
         <category>扩展学习</category>
+        <category>领域驱动设计</category>
       </categories>
       <tags>
         <tag>开发拓展知识</tag>
@@ -388,6 +508,7 @@
 ]]></content>
       <categories>
         <category>扩展学习</category>
+        <category>领域驱动设计</category>
       </categories>
       <tags>
         <tag>开发拓展知识</tag>
@@ -463,6 +584,7 @@
 ]]></content>
       <categories>
         <category>扩展学习</category>
+        <category>领域驱动设计</category>
       </categories>
       <tags>
         <tag>开发拓展知识</tag>
@@ -613,6 +735,64 @@
 ]]></content>
       <categories>
         <category>扩展学习</category>
+        <category>领域驱动设计</category>
+      </categories>
+      <tags>
+        <tag>开发拓展知识</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>领域驱动设计-聚合</title>
+    <url>/posts/55850.html</url>
+    <content><![CDATA[<h2 id="聚合"><a href="#聚合" class="headerlink" title="聚合"></a>聚合</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><ul>
+<li><p><strong>从不变量、强一致性（数据库持久化）出发，</strong>将实体和值对象聚集到聚合中。每个聚合定义了一个边界。为每个聚合选择一个实体作为其根，并通过根来控制所有对边界内对象的访问。<strong>外部对象只能持有根的引用</strong>；对内部元素的临时引用只能在单个操作中使用。由于根控制了访问，因此我们无法绕过它去修改内部元素。这种安排使得我们可以保证在任何状态变化中，聚合本身的不变量，以及聚合中对象的不变量都可以被满足。</p>
+<p>聚合实现封装的功能，通过<strong>外部对象只能持有根的引用</strong>将内部细节进行隐藏，但是对于建模没有帮助</p>
+<p><img src="/posts/55850/image-20240704133126966.png" alt="image-20240704133126966" style="zoom:67%;"></p>
+</li>
+</ul>
+<p>  即便任意圈都能保证一致性和不变量，在具体进行聚合时依然存在如下问题：</p>
+<ol>
+<li>哪种聚合划分方式才更很合理？</li>
+<li>按照一致性的强弱来划分吗？哪几个对象的一致性更强？</li>
+<li>为什么不把所有业务对象都放到一个聚合内?</li>
+</ol>
+<ul>
+<li><p><strong>从问题域出发，</strong>聚合是紧密联系的一组功能</p>
+</li>
+<li><p><strong>从软件设计出发</strong>，聚合是一个内存单元，它包含了一组对象，要被<strong>整存整取（一致性）</strong></p>
+</li>
+</ul>
+<h3 id="范围"><a href="#范围" class="headerlink" title="范围"></a>范围</h3><p><strong>聚合范围越小：</strong></p>
+<ul>
+<li>越难实现一致性，需要更多跨聚合的协调</li>
+<li>封装粒度越小，领域逻辑越多在聚合间实现</li>
+<li>整存整取开销越小</li>
+</ul>
+<p><strong>聚合范围越大：</strong></p>
+<ul>
+<li>越容易实现一致性</li>
+<li>封装粒度越大，领域逻辑越多在聚合内实现</li>
+<li>整存整取开销越高：一次性要处理太多对象</li>
+</ul>
+<h3 id="上下限"><a href="#上下限" class="headerlink" title="上下限"></a>上下限</h3><ul>
+<li><p><strong>下限</strong>：不要破坏封装</p>
+<p>否则沦为贫血模型，聚合内部缺乏业务逻辑，这些功能都需要通过聚合间协作完成，而协作要么通过事件监听、要么通过前置控制器完成，导致逻辑、数据会泄露给这些无状态、无行为的service</p>
+</li>
+<li><p><strong>上限</strong>：不要出现性能问题</p>
+<p>否则难以落地，即便上线，也需要进行拆分</p>
+</li>
+</ul>
+<p>思考上下限的目的在于<strong>明确设计领域模型聚合对象的边界</strong></p>
+<h3 id="停车示例"><a href="#停车示例" class="headerlink" title="停车示例"></a>停车示例</h3><p><img src="/posts/55850/image-20240703120501614.png" alt="image-20240703120501614" style="zoom: 33%;"></p>
+<ul>
+<li>停车聚合只有4个属性，分别是车牌号、时间、金额，均为字符串类型，大小确定，能满足一个停车场的性能要求。</li>
+<li>停车聚合提供的入场、出场、计费、通知付费几个功能存在强内在关联，没有泄露到外部。</li>
+<li>实际上在上下限之间有很大的空间，并没有绝对的唯一的合理的模型设计。可以根据实际情况选择，够用就行。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>扩展学习</category>
+        <category>领域驱动设计</category>
       </categories>
       <tags>
         <tag>开发拓展知识</tag>
@@ -669,6 +849,7 @@
 ]]></content>
       <categories>
         <category>扩展学习</category>
+        <category>领域驱动设计</category>
       </categories>
       <tags>
         <tag>开发拓展知识</tag>
@@ -817,175 +998,7 @@
 ]]></content>
       <categories>
         <category>扩展学习</category>
-      </categories>
-      <tags>
-        <tag>开发拓展知识</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>领域驱动设计-LMAX</title>
-    <url>/posts/24946.html</url>
-    <content><![CDATA[<h2 id="LMAX架构"><a href="#LMAX架构" class="headerlink" title="LMAX架构"></a>LMAX架构</h2><p>DDD的极致性能架构，但并不局限于DDD，其目标是超高TPS（事务数/秒），例如金融零售平台</p>
-<h3 id="总体架构"><a href="#总体架构" class="headerlink" title="总体架构"></a>总体架构</h3><p><img src="/posts/24946/image-20240708110641088.png" alt="image-20240708110641088"></p>
-<ol>
-<li><p>外部系统发过来的请求置于一个串行队列进行处理</p>
-<p>Disruptor是java的一个高性能队列框架</p>
-</li>
-<li><p>经过业务处理后得到处理结果，即domain event</p>
-</li>
-<li><p>将结果写到输出队列中</p>
-</li>
-</ol>
-<p>并不存在一个直接response给客户端的步骤，实际上这是一个异步过程，客户端发送请求后就不管了，设置一个监听器进行监听</p>
-<h3 id="架构要素"><a href="#架构要素" class="headerlink" title="架构要素"></a>架构要素</h3><ul>
-<li><p>聚合常驻内存</p>
-<p>传统做法通常聚合在本次使用完后就会被垃圾回收，下次再从数据库加载</p>
-</li>
-<li><p>事件溯源</p>
-</li>
-<li><p>单线程异步非阻塞IO（串行化、无锁）</p>
-</li>
-</ul>
-<h4 id="内存常驻"><a href="#内存常驻" class="headerlink" title="内存常驻"></a>内存常驻</h4><h5 id="时序图对比"><a href="#时序图对比" class="headerlink" title="时序图对比"></a>时序图对比</h5><p><strong>传统时序</strong></p>
-<p><img src="/posts/24946/image-20240708112544322.png" alt="image-20240708112544322"></p>
-<ul>
-<li>每次收到命令后，<strong>从数据库读取聚合状态数据重建聚合</strong></li>
-<li>每次处理完业务功能后，将聚合状态写入数据库</li>
-<li>领域事件可持久化也可不持久化</li>
-</ul>
-<p><strong>事件溯源时序</strong></p>
-<p><img src="/posts/24946/image-20240708113355031.png" alt="image-20240708113355031"></p>
-<ul>
-<li>每次收到命令后，<strong>从数据库读取领域事件和聚合快照，重建聚合</strong></li>
-<li>每次处理完业务功能后将领域事件持久化</li>
-</ul>
-<p><strong>LMAX时序</strong></p>
-<ul>
-<li><p>每次收到命令后，<strong>从内存中找到聚合对象</strong></p>
-<p><strong>第一次查询时需要查询事件进行重建，后续则直接查找聚合对象</strong></p>
-</li>
-<li><p>每次处理完业务功能后将领域事件异步持久化</p>
-</li>
-<li><p>持久化成功后，异步通知客户端结果</p>
-</li>
-<li><p>第一次启动服务器时重建所有聚合，仓储创建好内存索引</p>
-</li>
-</ul>
-<h5 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h5><p><img src="/posts/24946/image-20240708115038195.png" alt="image-20240708115038195"></p>
-<h4 id="事件溯源"><a href="#事件溯源" class="headerlink" title="事件溯源"></a>事件溯源</h4><p>如果写的是聚合的数据，那么在业务过程中，需要在数据库中找到原来的对象，然后进行update，开销肯定是比事件溯源的追加要大的（空间换时间）</p>
-<h4 id="单线程非阻塞异步IO（reactor）"><a href="#单线程非阻塞异步IO（reactor）" class="headerlink" title="单线程非阻塞异步IO（reactor）"></a>单线程非阻塞异步IO（reactor）</h4><ul>
-<li>多线程<ul>
-<li>CPU在多线程间切换开销高(相对reactor)</li>
-<li>阻塞<ul>
-<li>每个请求分配一个线程进行处理，并发受线程数限制</li>
-<li>如果某个线程阻塞，那么没办法执行，但是依然占用内存空间</li>
-</ul>
-</li>
-<li>非阻塞<ul>
-<li>聚合在内存中只有一个实例，对实例加锁，每个聚合实际并发1</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><strong>单线程</strong><ul>
-<li>串行执行，无需加锁，一个CPU执行一个线程</li>
-<li>阻塞<ul>
-<li>并发能力1，性能暴跌</li>
-</ul>
-</li>
-<li><strong>非阻塞 (超高性能的唯一选择，节省了线程切换、缓存失效开销)</strong></li>
-</ul>
-</li>
-</ul>
-<h3 id="实践方案"><a href="#实践方案" class="headerlink" title="实践方案"></a>实践方案</h3><p><img src="/posts/24946/image-20240708123701322.png" alt="image-20240708123701322"></p>
-<p>主从关系的冗余确保可靠性，在主设备宕机时，启用从设备，并调整主从关系</p>
-<h3 id="代价"><a href="#代价" class="headerlink" title="代价"></a>代价</h3><ul>
-<li><strong>无数据库事务</strong><ul>
-<li>无先操作后回滚的弥补措施，必须严格前置完成所有校验，才能变更聚合内的状态数据，才能发布领域事件</li>
-</ul>
-</li>
-<li><strong>运行时外部调用变复杂（设计、实现时较为复杂）</strong><ul>
-<li>减少主动外部调用：监听事件提前组装数据 (数据量小)</li>
-<li>显式事件驱动方式</li>
-</ul>
-</li>
-<li><strong>受内存大小限制</strong><ul>
-<li>聚合实例数据量太大：数据分区，多服务器，架构更复杂</li>
-</ul>
-</li>
-</ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
-<li>极致性能</li>
-<li>全内存化模型设计，更灵活自由</li>
-</ul>
-<hr>
-<ul>
-<li>异步编程带来的编程难度</li>
-<li>高可用架构更复杂</li>
-</ul>
-<hr>
-<ul>
-<li>聚合数据量适合内存化，需要极致TPS场景，比如:某些游戏服务器，火车订票</li>
-</ul>
-]]></content>
-      <categories>
-        <category>扩展学习</category>
-      </categories>
-      <tags>
-        <tag>开发拓展知识</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>领域驱动设计-聚合</title>
-    <url>/posts/55850.html</url>
-    <content><![CDATA[<h2 id="聚合"><a href="#聚合" class="headerlink" title="聚合"></a>聚合</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><ul>
-<li><p><strong>从不变量、强一致性（数据库持久化）出发，</strong>将实体和值对象聚集到聚合中。每个聚合定义了一个边界。为每个聚合选择一个实体作为其根，并通过根来控制所有对边界内对象的访问。<strong>外部对象只能持有根的引用</strong>；对内部元素的临时引用只能在单个操作中使用。由于根控制了访问，因此我们无法绕过它去修改内部元素。这种安排使得我们可以保证在任何状态变化中，聚合本身的不变量，以及聚合中对象的不变量都可以被满足。</p>
-<p>聚合实现封装的功能，通过<strong>外部对象只能持有根的引用</strong>将内部细节进行隐藏，但是对于建模没有帮助</p>
-<p><img src="/posts/55850/image-20240704133126966.png" alt="image-20240704133126966" style="zoom:67%;"></p>
-</li>
-</ul>
-<p>  即便任意圈都能保证一致性和不变量，在具体进行聚合时依然存在如下问题：</p>
-<ol>
-<li>哪种聚合划分方式才更很合理？</li>
-<li>按照一致性的强弱来划分吗？哪几个对象的一致性更强？</li>
-<li>为什么不把所有业务对象都放到一个聚合内?</li>
-</ol>
-<ul>
-<li><p><strong>从问题域出发，</strong>聚合是紧密联系的一组功能</p>
-</li>
-<li><p><strong>从软件设计出发</strong>，聚合是一个内存单元，它包含了一组对象，要被<strong>整存整取（一致性）</strong></p>
-</li>
-</ul>
-<h3 id="范围"><a href="#范围" class="headerlink" title="范围"></a>范围</h3><p><strong>聚合范围越小：</strong></p>
-<ul>
-<li>越难实现一致性，需要更多跨聚合的协调</li>
-<li>封装粒度越小，领域逻辑越多在聚合间实现</li>
-<li>整存整取开销越小</li>
-</ul>
-<p><strong>聚合范围越大：</strong></p>
-<ul>
-<li>越容易实现一致性</li>
-<li>封装粒度越大，领域逻辑越多在聚合内实现</li>
-<li>整存整取开销越高：一次性要处理太多对象</li>
-</ul>
-<h3 id="上下限"><a href="#上下限" class="headerlink" title="上下限"></a>上下限</h3><ul>
-<li><p><strong>下限</strong>：不要破坏封装</p>
-<p>否则沦为贫血模型，聚合内部缺乏业务逻辑，这些功能都需要通过聚合间协作完成，而协作要么通过事件监听、要么通过前置控制器完成，导致逻辑、数据会泄露给这些无状态、无行为的service</p>
-</li>
-<li><p><strong>上限</strong>：不要出现性能问题</p>
-<p>否则难以落地，即便上线，也需要进行拆分</p>
-</li>
-</ul>
-<p>思考上下限的目的在于<strong>明确设计领域模型聚合对象的边界</strong></p>
-<h3 id="停车示例"><a href="#停车示例" class="headerlink" title="停车示例"></a>停车示例</h3><p><img src="/posts/55850/image-20240703120501614.png" alt="image-20240703120501614" style="zoom: 33%;"></p>
-<ul>
-<li>停车聚合只有4个属性，分别是车牌号、时间、金额，均为字符串类型，大小确定，能满足一个停车场的性能要求。</li>
-<li>停车聚合提供的入场、出场、计费、通知付费几个功能存在强内在关联，没有泄露到外部。</li>
-<li>实际上在上下限之间有很大的空间，并没有绝对的唯一的合理的模型设计。可以根据实际情况选择，够用就行。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>扩展学习</category>
+        <category>领域驱动设计</category>
       </categories>
       <tags>
         <tag>开发拓展知识</tag>
@@ -1034,6 +1047,45 @@
 ]]></content>
       <categories>
         <category>扩展学习</category>
+        <category>领域驱动设计</category>
+      </categories>
+      <tags>
+        <tag>开发拓展知识</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>领域驱动设计-学习方法和路径</title>
+    <url>/posts/24545.html</url>
+    <content><![CDATA[<h2 id="学习方法和路径"><a href="#学习方法和路径" class="headerlink" title="学习方法和路径"></a>学习方法和路径</h2><h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><p><strong>实践是学习DDD的唯一方法</strong></p>
+<p>DDD = 知识 + 技能 </p>
+<p>知识比较容易掌握，但是技能需要反复实践</p>
+<h3 id="实践路径"><a href="#实践路径" class="headerlink" title="实践路径"></a>实践路径</h3><ol>
+<li><p><strong>实现模型</strong></p>
+<p>掌握使用六边形架构和CQRS实现出领域模块，掌握仓储模式</p>
+<ul>
+<li><strong>不用过度关注四层架构，专注于 独立的领域核心模块不会依赖任何其他模块，而负责描述领域本身</strong></li>
+<li>CQRS是将业务和查询分开的关键，也是极为重要的</li>
+</ul>
+</li>
+<li><p><strong>战术建模</strong></p>
+<p>用事件风暴和OOD设计模型，掌握聚合，能够解决较为简单的问题</p>
+<ul>
+<li>没有必要纠结值对象、实体、工厂等概念，并不是非要拿着实际业务场景往上述概念上靠</li>
+<li>在不同上下文中，同一个概念可能是实体，也可能是值对象</li>
+<li>重要的是学习事件风暴、OOD等设计模型的方法</li>
+</ul>
+</li>
+<li><p>战略建模</p>
+<p>用事件风暴对复杂业务建模，掌握限界上下文子领域</p>
+</li>
+<li><p>协作</p>
+<p>将DDD拓展到其他团队，统一开发范式</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>扩展学习</category>
+        <category>领域驱动设计</category>
       </categories>
       <tags>
         <tag>开发拓展知识</tag>
@@ -1108,43 +1160,7 @@
 ]]></content>
       <categories>
         <category>扩展学习</category>
-      </categories>
-      <tags>
-        <tag>开发拓展知识</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>领域驱动设计-学习方法和路径</title>
-    <url>/posts/24545.html</url>
-    <content><![CDATA[<h2 id="学习方法和路径"><a href="#学习方法和路径" class="headerlink" title="学习方法和路径"></a>学习方法和路径</h2><h3 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h3><p><strong>实践是学习DDD的唯一方法</strong></p>
-<p>DDD = 知识 + 技能 </p>
-<p>知识比较容易掌握，但是技能需要反复实践</p>
-<h3 id="实践路径"><a href="#实践路径" class="headerlink" title="实践路径"></a>实践路径</h3><ol>
-<li><p><strong>实现模型</strong></p>
-<p>掌握使用六边形架构和CQRS实现出领域模块，掌握仓储模式</p>
-<ul>
-<li><strong>不用过度关注四层架构，专注于 独立的领域核心模块不会依赖任何其他模块，而负责描述领域本身</strong></li>
-<li>CQRS是将业务和查询分开的关键，也是极为重要的</li>
-</ul>
-</li>
-<li><p><strong>战术建模</strong></p>
-<p>用事件风暴和OOD设计模型，掌握聚合，能够解决较为简单的问题</p>
-<ul>
-<li>没有必要纠结值对象、实体、工厂等概念，并不是非要拿着实际业务场景往上述概念上靠</li>
-<li>在不同上下文中，同一个概念可能是实体，也可能是值对象</li>
-<li>重要的是学习事件风暴、OOD等设计模型的方法</li>
-</ul>
-</li>
-<li><p>战略建模</p>
-<p>用事件风暴对复杂业务建模，掌握限界上下文子领域</p>
-</li>
-<li><p>协作</p>
-<p>将DDD拓展到其他团队，统一开发范式</p>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>扩展学习</category>
+        <category>领域驱动设计</category>
       </categories>
       <tags>
         <tag>开发拓展知识</tag>
@@ -1212,6 +1228,7 @@
 ]]></content>
       <categories>
         <category>扩展学习</category>
+        <category>领域驱动设计</category>
       </categories>
       <tags>
         <tag>开发拓展知识</tag>

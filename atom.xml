@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2024-07-15T08:39:15.839Z</updated>
+  <updated>2024-07-15T09:39:08.823Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -20,8 +20,8 @@
     <title>领域驱动设计-数量关系</title>
     <link href="http://example.com/posts/17868.html"/>
     <id>http://example.com/posts/17868.html</id>
-    <published>2024-07-15T08:27:12.000Z</published>
-    <updated>2024-07-15T08:39:15.839Z</updated>
+    <published>2024-07-15T08:12:28.000Z</published>
+    <updated>2024-07-15T09:39:08.823Z</updated>
     
     
     <summary type="html">DDD中的数量关系</summary>
@@ -29,6 +29,8 @@
     
     
     <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="领域驱动设计" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
     
     
     <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
@@ -39,8 +41,8 @@
     <title>领域驱动设计-DDD与微服务</title>
     <link href="http://example.com/posts/26335.html"/>
     <id>http://example.com/posts/26335.html</id>
-    <published>2024-07-15T08:25:12.000Z</published>
-    <updated>2024-07-15T08:39:15.829Z</updated>
+    <published>2024-07-15T08:12:27.000Z</published>
+    <updated>2024-07-15T09:38:57.541Z</updated>
     
     
     <summary type="html">DDD与微服务的关系</summary>
@@ -48,6 +50,8 @@
     
     
     <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="领域驱动设计" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
     
     
     <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
@@ -58,8 +62,8 @@
     <title>领域驱动设计-DDD与微服务</title>
     <link href="http://example.com/posts/26336.html"/>
     <id>http://example.com/posts/26336.html</id>
-    <published>2024-07-15T08:24:12.000Z</published>
-    <updated>2024-07-15T08:39:15.830Z</updated>
+    <published>2024-07-15T08:12:26.000Z</published>
+    <updated>2024-07-15T09:38:48.169Z</updated>
     
     
     <summary type="html">DDD与微服务之间的关系</summary>
@@ -67,6 +71,8 @@
     
     
     <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="领域驱动设计" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
     
     
     <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
@@ -77,8 +83,8 @@
     <title>领域驱动设计-DDD与MVC</title>
     <link href="http://example.com/posts/54442.html"/>
     <id>http://example.com/posts/54442.html</id>
-    <published>2024-07-15T08:23:12.000Z</published>
-    <updated>2024-07-15T08:39:15.828Z</updated>
+    <published>2024-07-15T08:12:25.000Z</published>
+    <updated>2024-07-15T09:38:26.620Z</updated>
     
     
     <summary type="html">DDD与MVC之间的关系</summary>
@@ -86,6 +92,8 @@
     
     
     <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="领域驱动设计" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
     
     
     <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
@@ -96,8 +104,8 @@
     <title>领域驱动设计-子领域</title>
     <link href="http://example.com/posts/64137.html"/>
     <id>http://example.com/posts/64137.html</id>
-    <published>2024-07-15T08:22:12.000Z</published>
-    <updated>2024-07-15T08:39:15.837Z</updated>
+    <published>2024-07-15T08:12:24.000Z</published>
+    <updated>2024-07-15T09:38:07.012Z</updated>
     
     
     <summary type="html">DDD的子领域概念</summary>
@@ -106,119 +114,7 @@
     
     <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
     
-    
-    <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>领域驱动设计-事件溯源</title>
-    <link href="http://example.com/posts/46889.html"/>
-    <id>http://example.com/posts/46889.html</id>
-    <published>2024-07-15T08:21:12.000Z</published>
-    <updated>2024-07-15T08:39:15.833Z</updated>
-    
-    
-    <summary type="html">何为事件溯源</summary>
-    
-    
-    
-    <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-    <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>领域驱动设计-限界上下文</title>
-    <link href="http://example.com/posts/48778.html"/>
-    <id>http://example.com/posts/48778.html</id>
-    <published>2024-07-15T08:20:12.000Z</published>
-    <updated>2024-07-15T08:39:15.841Z</updated>
-    
-    
-    <summary type="html">限界上下文的概念</summary>
-    
-    
-    
-    <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-    <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>领域驱动设计-图书借阅系统示例</title>
-    <link href="http://example.com/posts/57321.html"/>
-    <id>http://example.com/posts/57321.html</id>
-    <published>2024-07-15T08:19:12.000Z</published>
-    <updated>2024-07-15T08:39:15.836Z</updated>
-    
-    
-    <summary type="html">以图书借阅系统为例阐述较为复杂的领域模型的设计</summary>
-    
-    
-    
-    <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-    <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>领域驱动设计-事件风暴</title>
-    <link href="http://example.com/posts/27943.html"/>
-    <id>http://example.com/posts/27943.html</id>
-    <published>2024-07-15T08:18:12.000Z</published>
-    <updated>2024-07-15T08:39:15.834Z</updated>
-    
-    
-    <summary type="html">事件风暴的具体阐述</summary>
-    
-    
-    
-    <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-    <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>领域驱动设计-实现面向对象领域模型</title>
-    <link href="http://example.com/posts/55083.html"/>
-    <id>http://example.com/posts/55083.html</id>
-    <published>2024-07-15T08:18:12.000Z</published>
-    <updated>2024-07-15T08:39:15.839Z</updated>
-    
-    
-    <summary type="html">以停车场为示例，基于面向对象构造领域模型</summary>
-    
-    
-    
-    <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
-    
-    
-    <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>领域驱动设计-CQRS</title>
-    <link href="http://example.com/posts/17660.html"/>
-    <id>http://example.com/posts/17660.html</id>
-    <published>2024-07-15T08:17:12.000Z</published>
-    <updated>2024-07-15T08:39:15.825Z</updated>
-    
-    
-    <summary type="html">命令和查询分离的具体阐述</summary>
-    
-    
-    
-    <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    <category term="领域驱动设计" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
     
     
     <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
@@ -229,8 +125,8 @@
     <title>领域驱动设计-LMAX</title>
     <link href="http://example.com/posts/24946.html"/>
     <id>http://example.com/posts/24946.html</id>
-    <published>2024-07-15T08:17:12.000Z</published>
-    <updated>2024-07-15T08:39:15.831Z</updated>
+    <published>2024-07-15T08:12:23.000Z</published>
+    <updated>2024-07-15T09:37:53.069Z</updated>
     
     
     <summary type="html">DDD的极致性能架构——LMAX</summary>
@@ -238,6 +134,92 @@
     
     
     <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="领域驱动设计" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
+    
+    
+    <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-事件溯源</title>
+    <link href="http://example.com/posts/46889.html"/>
+    <id>http://example.com/posts/46889.html</id>
+    <published>2024-07-15T08:12:22.000Z</published>
+    <updated>2024-07-15T09:37:07.435Z</updated>
+    
+    
+    <summary type="html">何为事件溯源</summary>
+    
+    
+    
+    <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="领域驱动设计" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
+    
+    
+    <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-限界上下文</title>
+    <link href="http://example.com/posts/48778.html"/>
+    <id>http://example.com/posts/48778.html</id>
+    <published>2024-07-15T08:12:21.000Z</published>
+    <updated>2024-07-15T09:36:54.781Z</updated>
+    
+    
+    <summary type="html">限界上下文的概念</summary>
+    
+    
+    
+    <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="领域驱动设计" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
+    
+    
+    <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-图书借阅系统示例</title>
+    <link href="http://example.com/posts/57321.html"/>
+    <id>http://example.com/posts/57321.html</id>
+    <published>2024-07-15T08:12:20.000Z</published>
+    <updated>2024-07-15T09:36:44.554Z</updated>
+    
+    
+    <summary type="html">以图书借阅系统为例阐述较为复杂的领域模型的设计</summary>
+    
+    
+    
+    <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="领域驱动设计" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
+    
+    
+    <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-事件风暴</title>
+    <link href="http://example.com/posts/27943.html"/>
+    <id>http://example.com/posts/27943.html</id>
+    <published>2024-07-15T08:12:19.000Z</published>
+    <updated>2024-07-15T09:36:03.908Z</updated>
+    
+    
+    <summary type="html">事件风暴的具体阐述</summary>
+    
+    
+    
+    <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="领域驱动设计" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
     
     
     <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
@@ -248,8 +230,8 @@
     <title>领域驱动设计-聚合</title>
     <link href="http://example.com/posts/55850.html"/>
     <id>http://example.com/posts/55850.html</id>
-    <published>2024-07-15T08:16:12.000Z</published>
-    <updated>2024-07-15T08:39:15.840Z</updated>
+    <published>2024-07-15T08:12:18.000Z</published>
+    <updated>2024-07-15T09:35:50.934Z</updated>
     
     
     <summary type="html">领域驱动设计中的聚合概念</summary>
@@ -257,6 +239,50 @@
     
     
     <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="领域驱动设计" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
+    
+    
+    <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-实现面向对象领域模型</title>
+    <link href="http://example.com/posts/55083.html"/>
+    <id>http://example.com/posts/55083.html</id>
+    <published>2024-07-15T08:12:17.000Z</published>
+    <updated>2024-07-15T09:35:34.774Z</updated>
+    
+    
+    <summary type="html">以停车场为示例，基于面向对象构造领域模型</summary>
+    
+    
+    
+    <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="领域驱动设计" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
+    
+    
+    <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-CQRS</title>
+    <link href="http://example.com/posts/17660.html"/>
+    <id>http://example.com/posts/17660.html</id>
+    <published>2024-07-15T08:12:16.000Z</published>
+    <updated>2024-07-15T09:35:27.091Z</updated>
+    
+    
+    <summary type="html">命令和查询分离的具体阐述</summary>
+    
+    
+    
+    <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="领域驱动设计" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
     
     
     <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
@@ -267,8 +293,8 @@
     <title>领域驱动设计-六边形架构</title>
     <link href="http://example.com/posts/8292.html"/>
     <id>http://example.com/posts/8292.html</id>
-    <published>2024-07-15T08:15:12.000Z</published>
-    <updated>2024-07-15T08:39:15.835Z</updated>
+    <published>2024-07-15T08:12:15.000Z</published>
+    <updated>2024-07-15T09:35:16.943Z</updated>
     
     
     <summary type="html">领域驱动设计的传统架构与六边形架构</summary>
@@ -277,24 +303,7 @@
     
     <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
     
-    
-    <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>领域驱动设计-DDD与重构的关系</title>
-    <link href="http://example.com/posts/55963.html"/>
-    <id>http://example.com/posts/55963.html</id>
-    <published>2024-07-15T08:14:12.000Z</published>
-    <updated>2024-07-15T08:39:15.831Z</updated>
-    
-    
-    <summary type="html">DDD与重构的关系</summary>
-    
-    
-    
-    <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    <category term="领域驱动设计" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
     
     
     <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
@@ -305,8 +314,8 @@
     <title>领域驱动设计-学习方法和路径</title>
     <link href="http://example.com/posts/24545.html"/>
     <id>http://example.com/posts/24545.html</id>
-    <published>2024-07-15T08:13:12.000Z</published>
-    <updated>2024-07-15T08:39:15.838Z</updated>
+    <published>2024-07-15T08:12:14.000Z</published>
+    <updated>2024-07-15T09:35:08.853Z</updated>
     
     
     <summary type="html">领域驱动设计需要学习什么内容？如何学习？</summary>
@@ -314,6 +323,29 @@
     
     
     <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="领域驱动设计" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
+    
+    
+    <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>领域驱动设计-DDD与重构的关系</title>
+    <link href="http://example.com/posts/55963.html"/>
+    <id>http://example.com/posts/55963.html</id>
+    <published>2024-07-15T08:12:13.000Z</published>
+    <updated>2024-07-15T09:35:00.700Z</updated>
+    
+    
+    <summary type="html">DDD与重构的关系</summary>
+    
+    
+    
+    <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="领域驱动设计" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
     
     
     <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
@@ -325,7 +357,7 @@
     <link href="http://example.com/posts/27223.html"/>
     <id>http://example.com/posts/27223.html</id>
     <published>2024-07-15T08:12:12.000Z</published>
-    <updated>2024-07-15T08:43:01.575Z</updated>
+    <updated>2024-07-15T09:34:44.899Z</updated>
     
     
     <summary type="html">领域驱动设计的核心方法论</summary>
@@ -333,6 +365,8 @@
     
     
     <category term="扩展学习" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/"/>
+    
+    <category term="领域驱动设计" scheme="http://example.com/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/%E9%A2%86%E5%9F%9F%E9%A9%B1%E5%8A%A8%E8%AE%BE%E8%AE%A1/"/>
     
     
     <category term="开发拓展知识" scheme="http://example.com/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/"/>
