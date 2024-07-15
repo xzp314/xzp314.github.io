@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="开发拓展知识," />
 
 
 
@@ -79,17 +79,21 @@
 
 
 
-<meta name="description" content="xzp（Xu Zhipeng）个人小站">
+<meta name="description" content="DDD与MVC之间的关系">
 <meta property="og:type" content="article">
 <meta property="og:title" content="领域驱动设计-DDD与MVC">
 <meta property="og:url" content="http://example.com/posts/54442.html">
 <meta property="og:site_name" content="主页">
-<meta property="og:description" content="xzp（Xu Zhipeng）个人小站">
+<meta property="og:description" content="DDD与MVC之间的关系">
 <meta property="og:locale">
-<meta property="article:published_time" content="2024-07-15T08:14:24.000Z">
-<meta property="article:modified_time" content="2024-07-15T08:18:52.731Z">
+<meta property="og:image" content="http://example.com/posts/54442/image-20240709160156077.png">
+<meta property="og:image" content="http://example.com/posts/54442/image-20240709160922260.png">
+<meta property="article:published_time" content="2024-07-15T08:23:12.000Z">
+<meta property="article:modified_time" content="2024-07-15T08:37:39.398Z">
 <meta property="article:author" content="Xu Zhipeng">
+<meta property="article:tag" content="开发拓展知识">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/posts/54442/image-20240709160156077.png">
 
 
 
@@ -326,7 +330,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-07-15T16:14:24+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-07-15T16:23:12+08:00">
                 2024-07-15
               </time>
             
@@ -336,6 +340,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">扩展学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -358,7 +384,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0
+                  252
                 </span>
               
 
@@ -381,6 +407,10 @@
           
 
           
+              <div class="post-description">
+                  DDD与MVC之间的关系
+              </div>
+          
 
         </div>
       </header>
@@ -395,7 +425,47 @@
       
 
       
-        
+        <h2 id="DDD与MVC"><a href="#DDD与MVC" class="headerlink" title="DDD与MVC"></a>DDD与MVC</h2><h3 id="MVC架构"><a href="#MVC架构" class="headerlink" title="MVC架构"></a>MVC架构</h3><p><img src="/posts/54442/image-20240709160156077.png" alt="image-20240709160156077" style="zoom:80%;"></p>
+<ul>
+<li>Model的职责<ul>
+<li>持有view渲染时需要的数据</li>
+<li>完成业务功能</li>
+</ul>
+</li>
+<li>View的职责<ul>
+<li>生成界面给用户查看</li>
+<li>翻译用户操作为系统动作</li>
+</ul>
+</li>
+<li>Controller的职责<ul>
+<li>翻译用户操作为模型动作</li>
+</ul>
+</li>
+</ul>
+<h3 id="关系"><a href="#关系" class="headerlink" title="关系"></a>关系</h3><p>两者之间并没有直接关系</p>
+<p>分别关注不同侧重点</p>
+<ol>
+<li>MVC关注的是UI的问题</li>
+<li>DDD关注的是业务逻辑问题</li>
+</ol>
+<h3 id="DDD-MVC"><a href="#DDD-MVC" class="headerlink" title="DDD+MVC"></a>DDD+MVC</h3><p><img src="/posts/54442/image-20240709160922260.png" alt="image-20240709160922260" style="zoom:67%;"></p>
+<h3 id="典型架构"><a href="#典型架构" class="headerlink" title="典型架构"></a>典型架构</h3><p>MVC</p>
+<ul>
+<li><p>JSP（View）+Servlet（Controller，处理|分派用户请求）+EJB（充当model，处理业务逻辑）</p>
+</li>
+<li><p>JSP+Struts+Spring Bean</p>
+</li>
+<li>JSF（本身就是MVC架构）+EJB</li>
+<li>freemarker/thymeleaf/velocity + Spring MVC + Spring Bean</li>
+</ul>
+<p>DDD主要就是实现上述架构中的model部分</p>
+<h3 id="DDD-MVC-1"><a href="#DDD-MVC-1" class="headerlink" title="DDD-MVC"></a>DDD-MVC</h3><p>现有采用DDD的架构一般不会使用MVC</p>
+<ul>
+<li>没有MVC，只有对外接口，接受外部请求（HTTP接口、WebSocket、消息中间件的listener）</li>
+<li>处理请求被翻译成执行领域命令，有领域核心</li>
+<li>在前端大发展之后（Ajax React Vue）MVC在服务端就逐渐不流行了D100%</li>
+</ul>
+
       
     </div>
     
@@ -410,6 +480,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/" rel="tag"># 开发拓展知识</a>
+          
+        </div>
+      
 
       
       
@@ -419,8 +495,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/posts/31911.html" rel="next" title="领域驱动设计-LMAX架构">
-                <i class="fa fa-chevron-left"></i> 领域驱动设计-LMAX架构
+              <a href="/posts/64137.html" rel="next" title="领域驱动设计-子领域">
+                <i class="fa fa-chevron-left"></i> 领域驱动设计-子领域
               </a>
             
           </div>
@@ -429,7 +505,7 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/posts/26335.html" rel="prev" title="领域驱动设计-DDD与微服务">
+              <a href="/posts/26336.html" rel="prev" title="领域驱动设计-DDD与微服务">
                 领域驱动设计-DDD与微服务 <i class="fa fa-chevron-right"></i>
               </a>
             
@@ -483,8 +559,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -564,6 +649,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#DDD%E4%B8%8EMVC"><span class="nav-number">1.</span> <span class="nav-text">DDD与MVC</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#MVC%E6%9E%B6%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">MVC架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB"><span class="nav-number">1.2.</span> <span class="nav-text">关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DDD-MVC"><span class="nav-number">1.3.</span> <span class="nav-text">DDD+MVC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E6%9E%B6%E6%9E%84"><span class="nav-number">1.4.</span> <span class="nav-text">典型架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DDD-MVC-1"><span class="nav-number">1.5.</span> <span class="nav-text">DDD-MVC</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -591,7 +692,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">244.3k</span>
+    <span title="Site words total count">257.2k</span>
   
 </div>
 

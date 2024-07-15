@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="开发拓展知识," />
 
 
 
@@ -79,17 +79,21 @@
 
 
 
-<meta name="description" content="xzp（Xu Zhipeng）个人小站">
+<meta name="description" content="领域驱动设计中的聚合概念">
 <meta property="og:type" content="article">
 <meta property="og:title" content="领域驱动设计-聚合">
 <meta property="og:url" content="http://example.com/posts/55850.html">
 <meta property="og:site_name" content="主页">
-<meta property="og:description" content="xzp（Xu Zhipeng）个人小站">
+<meta property="og:description" content="领域驱动设计中的聚合概念">
 <meta property="og:locale">
-<meta property="article:published_time" content="2024-07-15T08:13:09.000Z">
-<meta property="article:modified_time" content="2024-07-15T08:18:52.747Z">
+<meta property="og:image" content="http://example.com/posts/55850/image-20240704133126966.png">
+<meta property="og:image" content="http://example.com/posts/55850/image-20240703120501614.png">
+<meta property="article:published_time" content="2024-07-15T08:16:12.000Z">
+<meta property="article:modified_time" content="2024-07-15T08:32:44.099Z">
 <meta property="article:author" content="Xu Zhipeng">
+<meta property="article:tag" content="开发拓展知识">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/posts/55850/image-20240704133126966.png">
 
 
 
@@ -326,7 +330,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-07-15T16:13:09+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-07-15T16:16:12+08:00">
                 2024-07-15
               </time>
             
@@ -336,6 +340,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">扩展学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -358,7 +384,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0
+                  726
                 </span>
               
 
@@ -374,12 +400,16 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  2
                 </span>
               
             </div>
           
 
+          
+              <div class="post-description">
+                  领域驱动设计中的聚合概念
+              </div>
           
 
         </div>
@@ -395,7 +425,52 @@
       
 
       
-        
+        <h2 id="聚合"><a href="#聚合" class="headerlink" title="聚合"></a>聚合</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><ul>
+<li><p><strong>从不变量、强一致性（数据库持久化）出发，</strong>将实体和值对象聚集到聚合中。每个聚合定义了一个边界。为每个聚合选择一个实体作为其根，并通过根来控制所有对边界内对象的访问。<strong>外部对象只能持有根的引用</strong>；对内部元素的临时引用只能在单个操作中使用。由于根控制了访问，因此我们无法绕过它去修改内部元素。这种安排使得我们可以保证在任何状态变化中，聚合本身的不变量，以及聚合中对象的不变量都可以被满足。</p>
+<p>聚合实现封装的功能，通过<strong>外部对象只能持有根的引用</strong>将内部细节进行隐藏，但是对于建模没有帮助</p>
+<p><img src="/posts/55850/image-20240704133126966.png" alt="image-20240704133126966" style="zoom:67%;"></p>
+</li>
+</ul>
+<p>  即便任意圈都能保证一致性和不变量，在具体进行聚合时依然存在如下问题：</p>
+<ol>
+<li>哪种聚合划分方式才更很合理？</li>
+<li>按照一致性的强弱来划分吗？哪几个对象的一致性更强？</li>
+<li>为什么不把所有业务对象都放到一个聚合内?</li>
+</ol>
+<ul>
+<li><p><strong>从问题域出发，</strong>聚合是紧密联系的一组功能</p>
+</li>
+<li><p><strong>从软件设计出发</strong>，聚合是一个内存单元，它包含了一组对象，要被<strong>整存整取（一致性）</strong></p>
+</li>
+</ul>
+<h3 id="范围"><a href="#范围" class="headerlink" title="范围"></a>范围</h3><p><strong>聚合范围越小：</strong></p>
+<ul>
+<li>越难实现一致性，需要更多跨聚合的协调</li>
+<li>封装粒度越小，领域逻辑越多在聚合间实现</li>
+<li>整存整取开销越小</li>
+</ul>
+<p><strong>聚合范围越大：</strong></p>
+<ul>
+<li>越容易实现一致性</li>
+<li>封装粒度越大，领域逻辑越多在聚合内实现</li>
+<li>整存整取开销越高：一次性要处理太多对象</li>
+</ul>
+<h3 id="上下限"><a href="#上下限" class="headerlink" title="上下限"></a>上下限</h3><ul>
+<li><p><strong>下限</strong>：不要破坏封装</p>
+<p>否则沦为贫血模型，聚合内部缺乏业务逻辑，这些功能都需要通过聚合间协作完成，而协作要么通过事件监听、要么通过前置控制器完成，导致逻辑、数据会泄露给这些无状态、无行为的service</p>
+</li>
+<li><p><strong>上限</strong>：不要出现性能问题</p>
+<p>否则难以落地，即便上线，也需要进行拆分</p>
+</li>
+</ul>
+<p>思考上下限的目的在于<strong>明确设计领域模型聚合对象的边界</strong></p>
+<h3 id="停车示例"><a href="#停车示例" class="headerlink" title="停车示例"></a>停车示例</h3><p><img src="/posts/55850/image-20240703120501614.png" alt="image-20240703120501614" style="zoom: 33%;"></p>
+<ul>
+<li>停车聚合只有4个属性，分别是车牌号、时间、金额，均为字符串类型，大小确定，能满足一个停车场的性能要求。</li>
+<li>停车聚合提供的入场、出场、计费、通知付费几个功能存在强内在关联，没有泄露到外部。</li>
+<li>实际上在上下限之间有很大的空间，并没有绝对的唯一的合理的模型设计。可以根据实际情况选择，够用就行。</li>
+</ul>
+
       
     </div>
     
@@ -409,6 +484,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/" rel="tag"># 开发拓展知识</a>
+          
+        </div>
       
 
       
@@ -429,8 +510,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/posts/17660.html" rel="prev" title="领域驱动设计-CQRS">
-                领域驱动设计-CQRS <i class="fa fa-chevron-right"></i>
+              <a href="/posts/24946.html" rel="prev" title="领域驱动设计-LMAX">
+                领域驱动设计-LMAX <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -483,8 +564,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -564,6 +654,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%9A%E5%90%88"><span class="nav-number">1.</span> <span class="nav-text">聚合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8C%83%E5%9B%B4"><span class="nav-number">1.2.</span> <span class="nav-text">范围</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8A%E4%B8%8B%E9%99%90"><span class="nav-number">1.3.</span> <span class="nav-text">上下限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%9C%E8%BD%A6%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.4.</span> <span class="nav-text">停车示例</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -591,7 +697,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">244.3k</span>
+    <span title="Site words total count">257.2k</span>
   
 </div>
 

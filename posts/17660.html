@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="开发拓展知识," />
 
 
 
@@ -79,17 +79,24 @@
 
 
 
-<meta name="description" content="xzp（Xu Zhipeng）个人小站">
+<meta name="description" content="命令和查询分离的具体阐述">
 <meta property="og:type" content="article">
 <meta property="og:title" content="领域驱动设计-CQRS">
 <meta property="og:url" content="http://example.com/posts/17660.html">
 <meta property="og:site_name" content="主页">
-<meta property="og:description" content="xzp（Xu Zhipeng）个人小站">
+<meta property="og:description" content="命令和查询分离的具体阐述">
 <meta property="og:locale">
-<meta property="article:published_time" content="2024-07-15T08:13:13.000Z">
-<meta property="article:modified_time" content="2024-07-15T08:18:52.729Z">
+<meta property="og:image" content="http://example.com/posts/17660/image-20240702153449135.png">
+<meta property="og:image" content="http://example.com/posts/17660/image-20240702154958125.png">
+<meta property="og:image" content="http://example.com/posts/17660/image-20240702161252061.png">
+<meta property="og:image" content="http://example.com/posts/17660/image-20240702162645185.png">
+<meta property="og:image" content="http://example.com/posts/17660/image-20240702162839501.png">
+<meta property="article:published_time" content="2024-07-15T08:17:12.000Z">
+<meta property="article:modified_time" content="2024-07-15T08:32:21.014Z">
 <meta property="article:author" content="Xu Zhipeng">
+<meta property="article:tag" content="开发拓展知识">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/posts/17660/image-20240702153449135.png">
 
 
 
@@ -326,7 +333,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-07-15T16:13:13+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-07-15T16:17:12+08:00">
                 2024-07-15
               </time>
             
@@ -336,6 +343,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">扩展学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -358,7 +387,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0
+                  1.4k
                 </span>
               
 
@@ -374,12 +403,16 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  4
                 </span>
               
             </div>
           
 
+          
+              <div class="post-description">
+                  命令和查询分离的具体阐述
+              </div>
           
 
         </div>
@@ -395,7 +428,144 @@
       
 
       
-        
+        <h2 id="Command-and-Query-Responsibility-Segregation"><a href="#Command-and-Query-Responsibility-Segregation" class="headerlink" title="Command and Query Responsibility Segregation"></a>Command and Query Responsibility Segregation</h2><p>命令和查询职责分离</p>
+<h3 id="命令和查询"><a href="#命令和查询" class="headerlink" title="命令和查询"></a>命令和查询</h3><p>把软件系统功能可以拆解为命令和查询两大类：</p>
+<ul>
+<li>命令：有副作用，会导致系统发生变更</li>
+<li>查询：无副作用，不会导致系统发生变更</li>
+</ul>
+<p>可以简单类比Get和Post，比如一个用户管理系统的注册功能</p>
+<p>每次注册都会产生一个新的用户，这就是命令类功能，那么查询就是得到系统当前注册了多少用户的数量</p>
+<p>一些特例：</p>
+<ul>
+<li><p>某个功能既需要查询也需要变更，属于命令还是查询呢？</p>
+<p>功能目标虽然是查询，但是导致了某些统计数据发生了改变，比如某对象被查询了多少次</p>
+<p>实际上可以进一步将该功能进行划分</p>
+</li>
+</ul>
+<h3 id="职责分离"><a href="#职责分离" class="headerlink" title="职责分离"></a>职责分离</h3><p>在架构上，把命令和查询两类功能的代码进行分离</p>
+<p><img src="/posts/17660/image-20240702153449135.png" alt="image-20240702153449135" style="zoom:67%;"></p>
+<ul>
+<li><p><strong>一般查询模块（不稳定）依赖命令模块（稳定的）</strong></p>
+<p>稳定的东西不要依赖不稳定的东西</p>
+</li>
+<li><p><strong>查询模块负责生成查询数据</strong></p>
+<p>不仅仅是数据库的读功能，比如组装查询数据[视图、查询范式]存到数据库方便下次查询的这种操作也属于查询</p>
+</li>
+<li><p><strong>查询模块和命令模块的数据在存储上可以共享，也可以分离，甚至异构</strong></p>
+<ul>
+<li>共享：使用同一个数据库的同一张表，所使用的字段不同</li>
+<li>分离：比如主从复制</li>
+<li>异构：命令是一个关系型数据库，查询则是一个文档数据库+缓存</li>
+</ul>
+</li>
+<li><p><strong>该架构的目的在于应对高性能查询和复杂查询</strong></p>
+<ul>
+<li>大部分系统的查询量&gt;&gt;命令量，可以针对查询模块进行大量优化而不影响命令模块的正常运行</li>
+<li>针对复杂查询，进行针对性优化</li>
+</ul>
+</li>
+<li><p><strong>不使用DDD也可以使用CQRS</strong></p>
+</li>
+</ul>
+<h3 id="DDD-vs-CQRS"><a href="#DDD-vs-CQRS" class="headerlink" title="DDD vs CQRS"></a>DDD vs CQRS</h3><p>DDD可以采用CQRS作为自己的一个架构实现，由于同时适配命令和查询两类业务的领域模型非常难以设计</p>
+<ul>
+<li><strong>命令场景的领域模型</strong><ul>
+<li>对象少</li>
+<li>对象间形成树形或者图结构</li>
+<li>需要避免冗余数据</li>
+<li>ACID很重要以确保数据的准确性</li>
+</ul>
+</li>
+<li><strong>查询场景的查询模型</strong><ul>
+<li>对象多</li>
+<li>对象间只有查询用的关联关系</li>
+<li>为了提高查询性能[存储冗余，索引冗余]，允许冗余</li>
+<li>ACID不重要，因为不会对数据进行变更</li>
+</ul>
+</li>
+</ul>
+<p>所以<strong>命令模块用DDD实现，查询模块不用DDD实现，这样能够降低领域模型的设计难度</strong></p>
+<h3 id="架构方案"><a href="#架构方案" class="headerlink" title="架构方案"></a>架构方案</h3><h4 id="标准架构"><a href="#标准架构" class="headerlink" title="标准架构"></a>标准架构</h4><h5 id="框架图"><a href="#框架图" class="headerlink" title="框架图"></a>框架图</h5><p><img src="/posts/17660/image-20240702154958125.png" alt="image-20240702154958125" style="zoom:67%;"></p>
+<p><strong>注意点</strong></p>
+<ul>
+<li>命令和查询通过<strong>领域事件</strong>集成<ul>
+<li>命令模块(领域模块)发布领域事件，查询模块监听领域事件，构建查询模型，提供查询功能</li>
+</ul>
+</li>
+<li>采用<strong>异步消息队列</strong>的方式</li>
+<li><strong>存储分开</strong>，领域模型和查询模型用各自合适的格式存储到各自的存储设备中</li>
+</ul>
+<p><strong>过程</strong></p>
+<ol>
+<li>UI向命令模块发送一个命令</li>
+<li>领域模型去完成业务功能，并发布一个领域事件</li>
+<li>查询模块监听到这个领域事件，构建出查询模型的数据并进行存储</li>
+<li>UI发出查询请求时，查询模块就会去查数据</li>
+</ol>
+<h5 id="发送端的标准时序"><a href="#发送端的标准时序" class="headerlink" title="发送端的标准时序"></a>发送端的标准时序</h5><p><img src="/posts/17660/image-20240702161252061.png" alt="image-20240702161252061" style="zoom:80%;"></p>
+<ul>
+<li><p><strong>消息的顺序消费</strong></p>
+</li>
+<li><p><strong>③ 消息的可靠送达（有且仅有一次）</strong></p>
+<p>万一真正发送的时候失败了，还能从数据库中搞出来</p>
+<p>并且业务和事件暂存是在一个事务里面执行的，能够满足原子性</p>
+</li>
+<li><p><strong>查询模型存储和领域模型存储的延迟</strong></p>
+<p>对于领域模型来说，事务提交完就结束了，这个时候才会触发查询模型，用户是看不到这个数据的</p>
+</li>
+<li><p><strong>领域模型内进行查询不需要走查询模型</strong></p>
+</li>
+</ul>
+<h4 id="同事务存储分离"><a href="#同事务存储分离" class="headerlink" title="同事务存储分离"></a>同事务存储分离</h4><p><img src="/posts/17660/image-20240702162645185.png" alt="image-20240702162645185" style="zoom: 80%;"></p>
+<p>简化后的标准架构，把查询模型和领域模型放到同一个事务里面，但是存储上依然分离（同数据库不同表）</p>
+<ul>
+<li><strong>命令和查询数据的构建在一个事务中</strong></li>
+<li><strong>优点</strong>：简单，没有消息消费引发的问题(顺序、可靠、延迟)</li>
+<li><strong>缺点</strong><ul>
+<li>领域模型和查询模型必须存储到一个数据库，才能确保ACID</li>
+<li>命令处理延迟更高</li>
+</ul>
+</li>
+</ul>
+<h4 id="共享存储"><a href="#共享存储" class="headerlink" title="共享存储"></a>共享存储</h4><p><img src="/posts/17660/image-20240702162839501.png" alt="image-20240702162839501" style="zoom:80%;"></p>
+<ul>
+<li><p><strong>抛弃领域事件，由仓储直接负责触发生成查询模型</strong></p>
+</li>
+<li><p><strong>优点</strong>：简单易实现</p>
+</li>
+<li><p><strong>缺点</strong></p>
+<ul>
+<li><p>查询模型共享领域模型</p>
+</li>
+<li><p>适应范围窄</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="CQRS的使用场景"><a href="#CQRS的使用场景" class="headerlink" title="CQRS的使用场景"></a>CQRS的使用场景</h3><p><strong>不用CQRS就会污染领域模型的时候</strong></p>
+<ul>
+<li><p>复杂查询</p>
+<ul>
+<li>条件复杂，需要冗余数据（针对条件构建索引）</li>
+<li>搜索</li>
+</ul>
+<p>为了支持上述功能，得构建相应的领域对象方便持久化</p>
+<blockquote>
+<p>比如某个领域模型完成业务功能只需要三个字段，为了查询又附加了其他字段，就造成了污染</p>
+</blockquote>
+</li>
+<li><p>高性能查询</p>
+<ul>
+<li>需要查询专用数据库</li>
+<li>异构查询存储（关系型数据库+缓存+NoSql）</li>
+</ul>
+</li>
+</ul>
+<p><strong>只要领域复杂点，一般都需要CQRS！</strong></p>
+<h3 id="如何选择架构方案"><a href="#如何选择架构方案" class="headerlink" title="如何选择架构方案"></a>如何选择架构方案</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">graph LR;</span><br><span class="line">	共享存储--&gt;同事务存储分离--&gt;信息集成不同数据库</span><br></pre></td></tr></table></figure>
+<p>从简单做起，能落地解决问题最重要！</p>
+
       
     </div>
     
@@ -410,6 +580,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/" rel="tag"># 开发拓展知识</a>
+          
+        </div>
+      
 
       
       
@@ -419,8 +595,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/posts/55850.html" rel="next" title="领域驱动设计-聚合">
-                <i class="fa fa-chevron-left"></i> 领域驱动设计-聚合
+              <a href="/posts/24946.html" rel="next" title="领域驱动设计-LMAX">
+                <i class="fa fa-chevron-left"></i> 领域驱动设计-LMAX
               </a>
             
           </div>
@@ -483,8 +659,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -564,6 +749,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Command-and-Query-Responsibility-Segregation"><span class="nav-number">1.</span> <span class="nav-text">Command and Query Responsibility Segregation</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E5%92%8C%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.1.</span> <span class="nav-text">命令和查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%81%8C%E8%B4%A3%E5%88%86%E7%A6%BB"><span class="nav-number">1.2.</span> <span class="nav-text">职责分离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DDD-vs-CQRS"><span class="nav-number">1.3.</span> <span class="nav-text">DDD vs CQRS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E6%96%B9%E6%A1%88"><span class="nav-number">1.4.</span> <span class="nav-text">架构方案</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A0%87%E5%87%86%E6%9E%B6%E6%9E%84"><span class="nav-number">1.4.1.</span> <span class="nav-text">标准架构</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A1%86%E6%9E%B6%E5%9B%BE"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">框架图</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E7%AB%AF%E7%9A%84%E6%A0%87%E5%87%86%E6%97%B6%E5%BA%8F"><span class="nav-number">1.4.1.2.</span> <span class="nav-text">发送端的标准时序</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8C%E4%BA%8B%E5%8A%A1%E5%AD%98%E5%82%A8%E5%88%86%E7%A6%BB"><span class="nav-number">1.4.2.</span> <span class="nav-text">同事务存储分离</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%B1%E4%BA%AB%E5%AD%98%E5%82%A8"><span class="nav-number">1.4.3.</span> <span class="nav-text">共享存储</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CQRS%E7%9A%84%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.5.</span> <span class="nav-text">CQRS的使用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%80%89%E6%8B%A9%E6%9E%B6%E6%9E%84%E6%96%B9%E6%A1%88"><span class="nav-number">1.6.</span> <span class="nav-text">如何选择架构方案</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -591,7 +792,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">244.3k</span>
+    <span title="Site words total count">257.2k</span>
   
 </div>
 

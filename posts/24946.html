@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="开发拓展知识," />
 
 
 
@@ -79,17 +79,24 @@
 
 
 
-<meta name="description" content="xzp（Xu Zhipeng）个人小站">
+<meta name="description" content="DDD的极致性能架构——LMAX">
 <meta property="og:type" content="article">
-<meta property="og:title" content="领域驱动设计-LMAX架构">
-<meta property="og:url" content="http://example.com/posts/31911.html">
+<meta property="og:title" content="领域驱动设计-LMAX">
+<meta property="og:url" content="http://example.com/posts/24946.html">
 <meta property="og:site_name" content="主页">
-<meta property="og:description" content="xzp（Xu Zhipeng）个人小站">
+<meta property="og:description" content="DDD的极致性能架构——LMAX">
 <meta property="og:locale">
-<meta property="article:published_time" content="2024-07-15T08:14:17.000Z">
-<meta property="article:modified_time" content="2024-07-15T08:18:52.735Z">
+<meta property="og:image" content="http://example.com/posts/24946/image-20240708110641088.png">
+<meta property="og:image" content="http://example.com/posts/24946/image-20240708112544322.png">
+<meta property="og:image" content="http://example.com/posts/24946/image-20240708113355031.png">
+<meta property="og:image" content="http://example.com/posts/24946/image-20240708115038195.png">
+<meta property="og:image" content="http://example.com/posts/24946/image-20240708123701322.png">
+<meta property="article:published_time" content="2024-07-15T08:17:12.000Z">
+<meta property="article:modified_time" content="2024-07-15T08:36:53.125Z">
 <meta property="article:author" content="Xu Zhipeng">
+<meta property="article:tag" content="开发拓展知识">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/posts/24946/image-20240708110641088.png">
 
 
 
@@ -119,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/posts/31911.html"/>
+  <link rel="canonical" href="http://example.com/posts/24946.html"/>
 
 
 
 
 
-  <title>领域驱动设计-LMAX架构 | 主页</title>
+  <title>领域驱动设计-LMAX | 主页</title>
   
 
 
@@ -297,7 +304,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/posts/31911.html">
+    <link itemprop="mainEntityOfPage" href="http://example.com/posts/24946.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -314,7 +321,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">领域驱动设计-LMAX架构</h1>
+          <h1 class="post-title" itemprop="name headline">领域驱动设计-LMAX</h1>
         
 
         <div class="post-meta">
@@ -326,7 +333,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-07-15T16:14:17+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-07-15T16:17:12+08:00">
                 2024-07-15
               </time>
             
@@ -336,6 +343,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">扩展学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -358,7 +387,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0
+                  895
                 </span>
               
 
@@ -374,12 +403,16 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  3
                 </span>
               
             </div>
           
 
+          
+              <div class="post-description">
+                  DDD的极致性能架构——LMAX
+              </div>
           
 
         </div>
@@ -395,7 +428,109 @@
       
 
       
-        
+        <h2 id="LMAX架构"><a href="#LMAX架构" class="headerlink" title="LMAX架构"></a>LMAX架构</h2><p>DDD的极致性能架构，但并不局限于DDD，其目标是超高TPS（事务数/秒），例如金融零售平台</p>
+<h3 id="总体架构"><a href="#总体架构" class="headerlink" title="总体架构"></a>总体架构</h3><p><img src="/posts/24946/image-20240708110641088.png" alt="image-20240708110641088"></p>
+<ol>
+<li><p>外部系统发过来的请求置于一个串行队列进行处理</p>
+<p>Disruptor是java的一个高性能队列框架</p>
+</li>
+<li><p>经过业务处理后得到处理结果，即domain event</p>
+</li>
+<li><p>将结果写到输出队列中</p>
+</li>
+</ol>
+<p>并不存在一个直接response给客户端的步骤，实际上这是一个异步过程，客户端发送请求后就不管了，设置一个监听器进行监听</p>
+<h3 id="架构要素"><a href="#架构要素" class="headerlink" title="架构要素"></a>架构要素</h3><ul>
+<li><p>聚合常驻内存</p>
+<p>传统做法通常聚合在本次使用完后就会被垃圾回收，下次再从数据库加载</p>
+</li>
+<li><p>事件溯源</p>
+</li>
+<li><p>单线程异步非阻塞IO（串行化、无锁）</p>
+</li>
+</ul>
+<h4 id="内存常驻"><a href="#内存常驻" class="headerlink" title="内存常驻"></a>内存常驻</h4><h5 id="时序图对比"><a href="#时序图对比" class="headerlink" title="时序图对比"></a>时序图对比</h5><p><strong>传统时序</strong></p>
+<p><img src="/posts/24946/image-20240708112544322.png" alt="image-20240708112544322"></p>
+<ul>
+<li>每次收到命令后，<strong>从数据库读取聚合状态数据重建聚合</strong></li>
+<li>每次处理完业务功能后，将聚合状态写入数据库</li>
+<li>领域事件可持久化也可不持久化</li>
+</ul>
+<p><strong>事件溯源时序</strong></p>
+<p><img src="/posts/24946/image-20240708113355031.png" alt="image-20240708113355031"></p>
+<ul>
+<li>每次收到命令后，<strong>从数据库读取领域事件和聚合快照，重建聚合</strong></li>
+<li>每次处理完业务功能后将领域事件持久化</li>
+</ul>
+<p><strong>LMAX时序</strong></p>
+<ul>
+<li><p>每次收到命令后，<strong>从内存中找到聚合对象</strong></p>
+<p><strong>第一次查询时需要查询事件进行重建，后续则直接查找聚合对象</strong></p>
+</li>
+<li><p>每次处理完业务功能后将领域事件异步持久化</p>
+</li>
+<li><p>持久化成功后，异步通知客户端结果</p>
+</li>
+<li><p>第一次启动服务器时重建所有聚合，仓储创建好内存索引</p>
+</li>
+</ul>
+<h5 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h5><p><img src="/posts/24946/image-20240708115038195.png" alt="image-20240708115038195"></p>
+<h4 id="事件溯源"><a href="#事件溯源" class="headerlink" title="事件溯源"></a>事件溯源</h4><p>如果写的是聚合的数据，那么在业务过程中，需要在数据库中找到原来的对象，然后进行update，开销肯定是比事件溯源的追加要大的（空间换时间）</p>
+<h4 id="单线程非阻塞异步IO（reactor）"><a href="#单线程非阻塞异步IO（reactor）" class="headerlink" title="单线程非阻塞异步IO（reactor）"></a>单线程非阻塞异步IO（reactor）</h4><ul>
+<li>多线程<ul>
+<li>CPU在多线程间切换开销高(相对reactor)</li>
+<li>阻塞<ul>
+<li>每个请求分配一个线程进行处理，并发受线程数限制</li>
+<li>如果某个线程阻塞，那么没办法执行，但是依然占用内存空间</li>
+</ul>
+</li>
+<li>非阻塞<ul>
+<li>聚合在内存中只有一个实例，对实例加锁，每个聚合实际并发1</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>单线程</strong><ul>
+<li>串行执行，无需加锁，一个CPU执行一个线程</li>
+<li>阻塞<ul>
+<li>并发能力1，性能暴跌</li>
+</ul>
+</li>
+<li><strong>非阻塞 (超高性能的唯一选择，节省了线程切换、缓存失效开销)</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="实践方案"><a href="#实践方案" class="headerlink" title="实践方案"></a>实践方案</h3><p><img src="/posts/24946/image-20240708123701322.png" alt="image-20240708123701322"></p>
+<p>主从关系的冗余确保可靠性，在主设备宕机时，启用从设备，并调整主从关系</p>
+<h3 id="代价"><a href="#代价" class="headerlink" title="代价"></a>代价</h3><ul>
+<li><strong>无数据库事务</strong><ul>
+<li>无先操作后回滚的弥补措施，必须严格前置完成所有校验，才能变更聚合内的状态数据，才能发布领域事件</li>
+</ul>
+</li>
+<li><strong>运行时外部调用变复杂（设计、实现时较为复杂）</strong><ul>
+<li>减少主动外部调用：监听事件提前组装数据 (数据量小)</li>
+<li>显式事件驱动方式</li>
+</ul>
+</li>
+<li><strong>受内存大小限制</strong><ul>
+<li>聚合实例数据量太大：数据分区，多服务器，架构更复杂</li>
+</ul>
+</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>极致性能</li>
+<li>全内存化模型设计，更灵活自由</li>
+</ul>
+<hr>
+<ul>
+<li>异步编程带来的编程难度</li>
+<li>高可用架构更复杂</li>
+</ul>
+<hr>
+<ul>
+<li>聚合数据量适合内存化，需要极致TPS场景，比如:某些游戏服务器，火车订票</li>
+</ul>
+
       
     </div>
     
@@ -410,6 +545,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/" rel="tag"># 开发拓展知识</a>
+          
+        </div>
+      
 
       
       
@@ -419,8 +560,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/posts/64137.html" rel="next" title="领域驱动设计-子领域">
-                <i class="fa fa-chevron-left"></i> 领域驱动设计-子领域
+              <a href="/posts/55850.html" rel="next" title="领域驱动设计-聚合">
+                <i class="fa fa-chevron-left"></i> 领域驱动设计-聚合
               </a>
             
           </div>
@@ -429,8 +570,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/posts/54442.html" rel="prev" title="领域驱动设计-DDD与MVC">
-                领域驱动设计-DDD与MVC <i class="fa fa-chevron-right"></i>
+              <a href="/posts/17660.html" rel="prev" title="领域驱动设计-CQRS">
+                领域驱动设计-CQRS <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -483,8 +624,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -564,6 +714,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#LMAX%E6%9E%B6%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">LMAX架构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E4%BD%93%E6%9E%B6%E6%9E%84"><span class="nav-number">1.1.</span> <span class="nav-text">总体架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%B6%E6%9E%84%E8%A6%81%E7%B4%A0"><span class="nav-number">1.2.</span> <span class="nav-text">架构要素</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%B8%B8%E9%A9%BB"><span class="nav-number">1.2.1.</span> <span class="nav-text">内存常驻</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%97%B6%E5%BA%8F%E5%9B%BE%E5%AF%B9%E6%AF%94"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">时序图对比</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">代码实现</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6%E6%BA%AF%E6%BA%90"><span class="nav-number">1.2.2.</span> <span class="nav-text">事件溯源</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E7%BA%BF%E7%A8%8B%E9%9D%9E%E9%98%BB%E5%A1%9E%E5%BC%82%E6%AD%A5IO%EF%BC%88reactor%EF%BC%89"><span class="nav-number">1.2.3.</span> <span class="nav-text">单线程非阻塞异步IO（reactor）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%E6%96%B9%E6%A1%88"><span class="nav-number">1.3.</span> <span class="nav-text">实践方案</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E4%BB%B7"><span class="nav-number">1.4.</span> <span class="nav-text">代价</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -591,7 +757,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">244.3k</span>
+    <span title="Site words total count">257.2k</span>
   
 </div>
 

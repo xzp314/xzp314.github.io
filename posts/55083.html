@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="开发拓展知识," />
 
 
 
@@ -79,17 +79,21 @@
 
 
 
-<meta name="description" content="xzp（Xu Zhipeng）个人小站">
+<meta name="description" content="以停车场为示例，基于面向对象构造领域模型">
 <meta property="og:type" content="article">
 <meta property="og:title" content="领域驱动设计-实现面向对象领域模型">
 <meta property="og:url" content="http://example.com/posts/55083.html">
 <meta property="og:site_name" content="主页">
-<meta property="og:description" content="xzp（Xu Zhipeng）个人小站">
+<meta property="og:description" content="以停车场为示例，基于面向对象构造领域模型">
 <meta property="og:locale">
-<meta property="article:published_time" content="2024-07-15T08:13:22.000Z">
-<meta property="article:modified_time" content="2024-07-15T08:18:52.742Z">
+<meta property="og:image" content="http://example.com/posts/55083/image-20240703120501614.png">
+<meta property="og:image" content="http://example.com/posts/55083/image-20240703122010753.png">
+<meta property="article:published_time" content="2024-07-15T08:18:12.000Z">
+<meta property="article:modified_time" content="2024-07-15T08:33:27.343Z">
 <meta property="article:author" content="Xu Zhipeng">
+<meta property="article:tag" content="开发拓展知识">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/posts/55083/image-20240703120501614.png">
 
 
 
@@ -326,7 +330,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-07-15T16:13:22+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-07-15T16:18:12+08:00">
                 2024-07-15
               </time>
             
@@ -336,6 +340,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">扩展学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -358,7 +384,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0
+                  1.4k
                 </span>
               
 
@@ -374,12 +400,16 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1
+                  6
                 </span>
               
             </div>
           
 
+          
+              <div class="post-description">
+                  以停车场为示例，基于面向对象构造领域模型
+              </div>
           
 
         </div>
@@ -395,7 +425,52 @@
       
 
       
-        
+        <h2 id="实现面向对象领域模型——停车场案例"><a href="#实现面向对象领域模型——停车场案例" class="headerlink" title="实现面向对象领域模型——停车场案例"></a>实现面向对象领域模型——停车场案例</h2><p>先掌握代码层面的实现，再关注如何设计领域模型</p>
+<h3 id="需求分析"><a href="#需求分析" class="headerlink" title="需求分析"></a>需求分析</h3><ul>
+<li>做一个停车计费程序</li>
+<li>车牌识别系统会在车辆入场和出场的时候调用计费程序（返回是否可以入场或者出场），付费后15分钟内可以离场，超过15分钟要补费<ul>
+<li>不在停车场内即可入场</li>
+<li>在停车场则需要缴费，缴费后15min内可以出场，否则需要补费（以当前时间重新计费）</li>
+<li>车辆入场出场失败的时候（比如出场未付费，入场发现车牌已在停车场内），要给管理员报警</li>
+</ul>
+</li>
+<li>计费程序提供查询当前某个车牌号应付款金额的功能</li>
+<li>支付系统需要能够通知计费程序车辆已付款</li>
+<li>用户要能够查看某个车牌号过去的停车记录（列表）</li>
+<li>管理员能够查看在场车辆总数，每日营业额</li>
+<li>计费规则是每小时1块，不足一小时当成1小时</li>
+</ul>
+<h3 id="领域模型"><a href="#领域模型" class="headerlink" title="领域模型"></a>领域模型</h3><p><img src="/posts/55083/image-20240703120501614.png" alt="image-20240703120501614" style="zoom:33%;"></p>
+<p><strong>计费实际上应该是一种查询，而并非命令，因为不会导致系统变化，但是计费包含业务规则，不适合归为查询</strong></p>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><p><a target="_blank" rel="noopener" href="https://github.com/ByteBlizzard/sample-ddd-parking/tree/domain">https://github.com/ByteBlizzard/sample-ddd-parking/tree/domain</a></p>
+<ul>
+<li>不需要过度关注到底哪些是值对象，哪些是实体</li>
+<li>六边形架构：依赖反转，部分功能不属于该领域，比如报警（调用外部接口或者发送一个消息MQ）、仓储服务，只需要声明一个接口<code>AlarmService</code>和<code>ParkingRepository</code>，领域功能依赖该接口</li>
+<li>也不需要过度关注贫血（无业务逻辑）、充血（有必要的业务逻辑）、胀血（所有业务逻辑）模型</li>
+</ul>
+<p><img src="/posts/55083/image-20240703122010753.png" alt="image-20240703122010753"></p>
+<p><code>CheckInCommand</code>：车辆入场命令</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.dddparking.domain</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component</span><br><span class="line"><span class="keyword">import</span> java.time.LocalDateTime</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CheckInCommand</span>(</span><br><span class="line">    <span class="keyword">val</span> plate: Plate,</span><br><span class="line">    <span class="keyword">val</span> checkInTime: LocalDateTime</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CheckInCommandHandler</span>(</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> parkingRepository: ParkingRepository</span><br><span class="line">) &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">handle</span><span class="params">(eventQueue: <span class="type">EventQueue</span>, command: <span class="type">CheckInCommand</span>)</span></span>: <span class="built_in">Boolean</span> &#123;</span><br><span class="line">        <span class="keyword">val</span> parking = parkingRepository.findByIdOrError(command.plate) </span><br><span class="line">        <span class="keyword">val</span> result = parking.handle(eventQueue, command)</span><br><span class="line">        parkingRepository.save(parking)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>CheckOutCommand</code>：车辆出场命令</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.dddparking.domain</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component</span><br><span class="line"><span class="keyword">import</span> java.time.LocalDateTime</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CheckOutCommand</span>(</span><br><span class="line">    <span class="keyword">val</span> plate: Plate, <span class="comment">// 车牌号</span></span><br><span class="line">    <span class="keyword">val</span> time: LocalDateTime <span class="comment">// 当前时间</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span> </span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CheckOutCommandHandler</span>( <span class="comment">// 单例模式 </span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> parkingRepository: ParkingRepository <span class="comment">// 停车场的仓储单例</span></span><br><span class="line">) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">handle</span><span class="params">(eventQueue: <span class="type">EventQueue</span>, command: <span class="type">CheckOutCommand</span>)</span></span>: <span class="built_in">Boolean</span> &#123;</span><br><span class="line">        <span class="keyword">val</span> parking = parkingRepository.findByIdOrError(command.plate) <span class="comment">// 找到对应停车聚合对象</span></span><br><span class="line">        <span class="keyword">val</span> result = parking.handle(eventQueue, command) <span class="comment">// 用这个对象去处理该命令</span></span><br><span class="line">        parkingRepository.save(parking)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>ParkingRepository.kt</code>：仓储</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.dddparking.domain</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">ParkingRepository</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">findByIdOrError</span><span class="params">(plate: <span class="type">Plate</span>)</span></span>: Parking <span class="comment">// 根据车牌号返回parking对象</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">save</span><span class="params">(parking: <span class="type">Parking</span>)</span></span> <span class="comment">// 存储回去</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Parking.kt</code>：停车聚合对象，也包含一系列业务功能，是充血模型</p>
+<ul>
+<li>贫血模型：不可取，只有数据及get、set方法没有行为（业务逻辑），业务逻辑都实现在外部</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.dddparking.domain</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.time.Duration</span><br><span class="line"><span class="keyword">import</span> java.time.LocalDateTime</span><br><span class="line"></span><br><span class="line"><span class="keyword">interface</span> <span class="title class_">Parking</span> &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">handle</span><span class="params">(eventQueue: <span class="type">EventQueue</span>, command: <span class="type">CheckInCommand</span>)</span></span>: <span class="built_in">Boolean</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">calculateFeeNow</span><span class="params">(now: <span class="type">LocalDateTime</span>)</span></span>: <span class="built_in">Int</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">handle</span><span class="params">(eventQueue: <span class="type">EventQueue</span>, command: <span class="type">NotifyPayCommand</span>)</span></span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">handle</span><span class="params">(eventQueue: <span class="type">EventQueue</span>, command: <span class="type">CheckOutCommand</span>)</span></span>: <span class="built_in">Boolean</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ParkingImpl</span>( <span class="comment">// 一个实体，长期存在，有Id标识，状态会发生改变，同时也是一个聚合</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> id: Plate,</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> checkInTime: LocalDateTime?, <span class="comment">// 值对象 入场时间</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> lastPayTime: LocalDateTime?, <span class="comment">// 值对象 最后支付时间</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">var</span> totalPaid: <span class="built_in">Int</span> = <span class="number">0</span> <span class="comment">// 值对象 累计支付金额</span></span><br><span class="line">): Parking &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 处理停车入场</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">handle</span><span class="params">(eventQueue: <span class="type">EventQueue</span>, command: <span class="type">CheckInCommand</span>)</span></span>: <span class="built_in">Boolean</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (inPark()) &#123;</span><br><span class="line">            eventQueue.enqueue(CheckInFailedEvent(id, command.checkInTime))</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        eventQueue.enqueue(CheckedInEvent(id, command.checkInTime))</span><br><span class="line">        <span class="keyword">this</span>.checkInTime = command.checkInTime</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 处理停车付费</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">handle</span><span class="params">(eventQueue: <span class="type">EventQueue</span>, command: <span class="type">NotifyPayCommand</span>)</span></span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!inPark()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> DomainException(<span class="string">&quot;车辆不在场，不能付费&quot;</span>)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        lastPayTime = command.payTime</span><br><span class="line">        totalPaid += command.amount</span><br><span class="line"></span><br><span class="line">        eventQueue.enqueue(PaidEvent(plate = id, amount = command.amount, payTime = command.payTime))</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">	<span class="comment">// 处理停车出场</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">handle</span><span class="params">(eventQueue: <span class="type">EventQueue</span>, command: <span class="type">CheckOutCommand</span>)</span></span>: <span class="built_in">Boolean</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!inPark()) &#123; <span class="comment">// 是否在场内</span></span><br><span class="line">            <span class="comment">// 输出出场失败事件</span></span><br><span class="line">            eventQueue.enqueue(CheckOutFailedEvent(plate = id, time = command.time, message = <span class="string">&quot;车辆不在场&quot;</span>))</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">        &#125;</span><br><span class="line">		<span class="comment">// 计算费用</span></span><br><span class="line">        <span class="keyword">if</span> (calculateFeeNow(command.time) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span> <span class="comment">// 费用未缴纳完全，不能出场</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 清空该对象的数据</span></span><br><span class="line">        <span class="keyword">this</span>.checkInTime = <span class="literal">null</span> <span class="comment">// 入场时间</span></span><br><span class="line">        <span class="keyword">this</span>.totalPaid = <span class="number">0</span> <span class="comment">// 已付总费用</span></span><br><span class="line">        <span class="keyword">this</span>.lastPayTime= <span class="literal">null</span> <span class="comment">// 最后一次付款时间</span></span><br><span class="line">		<span class="comment">// 输出出场成功事件</span></span><br><span class="line">        eventQueue.enqueue(CheckedOutEvent(plate = id, time = command.time))</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 计算停车费用</span></span><br><span class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">calculateFeeNow</span><span class="params">(now: <span class="type">LocalDateTime</span>)</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">        <span class="keyword">val</span> currentCheckInTime = checkInTime ?: <span class="keyword">throw</span> DomainException(<span class="string">&quot;车辆尚未入场&quot;</span>)</span><br><span class="line">        <span class="keyword">val</span> lastPayTimeCurrent = lastPayTime ?: <span class="keyword">return</span> hoursBetween(currentCheckInTime, now)</span><br><span class="line">        <span class="keyword">if</span> (lastPayTimeCurrent.plusMinutes(<span class="number">15</span>).isAfter(now)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span> <span class="comment">// 15min限制</span></span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> hoursBetween(currentCheckInTime, now) - totalPaid</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 时间处理逻辑</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">hoursBetween</span><span class="params">(start: <span class="type">LocalDateTime</span>, end: <span class="type">LocalDateTime</span>)</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">        <span class="keyword">val</span> minutes = Duration.between(start, end).toMinutes()</span><br><span class="line">        <span class="keyword">val</span> hours = minutes / <span class="number">60</span></span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">if</span> (hours * <span class="number">60</span> == minutes) hours <span class="keyword">else</span> hours + <span class="number">1</span>).toInt()</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 判断是否在场内</span></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">inPark</span><span class="params">()</span></span>: <span class="built_in">Boolean</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> checkInTime != <span class="literal">null</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>CheckInFailedEvent.kt</code>：车辆入场失败事件</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.dddparking.domain</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.time.LocalDateTime</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CheckInFailedEvent</span>(</span><br><span class="line">    <span class="keyword">val</span> plate: Plate,</span><br><span class="line">    <span class="keyword">val</span> time: LocalDateTime</span><br><span class="line">): DomainEvent</span><br></pre></td></tr></table></figure>
+<p><code>CalculateFeeCommand.kt</code>：计算费用</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.dddparking.domain</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component</span><br><span class="line"><span class="keyword">import</span> java.time.LocalDateTime</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CalculateFeeCommand</span>( <span class="comment">// 值对象，代表一些数据</span></span><br><span class="line">    <span class="keyword">val</span> plate: Plate,</span><br><span class="line">    <span class="keyword">val</span> time: LocalDateTime</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">CalculateFeeCommandHandler</span>(</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> parkingRepository: ParkingRepository</span><br><span class="line">) &#123;</span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">handle</span><span class="params">(command: <span class="type">CalculateFeeCommand</span>)</span></span>: <span class="built_in">Int</span> &#123;</span><br><span class="line">        <span class="keyword">val</span> parking = <span class="keyword">this</span>.parkingRepository.findByIdOrError(command.plate) <span class="comment">// 找到停车对象</span></span><br><span class="line">        <span class="keyword">return</span> parking.calculateFeeNow(command.time) <span class="comment">// 用当前时间来计算费用</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Plate</code>：车牌号类，后期可拓展车牌号所需要的数据</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.dddparking.domain</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Plate</span>(<span class="keyword">val</span> value: String)</span><br></pre></td></tr></table></figure>
+<p><code>NotifyPayCommand</code>：通知付费</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.dddparking.domain</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component</span><br><span class="line"><span class="keyword">import</span> java.time.LocalDateTime</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">NotifyPayCommand</span>(</span><br><span class="line">    <span class="keyword">val</span> plate: Plate, <span class="comment">// 车牌号</span></span><br><span class="line">    <span class="keyword">val</span> amount: <span class="built_in">Int</span>, <span class="comment">// 费用</span></span><br><span class="line">    <span class="keyword">val</span> payTime: LocalDateTime <span class="comment">// 支付时间</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">NotifyPayCommandHandler</span>(</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">val</span> parkingRepository: ParkingRepository</span><br><span class="line">) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">handle</span><span class="params">(eventQueue: <span class="type">EventQueue</span>, command: <span class="type">NotifyPayCommand</span>)</span></span> &#123;</span><br><span class="line">        <span class="keyword">val</span> parking = parkingRepository.findByIdOrError(command.plate)</span><br><span class="line">        parking.handle(eventQueue, command)</span><br><span class="line">        parkingRepository.save(parking)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>PaidEvent</code>：付款事件</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.example.dddparking.domain</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.time.LocalDateTime</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">PaidEvent</span> (</span><br><span class="line">    <span class="keyword">val</span> plate: Plate,</span><br><span class="line">    <span class="keyword">val</span> amount: <span class="built_in">Int</span>,</span><br><span class="line">    <span class="keyword">val</span> payTime: LocalDateTime</span><br><span class="line">): DomainEvent</span><br></pre></td></tr></table></figure>
+
       
     </div>
     
@@ -409,6 +484,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/" rel="tag"># 开发拓展知识</a>
+          
+        </div>
       
 
       
@@ -483,8 +564,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -564,6 +654,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E9%A2%86%E5%9F%9F%E6%A8%A1%E5%9E%8B%E2%80%94%E2%80%94%E5%81%9C%E8%BD%A6%E5%9C%BA%E6%A1%88%E4%BE%8B"><span class="nav-number">1.</span> <span class="nav-text">实现面向对象领域模型——停车场案例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9C%80%E6%B1%82%E5%88%86%E6%9E%90"><span class="nav-number">1.1.</span> <span class="nav-text">需求分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%86%E5%9F%9F%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.2.</span> <span class="nav-text">领域模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.3.</span> <span class="nav-text">代码实现</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -591,7 +697,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">244.3k</span>
+    <span title="Site words total count">257.2k</span>
   
 </div>
 

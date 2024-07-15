@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="开发拓展知识," />
 
 
 
@@ -79,16 +79,17 @@
 
 
 
-<meta name="description" content="xzp（Xu Zhipeng）个人小站">
+<meta name="description" content="DDD的子领域概念">
 <meta property="og:type" content="article">
 <meta property="og:title" content="领域驱动设计-子领域">
 <meta property="og:url" content="http://example.com/posts/64137.html">
 <meta property="og:site_name" content="主页">
-<meta property="og:description" content="xzp（Xu Zhipeng）个人小站">
+<meta property="og:description" content="DDD的子领域概念">
 <meta property="og:locale">
-<meta property="article:published_time" content="2024-07-15T08:14:04.000Z">
-<meta property="article:modified_time" content="2024-07-15T08:18:52.740Z">
+<meta property="article:published_time" content="2024-07-15T08:22:12.000Z">
+<meta property="article:modified_time" content="2024-07-15T08:37:09.602Z">
 <meta property="article:author" content="Xu Zhipeng">
+<meta property="article:tag" content="开发拓展知识">
 <meta name="twitter:card" content="summary">
 
 
@@ -326,7 +327,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-07-15T16:14:04+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-07-15T16:22:12+08:00">
                 2024-07-15
               </time>
             
@@ -336,6 +337,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%89%A9%E5%B1%95%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index">
+                    <span itemprop="name">扩展学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -358,7 +381,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  0
+                  588
                 </span>
               
 
@@ -381,6 +404,10 @@
           
 
           
+              <div class="post-description">
+                  DDD的子领域概念
+              </div>
+          
 
         </div>
       </header>
@@ -395,7 +422,27 @@
       
 
       
-        
+        <h2 id="子领域"><a href="#子领域" class="headerlink" title="子领域"></a>子领域</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><p><strong>核心子领域</strong></p>
+<ul>
+<li>它是一个唯一的、定义明确的领域模型，要对它进行战略投资，并在一个明确的限界上下文中投入大量资源去精心打磨通用语言。它是组织中最重要的项目，因为这将是你与其他竞争者的区别所在。正是因为你的组织无法在所有领域都出类拔萃，所以必须把核心域打造成组织的核心竞争力。做出这样的决定需要对核心域进行深入的学习与理解，而这需要承诺、协作与试验。这是组织最需要在软件中倾斜其投资的方向。</li>
+</ul>
+<p><strong>支撑子领域</strong></p>
+<ul>
+<li>这类建模场景提倡的是“定制开发”，因为找不到现成的解决方案。对它的投入无论如何也达不到与核心域相同的程度。也许会考虑使用外包的方式实现此类限界上下文，以避免因错误地认为其具有战略意义而进行巨额的投资。这类软件模型仍旧非常重要，核心域的成功离不开它。</li>
+</ul>
+<p><strong>通用子领域</strong></p>
+<ul>
+<li>通用子域的解决方案可以采购现成的，也可以采用外包的方式，抑或是由内部团队实现，但我们不用为其分配与核心域同样优质的研发资源，甚至都不如支撑子域。请注意不要把通用子域误认为是核心域。我们并不希望对其投资过甚。</li>
+</ul>
+<p>以电商为例，订单、商品就是核心子领域，用户、营销属于支撑子领域，日志等就属于通用子领域</p>
+<h3 id="划分子领域的目的"><a href="#划分子领域的目的" class="headerlink" title="划分子领域的目的"></a>划分子领域的目的</h3><p>指导投资，包括资金、人力、物力等等，而并非按照软件功能进行划分，或者说对系统的拆解</p>
+<p>核心子领域、核心域也并非六边形架构最中间的”领域核心模块”</p>
+<h3 id="子领域并不实用"><a href="#子领域并不实用" class="headerlink" title="子领域并不实用"></a>子领域并不实用</h3><ul>
+<li>对于具体的研发团队来说，要解决的问题域都是“核心子领域、</li>
+<li>商业项目初期难以确定哪些是核心，哪些不是核心</li>
+<li>影响研发投入的因素还有很多，子领域起不到什么作用</li>
+</ul>
+
       
     </div>
     
@@ -409,6 +456,12 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%BC%80%E5%8F%91%E6%8B%93%E5%B1%95%E7%9F%A5%E8%AF%86/" rel="tag"># 开发拓展知识</a>
+          
+        </div>
       
 
       
@@ -429,8 +482,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/posts/31911.html" rel="prev" title="领域驱动设计-LMAX架构">
-                领域驱动设计-LMAX架构 <i class="fa fa-chevron-right"></i>
+              <a href="/posts/54442.html" rel="prev" title="领域驱动设计-DDD与MVC">
+                领域驱动设计-DDD与MVC <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -483,8 +536,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -564,6 +626,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E9%A2%86%E5%9F%9F"><span class="nav-number">1.</span> <span class="nav-text">子领域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%92%E5%88%86%E5%AD%90%E9%A2%86%E5%9F%9F%E7%9A%84%E7%9B%AE%E7%9A%84"><span class="nav-number">1.2.</span> <span class="nav-text">划分子领域的目的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E9%A2%86%E5%9F%9F%E5%B9%B6%E4%B8%8D%E5%AE%9E%E7%94%A8"><span class="nav-number">1.3.</span> <span class="nav-text">子领域并不实用</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -591,7 +669,7 @@
     
       <span class="post-meta-item-text">Site words total count&#58;</span>
     
-    <span title="Site words total count">244.3k</span>
+    <span title="Site words total count">257.2k</span>
   
 </div>
 
